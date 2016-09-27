@@ -21,17 +21,8 @@ var styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    //marginTop: 0,
     alignItems: 'center',
     backgroundColor: '#09146d',
-  },
-  tile: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#BEE1D2',
   },
   letter: {
     color: '#00f',
