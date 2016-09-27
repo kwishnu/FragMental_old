@@ -9,7 +9,7 @@ class Game extends Component{
   render() {
     return (
         <View style={styles.container}>
-            <Text style={styles.letter}>Hello!</Text>
+            <Text style={styles.letter} >{ this.state.text }</Text>
         </View>
     );
   }
