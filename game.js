@@ -44,6 +44,7 @@ class Game extends React.Component{
         isOpen: false,
         selectedItem: item,
       });
+      window.alert(item);
   }
 
   render() {
