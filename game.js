@@ -23,9 +23,11 @@ class Game extends React.Component{
   }
   render() {
     return (
-        <View style={styles.container}><View style={styles.tiles_container}>
-            {this.drawTiles()}
-        </View></View>
+        <View style={styles.container}>
+            <View style={styles.tiles_container}>
+                {this.drawTiles()}
+            </View>
+        </View>
     );
   }
 
