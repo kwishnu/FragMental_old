@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
-const SideMenu = require('react-native-side-menu');
-const Menu = require('./menu');
 
-//var FragTiles = require('./frag_tiles.js');
+var SideMenu = require('react-native-side-menu');
+var Menu = require('./menu');
+var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
 var NUM_WIDE = 5;
 var NUM_HIGH = 4;
@@ -16,13 +16,13 @@ var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var LETTER_SIZE = Math.floor(TILE_HEIGHT * .6);
 
 class Game extends React.Component{
-  constructor(props) {
+    constructor(props) {
     super(props);
     this.state = {
         text: 'Hello',
         theWord: 'test'
     };
-  }
+    }
 
     state = {
       isOpen: false,
@@ -45,9 +45,9 @@ class Game extends React.Component{
         selectedItem: item,
       });
       window.alert(item);
-  }
+    }
 
-  render() {
+    render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
 
     return (
@@ -67,9 +67,9 @@ class Game extends React.Component{
         </SideMenu>
 
     );
-  }
+}
 
-  drawTiles() {
+drawTiles() {
     var result = [];
     for (var row = 0; row < NUM_HIGH; row++) {
         for (var col=0; col<NUM_WIDE; col++){
@@ -82,9 +82,9 @@ class Game extends React.Component{
         }
     }
     return result;
-  }
+}
 
-  drawTile(key, position) {
+drawTile(key, position) {
     return <View  key={key}>
              <TouchableHighlight  style={[styles.tile, position]} underlayColor='#0F0'
              onPress={() => this.show(key)}><Text style={styles.letter}>{key}</Text></TouchableHighlight>
@@ -93,7 +93,7 @@ class Game extends React.Component{
   show(which){
   window.alert(which);
   }
-};
+}
 
 class Button extends Component {
   handlePress(e) {
@@ -112,54 +112,5 @@ class Button extends Component {
     );
   }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#09146d',
-  },
-  tiles_container: {
-    width: CELL_WIDTH * NUM_WIDE,
-    height: CELL_HEIGHT * NUM_HIGH,
-    backgroundColor: 'transparent',
-  },
-  tile: {
-   position: 'absolute',
-    width: TILE_WIDTH,
-    height: TILE_HEIGHT,
-    borderRadius: BORDER_RADIUS,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#dedffa',
-  },
-  letter: {
-    color: '#00f',
-    fontSize: LETTER_SIZE,
-    backgroundColor: 'transparent',
-  },
-  button: {
-    position: 'absolute',
-    top: 20,
-    padding: 10,
-  },
-  caption: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    alignItems: 'center',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-},
-
-});
 
 module.exports = Game;
