@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity } from 'react-native';
+const SideMenu = require('react-native-side-menu');
+const Menu = require('./menu');
 
 //var FragTiles = require('./frag_tiles.js');
 var {width, height} = require('Dimensions').get('window');
@@ -21,13 +23,48 @@ class Game extends React.Component{
         theWord: 'test'
     };
   }
+
+    state = {
+      isOpen: false,
+      selectedItem: 'About',
+    };
+
+    toggle() {
+      this.setState({
+        isOpen: !this.state.isOpen,
+      });
+    }
+
+    updateMenuState(isOpen) {
+      this.setState({ isOpen, });
+    }
+
+    onMenuItemSelected = (item) => {
+      this.setState({
+        isOpen: false,
+        selectedItem: item,
+      });
+  }
+
   render() {
+    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
+
     return (
-        <View style={styles.container}>
-            <View style={styles.tiles_container}>
-                {this.drawTiles()}
+        <SideMenu
+                menu={menu}
+                isOpen={this.state.isOpen}
+        onChange={(isOpen) => this.updateMenuState(isOpen)}>
+
+            <View style={styles.container}>
+                <View style={styles.tiles_container}>
+                    {this.drawTiles()}
+                </View>
             </View>
-        </View>
+                <Button style={styles.button} onPress={() => this.toggle()}>
+                        <Text style={styles.letter}>{"Menu"}</Text>
+                </Button>
+        </SideMenu>
+
     );
   }
 
@@ -57,6 +94,23 @@ class Game extends React.Component{
   }
 };
 
+class Button extends Component {
+  handlePress(e) {
+    if (this.props.onPress) {
+      this.props.onPress(e);
+    }
+  }
+
+  render() {
+    return (
+      <TouchableOpacity
+        onPress={this.handlePress.bind(this)}
+        style={this.props.style}>
+        <Text>{this.props.children}</Text>
+      </TouchableOpacity>
+    );
+  }
+}
 
 var styles = StyleSheet.create({
   container: {
@@ -84,6 +138,27 @@ var styles = StyleSheet.create({
     fontSize: LETTER_SIZE,
     backgroundColor: 'transparent',
   },
+  button: {
+    position: 'absolute',
+    top: 20,
+    padding: 10,
+  },
+  caption: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    alignItems: 'center',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+},
+
 });
 
 module.exports = Game;

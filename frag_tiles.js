@@ -7,8 +7,10 @@ class FragTiles extends React.Component{
 
   render() {
     return <View style={styles.container}>
-        <TouchableHighlight  underlayColor='transparent'><Text style={styles.letter}>{this.props.theWord}</Text></TouchableHighlight>
-                      </View>
+                <TouchableHighlight  underlayColor='transparent'>
+                    <Text style={styles.letter}>{this.props.theWord}</Text>
+                </TouchableHighlight>
+           </View>
   }
 
 };
