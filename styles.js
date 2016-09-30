@@ -4,31 +4,43 @@ import { Dimensions, StyleSheet, Text, View, Image, TouchableHighlight, Touchabl
 const window = Dimensions.get('window');
 
 var {width, height} = require('Dimensions').get('window');
-var NUM_WIDE = 5;
-var NUM_HIGH = 4;
-var CELL_WIDTH = Math.floor(width * .17); // 20% of the screen width
-var CELL_HEIGHT = CELL_WIDTH * 0.6;
+var NUM_WIDE = 4;
+var NUM_HIGH = 5;
+var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
+var CELL_HEIGHT = CELL_WIDTH * 0.55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
-var BORDER_RADIUS = CELL_PADDING * 0.6;
+var BORDER_RADIUS = CELL_PADDING * 0.2;
 var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var LETTER_SIZE = Math.floor(TILE_HEIGHT * .6);
 
 
 module.exports = StyleSheet.create({
+  game_header: {
+    justifyContent: 'center',
+    width: window.width,
+    height: 46,
+    backgroundColor: 'blue',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#09146d',
+    padding:5,
+  },
+  clues_container: {
+    flex: 6,
+    backgroundColor: '#09146d',
   },
   tiles_container: {
+    flex: 1,
     width: CELL_WIDTH * NUM_WIDE,
     height: CELL_HEIGHT * NUM_HIGH,
-    backgroundColor: 'transparent',
+    backgroundColor: '#09146d',
   },
   tile: {
-   position: 'absolute',
+    position: 'absolute',
     width: TILE_WIDTH,
     height: TILE_HEIGHT,
     borderRadius: BORDER_RADIUS,
@@ -37,14 +49,23 @@ module.exports = StyleSheet.create({
     backgroundColor: '#dedffa',
   },
   letter: {
-    color: '#00f',
+    color: '#000',
     fontSize: LETTER_SIZE,
     backgroundColor: 'transparent',
   },
-  button: {
-    position: 'absolute',
-    top: 20,
-    padding: 10,
+  menu: {
+    flex: 1,
+    width: window.width,
+    height: window.height,
+    backgroundColor: 'blue',
+    padding: 20,
+  },
+  menu_font: {
+    color: '#fff',
+    fontSize: 40,
+  },
+  menu_button: {
+    left: 10,
   },
   caption: {
     fontSize: 20,
@@ -61,13 +82,6 @@ module.exports = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
 },
-  menu: {
-    flex: 1,
-    width: window.width,
-    height: window.height,
-    backgroundColor: '#fafbc4',
-    padding: 20,
-  },
   avatarContainer: {
     marginBottom: 20,
     marginTop: 20,
@@ -79,13 +93,17 @@ module.exports = StyleSheet.create({
     flex: 1,
   },
   name: {
-    position: 'absolute',
-    left: 70,
-    top: 20,
+    color: '#fff',
+    fontSize: 20,
   },
   item: {
-    fontSize: 14,
-    fontWeight: '300',
-    paddingTop: 5,
+    fontSize: 20,
+    color: '#fff',
   },
+  copyright: {
+    fontSize: 10,
+    color: '#fff',
+    marginBottom:10,
+  },
+
 });

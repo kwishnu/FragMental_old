@@ -12,19 +12,19 @@ module.exports = class Menu extends Component {
     return (
       <ScrollView scrollsToTop={false} style={styles.menu}>
         <View style={styles.avatarContainer}>
-          <Text style={styles.name}>Your name</Text>
+          <Text style={styles.name}>'Heading'</Text>
         </View>
 
         <Text
-          onPress={() => this.props.onItemSelected('About')}
+          onPress={() => this.props.onItemSelected('Item 1')}
           style={styles.item}>
-          About
+          Item 1
         </Text>
 
         <Text
-          onPress={() => this.props.onItemSelected('Contacts')}
+          onPress={() => this.props.onItemSelected('Item 2')}
           style={styles.item}>
-          Contacts
+          Item 2
         </Text>
       </ScrollView>
     );
