@@ -22,7 +22,6 @@ class PuzzleLaunch extends React.Component{
     };
     }
 
-
     state = {
       isOpen: false,
       selectedItem: 'About',
@@ -42,15 +41,13 @@ class PuzzleLaunch extends React.Component{
       });
       window.alert(item);
     }
-
     border= function(color){
         return{
             borderColor: color,
             borderWidth: 2,
         }
     }
-
-    onSelect(){
+    onSelect(passed){
         this.props.navigator.push({
             id: 'game board'
         });
@@ -68,16 +65,18 @@ class PuzzleLaunch extends React.Component{
             <View style={[container_styles.container, this.border('black')]}>
                 <View style={container_styles.header}>
                     <Button style={styles.menu_arrow} onPress={() => this.toggle()}>
-                        <Image source={require('./images/arrow_back.png')} style={{width: 32, height: 32}} />
+                        <Image source={require('./images/menu.png')} style={{width: 32, height: 32}} />
                     </Button>
                 </View>
+                <View style={[container_styles.tiles_container, this.border('black')]}>
 
-                <ScrollView style={container_styles.tiles_container}>
-                    <Button style={styles.menu_arrow} onPress={this.onSelect.bind(this)}>
+                <ScrollView style={container_styles.scrollview}>
+                    <Button style={styles.menu_arrow} onPress={() => this.onSelect('hi')}>
                         <Image source={require('./images/arrow_back.png')} style={{width: 32, height: 32}} />
                     </Button>
 
                 </ScrollView>
+                </View>
 
                 <View style={container_styles.footer}>
                  <Text style={styles.copyright}>Some fine print...</Text>
@@ -87,32 +86,32 @@ class PuzzleLaunch extends React.Component{
         </SideMenu>
 
     );
-}
-
-drawTiles() {
-    var result = [];
-    for (var row = 0; row < NUM_HIGH; row++) {
-        for (var col=0; col<NUM_WIDE; col++){
-              var key = row * NUM_WIDE + col;
-              var style = {
-                left: (col * CELL_WIDTH) + CELL_PADDING,
-                top: (row * CELL_HEIGHT) + CELL_PADDING,
-                }
-                result.push(this.drawTile(key, style));
-        }
     }
-    return result;
-}
 
-drawTile(key, position) {
-    return <View  key={key}>
-             <TouchableHighlight  style={[styles.tile, position]} underlayColor='#0F0'
-             onPress={() => this.show(key)}><Text style={styles.letter}>{key}</Text></TouchableHighlight>
-           </View>
-  }
-  show(which){
-  window.alert(which);
-  }
+    drawTiles() {
+        var result = [];
+        for (var row = 0; row < NUM_HIGH; row++) {
+            for (var col=0; col<NUM_WIDE; col++){
+                  var key = row * NUM_WIDE + col;
+                  var style = {
+                    left: (col * CELL_WIDTH) + CELL_PADDING,
+                    top: (row * CELL_HEIGHT) + CELL_PADDING,
+                    }
+                    result.push(this.drawTile(key, style));
+            }
+        }
+        return result;
+    }
+
+    drawTile(key, position) {
+        return <View  key={key}>
+                 <TouchableHighlight  style={[styles.tile, position]} underlayColor='#0F0'
+                 onPress={() => this.show(key)}><Text style={styles.letter}>{key}</Text></TouchableHighlight>
+               </View>
+      }
+      show(which){
+      window.alert(which);
+      }
 }
 
 class Button extends Component {
@@ -138,20 +137,24 @@ var container_styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#09146d',
   },
-  header: {
+  scrollview: {
     flex: 1,
+    backgroundColor: 'transparent',
+  },
+  header: {
+    flex: 4,
     alignItems: 'center',
     flexDirection: 'row',
     width: window.width,
     backgroundColor: '#3e05a6',
   },
   tiles_container: {
-    flex: 6,
+    flex: 45,
     backgroundColor: '#09146d',
     padding: 6,
   },
   footer: {
-    flex: 1,
+    flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#09146d',

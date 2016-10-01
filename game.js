@@ -41,12 +41,16 @@ class Game extends React.Component{
       });
       window.alert(item);
     }
-
     border= function(color){
         return{
             borderColor: color,
             borderWidth: 2,
         }
+    }
+    onSelect(passed){
+        this.props.navigator.push({
+            id: 'puzzle launcher'
+        });
     }
 
     render() {
@@ -60,8 +64,8 @@ class Game extends React.Component{
 
             <View style={[container_styles.container, this.border('black')]}>
                 <View style={container_styles.game_header}>
-                    <Button style={styles.menu_arrow} onPress={() => this.toggle()}>
-                        <Image source={require('./images/arrow_back.png')} style={{width: 32, height: 32}} />
+                    <Button style={styles.menu_arrow}onPress={() => this.onSelect()}>
+                        <Image source={require('./images/close.png')} style={{width: 32, height: 32}} />
                     </Button>
                 </View>
 
@@ -83,32 +87,32 @@ class Game extends React.Component{
         </SideMenu>
 
     );
-}
-
-drawTiles() {
-    var result = [];
-    for (var row = 0; row < NUM_HIGH; row++) {
-        for (var col=0; col<NUM_WIDE; col++){
-              var key = row * NUM_WIDE + col;
-              var style = {
-                left: (col * CELL_WIDTH) + CELL_PADDING,
-                top: (row * CELL_HEIGHT) + CELL_PADDING,
-                }
-                result.push(this.drawTile(key, style));
-        }
     }
-    return result;
-}
 
-drawTile(key, position) {
-    return <View  key={key}>
-             <TouchableHighlight  style={[styles.tile, position]} underlayColor='#0F0'
-             onPress={() => this.show(key)}><Text style={styles.letter}>{key}</Text></TouchableHighlight>
-           </View>
-  }
-  show(which){
-  window.alert(which);
-  }
+    drawTiles() {
+        var result = [];
+        for (var row = 0; row < NUM_HIGH; row++) {
+            for (var col=0; col<NUM_WIDE; col++){
+                  var key = row * NUM_WIDE + col;
+                  var style = {
+                    left: (col * CELL_WIDTH) + CELL_PADDING,
+                    top: (row * CELL_HEIGHT) + CELL_PADDING,
+                    }
+                    result.push(this.drawTile(key, style));
+            }
+        }
+        return result;
+    }
+
+    drawTile(key, position) {
+        return <View  key={key}>
+                 <TouchableHighlight  style={[styles.tile, position]} underlayColor='#0F0'
+                 onPress={() => this.show(key)}><Text style={styles.letter}>{key}</Text></TouchableHighlight>
+               </View>
+      }
+      show(which){
+      window.alert(which);
+      }
 }
 
 class Button extends Component {
