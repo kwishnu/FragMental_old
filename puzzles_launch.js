@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, Navigator  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ScrollView, BackAndroid, Navigator  } from 'react-native';
 
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -12,15 +12,16 @@ var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
 //var CONTAINER_PADDING = (width - (CELL_WIDTH * NUM_WIDE))/2
 
-class Game extends React.Component{
+class PuzzleLaunch extends React.Component{
     constructor(props) {
     super(props);
     this.state = {
-        id: 'game board',
+        id: 'puzzle launcher',
         text: 'Hello',
         theWord: 'test'
     };
     }
+
 
     state = {
       isOpen: false,
@@ -49,6 +50,12 @@ class Game extends React.Component{
         }
     }
 
+    onSelect(){
+        this.props.navigator.push({
+            id: 'game board'
+        });
+    }
+
     render() {
     const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
 
@@ -59,21 +66,18 @@ class Game extends React.Component{
                 onChange={(isOpen) => this.updateMenuState(isOpen)}>
 
             <View style={[container_styles.container, this.border('black')]}>
-                <View style={container_styles.game_header}>
+                <View style={container_styles.header}>
                     <Button style={styles.menu_arrow} onPress={() => this.toggle()}>
                         <Image source={require('./images/arrow_back.png')} style={{width: 32, height: 32}} />
                     </Button>
                 </View>
 
-                <View style={container_styles.clues_container}>
-                </View>
+                <ScrollView style={container_styles.tiles_container}>
+                    <Button style={styles.menu_arrow} onPress={this.onSelect.bind(this)}>
+                        <Image source={require('./images/arrow_back.png')} style={{width: 32, height: 32}} />
+                    </Button>
 
-                <View style={container_styles.UI_container}>
-                </View>
-
-                <View style={container_styles.tiles_container}>
-                   {this.drawTiles()}
-                </View>
+                </ScrollView>
 
                 <View style={container_styles.footer}>
                  <Text style={styles.copyright}>Some fine print...</Text>
@@ -134,33 +138,20 @@ var container_styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#09146d',
   },
-  game_header: {
-    flex: 4,
+  header: {
+    flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
     width: window.width,
     backgroundColor: '#3e05a6',
   },
-  clues_container: {
-    flex: 19,
-    backgroundColor: '#09146d',
-    borderTopWidth: 2,
-    borderTopColor: '#000',
-  },
-  UI_container: {
-    flex: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: window.width,
-    backgroundColor: '#08115d',
-  },
   tiles_container: {
-    flex: 21,
+    flex: 6,
     backgroundColor: '#09146d',
     padding: 6,
   },
   footer: {
-    flex: 4,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#09146d',
@@ -168,4 +159,4 @@ var container_styles = StyleSheet.create({
 
 });
 
-module.exports = Game;
+module.exports = PuzzleLaunch;

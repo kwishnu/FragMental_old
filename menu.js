@@ -16,15 +16,15 @@ module.exports = class Menu extends Component {
         </View>
 
         <Text
-          onPress={() => this.props.onItemSelected('Item 1')}
+          onPress={() => this.props.onItemSelected('Puzzle Launch Page')}
           style={styles.item}>
-          Item 1
+          Puzzle Launch Page
         </Text>
 
         <Text
-          onPress={() => this.props.onItemSelected('Item 2')}
+          onPress={() => this.props.onItemSelected('A Puzzle')}
           style={styles.item}>
-          Item 2
+          A Puzzle
         </Text>
       </ScrollView>
     );
