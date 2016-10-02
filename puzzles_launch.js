@@ -83,7 +83,7 @@ class PuzzleLaunch extends React.Component{
                     <View style={ [container_styles.tiles_container, this.border('black')] }>
                         <ScrollView style={ container_styles.scrollview }>
                             <Button style={ styles.menu_arrow } onPress={ () => this.onSelect('hi') }>
-                                <Image source={ require('./images/arrow_back.png') } style={ { width: 32, height: 32 } } />
+                                <Image source={ require('./images/square.png') } style={ { width: 32, height: 32 } } />
                             </Button>
                       </ScrollView>
                     </View>
