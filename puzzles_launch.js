@@ -18,21 +18,37 @@ class PuzzleLaunch extends React.Component{
     this.state = {
         id: 'puzzle launcher',
         text: 'Hello',
-        theWord: 'test'
+        theWord: 'test',
+        isOpen: false,
+        edgeHitWidth : width/2,
     };
-    }
 
-    state = {
-      isOpen: false,
-      selectedItem: 'About',
-    };
+    this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
+    }
+    handleHardwareBackButton(){
+        if(this.state.isOpen){
+               this.toggle();
+               return true;
+        }
+    }
     toggle() {
       this.setState({
         isOpen: !this.state.isOpen,
       });
+        if(this.state.isOpen){
+                BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
+        }else{
+                BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+        }
     }
     updateMenuState(isOpen) {
       this.setState({ isOpen, });
+      if(this.state.isOpen){
+              BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
+      }else{
+              BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+      }
+
     }
     onMenuItemSelected = (item) => {
       this.setState({

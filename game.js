@@ -11,6 +11,8 @@ var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
 //var CONTAINER_PADDING = (width - (CELL_WIDTH * NUM_WIDE))/2
+var menuOpen = null;
+
 
 class Game extends React.Component{
     constructor(props) {
@@ -18,14 +20,26 @@ class Game extends React.Component{
     this.state = {
         id: 'game board',
         text: 'Hello',
-        theWord: 'test'
+        theWord: 'test',
+        isOpen: false,
     };
+    this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
 
-    state = {
-      isOpen: false,
-      selectedItem: 'About',
-    };
+    componentDidMount() {
+        BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);    }
+    componentWillUnmount () {
+        BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+    }
+    handleHardwareBackButton(){
+          try {
+            this.props.navigator.pop();
+            return true;
+          }
+          catch(err)  {
+            return false;
+          }
+    }
     toggle() {
       this.setState({
         isOpen: !this.state.isOpen,
@@ -48,9 +62,12 @@ class Game extends React.Component{
         }
     }
     onSelect(passed){
-        this.props.navigator.push({
+        this.props.navigator.pop({
             id: 'puzzle launcher'
         });
+    }
+    closeGame(){
+        this.props.navigator.pop();
     }
 
     render() {
@@ -64,7 +81,7 @@ class Game extends React.Component{
 
             <View style={[container_styles.container, this.border('black')]}>
                 <View style={container_styles.game_header}>
-                    <Button style={styles.menu_arrow}onPress={() => this.onSelect()}>
+                    <Button style={styles.menu_arrow} onPress={() => this.closeGame()}>
                         <Image source={require('./images/close.png')} style={{width: 32, height: 32}} />
                     </Button>
                 </View>
@@ -121,7 +138,6 @@ class Button extends Component {
       this.props.onPress(e);
     }
   }
-
   render() {
     return (
       <TouchableOpacity
@@ -132,6 +148,7 @@ class Button extends Component {
     );
   }
 }
+
 
 var container_styles = StyleSheet.create({
   container: {
