@@ -2,20 +2,15 @@
 
 'use strict';
 
-import React , {Component} from 'react';
-import
-{
-  View,
-  Navigator
-}
-from 'react-native';
+import React, { Component } from 'react';
+import { View, Navigator } from 'react-native';
 
 var Navigation = require('./app_navigator');
 
 class Nav extends Component {
-    render(){
-        return(
-            <Navigation></Navigation>
+    render() {
+        return (
+            <Navigation />
         );
     }
 }

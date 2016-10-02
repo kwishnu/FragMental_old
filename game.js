@@ -14,179 +14,174 @@ var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
 var menuOpen = null;
 
 
-class Game extends React.Component{
+class Game extends React.Component {
     constructor(props) {
-    super(props);
-    this.state = {
-        id: 'game board',
-        text: 'Hello',
-        theWord: 'test',
-        isOpen: false,
-    };
-    this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
-    }
-
+        super(props);
+        this.state = {
+            id: 'game board',
+            text: 'Hello',
+            theWord: 'test',
+            isOpen: false,
+        };
+        this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
+    },
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);    }
+        BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
+    },
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
-    }
-    handleHardwareBackButton(){
-          try {
+    },
+    handleHardwareBackButton() {
+        try {
             this.props.navigator.pop();
             return true;
-          }
-          catch(err)  {
+        } catch(err)  {
             return false;
-          }
-    }
+        }
+    },
     toggle() {
-      this.setState({
-        isOpen: !this.state.isOpen,
-      });
-    }
+        this.setState({
+            isOpen: !this.state.isOpen,
+        });
+    },
     updateMenuState(isOpen) {
-      this.setState({ isOpen, });
-    }
-    onMenuItemSelected = (item) => {
-      this.setState({
-        isOpen: false,
-        selectedItem: item,
-      });
-      window.alert(item);
-    }
-    border= function(color){
-        return{
+        this.setState({ isOpen, });
+    },
+    onMenuItemSelected(item) {
+        this.setState({
+            isOpen: false,
+            selectedItem: item,
+        });
+        window.alert(item);
+    },
+    border(color) {
+        return {
             borderColor: color,
             borderWidth: 2,
         }
-    }
-    onSelect(passed){
+    },
+    onSelect(passed) {
         this.props.navigator.pop({
             id: 'puzzle launcher'
         });
-    }
-    closeGame(){
+    },
+    closeGame() {
         this.props.navigator.pop();
-    }
-
-    render() {
-    const menu = <Menu onItemSelected={this.onMenuItemSelected} />;
-
-    return (
-        <SideMenu
-                menu={menu}
-                isOpen={this.state.isOpen}
-                onChange={(isOpen) => this.updateMenuState(isOpen)}>
-
-            <View style={[container_styles.container, this.border('black')]}>
-                <View style={container_styles.game_header}>
-                    <Button style={styles.menu_arrow} onPress={() => this.closeGame()}>
-                        <Image source={require('./images/close.png')} style={{width: 32, height: 32}} />
-                    </Button>
-                </View>
-
-                <View style={container_styles.clues_container}>
-                </View>
-
-                <View style={container_styles.UI_container}>
-                </View>
-
-                <View style={container_styles.tiles_container}>
-                   {this.drawTiles()}
-                </View>
-
-                <View style={container_styles.footer}>
-                 <Text style={styles.copyright}>Some fine print...</Text>
-                </View>
-
-             </View>
-        </SideMenu>
-
-    );
-    }
-
+    },
     drawTiles() {
         var result = [];
         for (var row = 0; row < NUM_HIGH; row++) {
-            for (var col=0; col<NUM_WIDE; col++){
-                  var key = row * NUM_WIDE + col;
-                  var style = {
+            for (var col=0; col<NUM_WIDE; col++) {
+                var key = row * NUM_WIDE + col;
+                var style = {
                     left: (col * CELL_WIDTH) + CELL_PADDING,
                     top: (row * CELL_HEIGHT) + CELL_PADDING,
-                    }
-                    result.push(this.drawTile(key, style));
+                }
+                result.push(this.drawTile(key, style));
             }
         }
         return result;
-    }
-
+    },
     drawTile(key, position) {
-        return <View  key={key}>
-                 <TouchableHighlight  style={[styles.tile, position]} underlayColor='#0F0'
-                 onPress={() => this.show(key)}><Text style={styles.letter}>{key}</Text></TouchableHighlight>
-               </View>
-      }
-      show(which){
-      window.alert(which);
-      }
+        return (
+            <View  key={ key }>
+                <TouchableHighlight
+                    style={ [styles.tile, position] }
+                    underlayColor='#0F0'
+                    onPress={ () => this.show(key) } >
+
+                    <Text style={ styles.letter }>{ key }</Text>
+                </TouchableHighlight>
+            </View>
+        );
+    },
+    show(which) {
+        window.alert(which);
+    },
+    render() {
+        const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
+
+        return (
+            <SideMenu
+                menu={ menu }
+                isOpen={ this.state.isOpen }
+                onChange={ (isOpen) => this.updateMenuState(isOpen) } >
+
+                <View style={ [container_styles.container, this.border('black')] }>
+                    <View style={ container_styles.game_header }>
+                        <Button style={ styles.menu_arrow } onPress={ () => this.closeGame() }>
+                            <Image source={ require('./images/close.png') } style={ { width: 32, height: 32 } } />
+                        </Button>
+                    </View>
+                    <View style={ container_styles.clues_container } />
+                    <View style={ container_styles.UI_container } />
+                    <View style={ container_styles.tiles_container }>
+                        { this.drawTiles() }
+                    </View>
+                    <View style={ container_styles.footer }>
+                        <Text style={ styles.copyright }>Some fine print...</Text>
+                    </View>
+                </View>
+            </SideMenu>
+        );
+    }
 }
 
 class Button extends Component {
-  handlePress(e) {
-    if (this.props.onPress) {
-      this.props.onPress(e);
+    handlePress(e) {
+        if (this.props.onPress) {
+            this.props.onPress(e);
+        }
+    },
+    render() {
+        return (
+            <TouchableOpacity
+                onPress={ this.handlePress.bind(this) }
+                style={ this.props.style } >
+
+                <Text>{ this.props.children }</Text>
+            </TouchableOpacity>
+        );
     }
-  }
-  render() {
-    return (
-      <TouchableOpacity
-        onPress={this.handlePress.bind(this)}
-        style={this.props.style}>
-        <Text>{this.props.children}</Text>
-      </TouchableOpacity>
-    );
-  }
 }
 
 
 var container_styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#09146d',
-  },
-  game_header: {
-    flex: 4,
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: window.width,
-    backgroundColor: '#3e05a6',
-  },
-  clues_container: {
-    flex: 19,
-    backgroundColor: '#09146d',
-    borderTopWidth: 2,
-    borderTopColor: '#000',
-  },
-  UI_container: {
-    flex: 5,
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: window.width,
-    backgroundColor: '#08115d',
-  },
-  tiles_container: {
-    flex: 21,
-    backgroundColor: '#09146d',
-    padding: 6,
-  },
-  footer: {
-    flex: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#09146d',
-  },
-
+    container: {
+        flex: 1,
+        backgroundColor: '#09146d',
+    },
+    game_header: {
+        flex: 4,
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: window.width,
+        backgroundColor: '#3e05a6',
+    },
+    clues_container: {
+        flex: 19,
+        backgroundColor: '#09146d',
+        borderTopWidth: 2,
+        borderTopColor: '#000',
+    },
+    UI_container: {
+        flex: 5,
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: window.width,
+        backgroundColor: '#08115d',
+    },
+    tiles_container: {
+        flex: 21,
+        backgroundColor: '#09146d',
+        padding: 6,
+    },
+    footer: {
+        flex: 4,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#09146d',
+    },
 });
 
 module.exports = Game;
