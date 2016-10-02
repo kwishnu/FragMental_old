@@ -43,7 +43,7 @@ class PuzzleLaunch extends React.Component{
     }
     updateMenuState(isOpen) {
       this.setState({ isOpen, });
-      if(this.state.isOpen){
+      if(isOpen){
               BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
       }else{
               BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
