@@ -24,13 +24,13 @@ class Game extends React.Component {
             isOpen: false,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
-    },
+    }
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
-    },
+    }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
-    },
+    }
     handleHardwareBackButton() {
         try {
             this.props.navigator.pop();
@@ -38,36 +38,36 @@ class Game extends React.Component {
         } catch(err)  {
             return false;
         }
-    },
+    }
     toggle() {
         this.setState({
             isOpen: !this.state.isOpen,
         });
-    },
+    }
     updateMenuState(isOpen) {
         this.setState({ isOpen, });
-    },
+    }
     onMenuItemSelected(item) {
         this.setState({
             isOpen: false,
             selectedItem: item,
         });
         window.alert(item);
-    },
+    }
     border(color) {
         return {
             borderColor: color,
             borderWidth: 2,
         }
-    },
+    }
     onSelect(passed) {
         this.props.navigator.pop({
             id: 'puzzle launcher'
         });
-    },
+    }
     closeGame() {
         this.props.navigator.pop();
-    },
+    }
     drawTiles() {
         var result = [];
         for (var row = 0; row < NUM_HIGH; row++) {
@@ -81,7 +81,7 @@ class Game extends React.Component {
             }
         }
         return result;
-    },
+    }
     drawTile(key, position) {
         return (
             <View  key={ key }>
@@ -94,10 +94,10 @@ class Game extends React.Component {
                 </TouchableHighlight>
             </View>
         );
-    },
+    }
     show(which) {
         window.alert(which);
-    },
+    }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
 
@@ -132,7 +132,7 @@ class Button extends Component {
         if (this.props.onPress) {
             this.props.onPress(e);
         }
-    },
+    }
     render() {
         return (
             <TouchableOpacity

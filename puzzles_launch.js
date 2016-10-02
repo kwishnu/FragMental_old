@@ -24,13 +24,13 @@ class PuzzleLaunch extends React.Component{
         };
 
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
-    },
+    }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
             return true;
         }
-    },
+    }
     toggle() {
         this.setState({ isOpen: !this.state.isOpen });
         if (this.state.isOpen) {
@@ -38,7 +38,7 @@ class PuzzleLaunch extends React.Component{
         } else {
             BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
         }
-    },
+    }
     updateMenuState(isOpen) {
         this.setState({ isOpen });
         if (isOpen) {
@@ -46,7 +46,7 @@ class PuzzleLaunch extends React.Component{
         } else {
             BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
         }
-    },
+    }
     onMenuItemSelected(item) {
         this.setState({
             isOpen: false,
@@ -59,12 +59,12 @@ class PuzzleLaunch extends React.Component{
             borderColor: color,
             borderWidth: 2,
         };
-    },
+    }
     onSelect(passed) {
         this.props.navigator.push({
             id: 'game board'
         });
-    },
+    }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
 
@@ -101,7 +101,7 @@ class Button extends Component {
         if (this.props.onPress) {
             this.props.onPress(e);
         }
-    },
+    }
     render() {
         return (
             <TouchableOpacity

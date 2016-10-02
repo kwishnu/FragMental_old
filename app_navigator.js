@@ -9,7 +9,7 @@ const PuzzlesLaunch = require('./puzzles_launch');
 class AppNavigator extends React.Component {
     constructor(props) {
         super(props);
-    },
+    }
     navigatorRenderScene(route, navigator) {
         switch (route.id) {
             case 'game board':
@@ -18,7 +18,7 @@ class AppNavigator extends React.Component {
                 return (<PuzzlesLaunch navigator={ navigator } route={ route } title="Puzzle Launcher" />);
             // Add more ids here
         }
-    },
+    }
     render() {
         var initialRouteID = 'game board';
         return (
