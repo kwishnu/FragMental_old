@@ -30,6 +30,11 @@ module.exports = StyleSheet.create({
         fontSize: LETTER_SIZE,
         backgroundColor: 'transparent',
     },
+    header_text: {
+        color: '#e3e004',
+        fontSize: LETTER_SIZE,
+        backgroundColor: 'transparent',
+    },
     menu: {
         flex: 1,
         width: window.width,
@@ -40,11 +45,6 @@ module.exports = StyleSheet.create({
     menu_font: {
         color: '#fff',
         fontSize: 40,
-    },
-    menu_arrow: {
-        left: 10,
-    },
-    menu_button: {
     },
     caption: {
         fontSize: 20,

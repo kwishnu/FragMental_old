@@ -76,13 +76,18 @@ class PuzzleLaunch extends React.Component{
 
                 <View style={ [container_styles.container, this.border('black')] }>
                     <View style={ container_styles.header }>
-                        <Button style={ styles.menu_arrow } onPress={ () => this.toggle() }>
+                        <Button style={{left: 10}} onPress={ () => this.toggle() }>
                             <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
+                        </Button>
+                        <Text style={styles.header_text} >Asparagus
+                        </Text>
+                        <Button>
+                            <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.border('black')] }>
                         <ScrollView style={ container_styles.scrollview }>
-                            <Button style={ styles.menu_arrow } onPress={ () => this.onSelect('hi') }>
+                            <Button style={ styles.menu_button } onPress={ () => this.onSelect('hi') }>
                                 <Image source={ require('./images/square.png') } style={ { width: 32, height: 32 } } />
                             </Button>
                       </ScrollView>
@@ -125,8 +130,9 @@ var container_styles = StyleSheet.create({
     },
     header: {
         flex: 4,
-        alignItems: 'center',
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         width: window.width,
         backgroundColor: '#3e05a6',
     },
