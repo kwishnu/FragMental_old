@@ -61,9 +61,9 @@ class PuzzleLaunch extends React.Component{
         };
     }
     onSelect(passed) {
-        this.props.navigator.push({
-            id: 'game board'
-        });
+        this.props.navigator.replace({
+            id: 'game board',
+       });
     }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;

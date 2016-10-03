@@ -32,11 +32,18 @@ class Game extends React.Component {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
     handleHardwareBackButton() {
-        try {
-            this.props.navigator.pop();
+        if (this.state.isOpen) {
+            this.toggle();
             return true;
-        } catch(err)  {
-            return false;
+        }else{
+            try {
+            this.props.navigator.replace({
+                id: 'puzzle launcher',
+            });
+                return true;
+            } catch(err)  {
+                return false;
+            }
         }
     }
     toggle() {
@@ -60,13 +67,10 @@ class Game extends React.Component {
             borderWidth: 2,
         }
     }
-    onSelect(passed) {
-        this.props.navigator.pop({
-            id: 'puzzle launcher'
-        });
-    }
     closeGame() {
-        this.props.navigator.pop();
+        this.props.navigator.replace({
+            id: 'puzzle launcher',
+        });
     }
     drawTiles() {
         var result = [];
