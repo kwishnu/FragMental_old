@@ -133,7 +133,7 @@ var container_styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
     },
     header: {
         flex: 4,
