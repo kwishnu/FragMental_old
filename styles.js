@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
+
+const window = Dimensions.get('window');
 
 var { width, height } = require('Dimensions').get('window');
 var NUM_WIDE = 4;
