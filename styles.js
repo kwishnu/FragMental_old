@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
-
-const window = Dimensions.get('window');
+import { StyleSheet } from 'react-native';
 
 var { width, height } = require('Dimensions').get('window');
 var NUM_WIDE = 4;
@@ -75,7 +73,7 @@ module.exports = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
     },
-    item: {
+    menu_item: {
         fontSize: 20,
         color: '#fff',
     },

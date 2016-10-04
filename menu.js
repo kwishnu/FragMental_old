@@ -16,13 +16,13 @@ module.exports = class Menu extends Component {
                 </View>
                 <Text
                     onPress={ () => this.props.onItemSelected('Puzzle Launch Page') }
-                    style={ styles.item } >
+                    style={ styles.menu_item } >
 
                     Puzzle Launch Page
                 </Text>
                 <Text
                     onPress={ () => this.props.onItemSelected('A Puzzle') }
-                    style={ styles.item } >
+                    style={ styles.menu_item } >
 
                     A Puzzle
                 </Text>

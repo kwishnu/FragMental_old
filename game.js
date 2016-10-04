@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, Navigator  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid  } from 'react-native';
 
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -10,17 +10,12 @@ var NUM_HIGH = 5;
 var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
-//var CONTAINER_PADDING = (width - (CELL_WIDTH * NUM_WIDE))/2
-var menuOpen = null;
-
 
 class Game extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             id: 'game board',
-            text: 'Hello',
-            theWord: 'test',
             isOpen: false,
             code: this.props.code,
             title: this.props.title,
@@ -149,7 +144,6 @@ class Button extends Component {
             <TouchableOpacity
                 onPress={ this.handlePress.bind(this) }
                 style={ this.props.style } >
-
                 <Text>{ this.props.children }</Text>
             </TouchableOpacity>
         );
