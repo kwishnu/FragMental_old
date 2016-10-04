@@ -22,6 +22,8 @@ class Game extends React.Component {
             text: 'Hello',
             theWord: 'test',
             isOpen: false,
+            code: this.props.code,
+            title: this.props.title,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -113,8 +115,13 @@ class Game extends React.Component {
 
                 <View style={ [container_styles.container, this.border('black')] }>
                     <View style={ container_styles.game_header }>
-                        <Button style={ styles.menu_arrow } onPress={ () => this.closeGame() }>
+                        <Button style={{left: 10}} onPress={ () => this.closeGame() }>
                             <Image source={ require('./images/close.png') } style={ { width: 32, height: 32 } } />
+                        </Button>
+                        <Text style={styles.header_text} >{this.state.title}
+                        </Text>
+                        <Button>
+                            <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
                     <View style={ container_styles.clues_container } />
@@ -157,8 +164,9 @@ var container_styles = StyleSheet.create({
     },
     game_header: {
         flex: 4,
-        alignItems: 'center',
         flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         width: window.width,
         backgroundColor: '#3e05a6',
     },

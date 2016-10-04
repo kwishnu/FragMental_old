@@ -63,6 +63,10 @@ class PuzzleLaunch extends React.Component{
     onSelect(passed) {
         this.props.navigator.replace({
             id: 'game board',
+            passProps: {
+                title: passed,
+                code: 'Foo',
+                },
        });
     }
     render() {

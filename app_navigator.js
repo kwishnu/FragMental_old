@@ -10,21 +10,23 @@ class AppNavigator extends React.Component {
     constructor(props) {
         super(props);
     }
-    navigatorRenderScene(route, navigator) {
-        switch (route.id) {
+    navigatorRenderScene(routeID) {
+        switch (routeID) {
             case 'game board':
-                return (<Game navigator={ navigator } route={ route } title="Game Board" />);
+                return Game;
             case 'puzzle launcher':
-                return (<PuzzlesLaunch navigator={ navigator } route={ route } title="Puzzle Launcher" />);
+                return PuzzlesLaunch;
             // Add more ids here
         }
     }
+
     render() {
-        var initialRouteID = 'game board';
         return (
             <Navigator
               initialRoute={ { id: 'puzzle launcher' } }
-              renderScene={ this.navigatorRenderScene } />
+              renderScene={(route, navigator) => {
+                return React.createElement(this.navigatorRenderScene(route.id), { ...this.props, ...route.passProps, navigator, route } );
+              }} />
         );
     }
 }
