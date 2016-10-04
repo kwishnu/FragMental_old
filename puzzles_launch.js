@@ -22,7 +22,17 @@ class PuzzleLaunch extends React.Component{
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
-
+    getInitialState() {
+        var tilt = new Array(SIZE * SIZE);
+        for (var i = 0; i < tilt.length; i++) {
+          tilt[i] = new Animated.Value(0);
+        }
+            var opacities = new Array(SIZE * SIZE);
+            for (var i = 0; i < opacities.length; i++) {
+              opacities[i] = new Animated.Value(1);
+            }
+        return {tilt, opacities};
+    },
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
