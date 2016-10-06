@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated  } from 'react-native';
 
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
 var NUM_WIDE = 5;
+var NUM_ROWS = 10;
 var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the screen width
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
 var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
@@ -18,21 +19,21 @@ class PuzzleLaunch extends React.Component{
         this.state = {
             id: 'puzzle launcher',
             isOpen: false,
-            dataSource: ds.cloneWithRows(Array.from(new Array(50), (x,i) => i+1)),
+            dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
-    getInitialState() {
-        var tilt = new Array(SIZE * SIZE);
+    setLauncherProps() {
+        var tilt = new Array(NUM_WIDE * NUM_ROWS);
         for (var i = 0; i < tilt.length; i++) {
           tilt[i] = new Animated.Value(0);
         }
-            var opacities = new Array(SIZE * SIZE);
+            var opacities = new Array(NUM_WIDE * NUM_ROWS);
             for (var i = 0; i < opacities.length; i++) {
               opacities[i] = new Animated.Value(1);
             }
         return {tilt, opacities};
-    },
+    }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
@@ -80,6 +81,7 @@ class PuzzleLaunch extends React.Component{
 
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
+        this.setLauncherProps();
 
         return (
             <SideMenu
@@ -103,7 +105,7 @@ class PuzzleLaunch extends React.Component{
                          renderRow={(rowData) =>
                              <View>
                              <TouchableHighlight  onPress={ () => this.onSelect(rowData.toString()) } style={ container_styles.launcher } underlayColor='#0F0' >
-                             <Text style={ styles.letter }>{rowData}</Text>
+                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
                              </TouchableHighlight>
                              </View>}
                          />

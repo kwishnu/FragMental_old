@@ -91,10 +91,33 @@ class Game extends React.Component {
                     underlayColor='#0F0'
                     onPress={ () => this.show(key) } >
 
-                    <Text style={ styles.letter }>{ key }</Text>
+                    <Text style={ styles.puzzle_text_large }>{ key }</Text>
                 </TouchableHighlight>
             </View>
         );
+    }
+    clueRows(){
+        var result = [];
+        var rowStyle = styles.clue_row_light;
+        for (var row = 0; row < 7; row++) {
+            var key = row;
+            rowStyle = (rowStyle == styles.clue_row_light)?styles.clue_row_dark:styles.clue_row_light;
+            result.push(
+            <View  key={ key } style= {rowStyle}>
+                <View style= {styles.clue_section}>
+                <Text style= {styles.puzzle_text_small}>
+                    {"This is a clue for guessing a word"}
+                </Text>
+                </View>
+                 <View style= {styles.word_section}>
+                 <Text style= {styles.puzzle_text_small}>
+                     {"And..a word"}
+                 </Text>
+                 </View>
+            </View>
+            );
+        }
+        return result;
     }
     show(which) {
         window.alert(which);
@@ -119,7 +142,9 @@ class Game extends React.Component {
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
-                    <View style={ container_styles.clues_container } />
+                    <View style={ container_styles.clues_container }>
+                        { this.clueRows() }
+                    </View>
                     <View style={ container_styles.UI_container } />
                     <View style={ container_styles.tiles_container }>
                         { this.drawTiles() }
@@ -165,17 +190,22 @@ var container_styles = StyleSheet.create({
         backgroundColor: '#3e05a6',
     },
     clues_container: {
+        justifyContent: 'center',
         flex: 19,
-        backgroundColor: '#09146d',
+        backgroundColor: '#bdcff7',
         borderTopWidth: 2,
         borderTopColor: '#000',
+    },
+    clue_rows_container: {
+        flex: 1,
+        backgroundColor: 'transparent',
     },
     UI_container: {
         flex: 5,
         alignItems: 'center',
         flexDirection: 'row',
         width: window.width,
-        backgroundColor: '#08115d',
+        backgroundColor: '#09146d',
     },
     tiles_container: {
         flex: 21,

@@ -25,10 +25,50 @@ module.exports = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#dedffa',
     },
-    letter: {
+    clue_row_light: {
+        flex:1,
+        flexDirection: 'row',
+        width: width,
+        backgroundColor: '#dfe9fe',
+    },
+    clue_row_dark: {
+        flex:1,
+        flexDirection: 'row',
+        width: width,
+        backgroundColor: '#bdcff7',
+    },
+    clue_section: {
+        flex: 5,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent',
+        paddingLeft: 5,
+        paddingBottom: 2,
+    },
+    word_section: {
+        flex: 2,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent',
+        paddingLeft: 3,
+        paddingBottom: 2,
+    },
+    puzzle_text_large: {
         color: '#000',
         fontSize: LETTER_SIZE,
         backgroundColor: 'transparent',
+    },
+    puzzle_text_small: {
+        color: '#000',
+        fontWeight: 'bold',
+        backgroundColor: 'transparent',
+    },
+    input_box: {
+        borderWidth: 2,
+        borderColor: '#000',
+        borderRadius: 24,
     },
     header_text: {
         color: '#e3e004',
