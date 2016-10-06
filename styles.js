@@ -68,7 +68,8 @@ module.exports = StyleSheet.create({
     input_box: {
         borderWidth: 2,
         borderColor: '#000',
-        borderRadius: 24,
+        borderRadius: 5,
+        backgroundColor: 'white',
     },
     header_text: {
         color: '#e3e004',
