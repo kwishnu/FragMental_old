@@ -69,7 +69,15 @@ module.exports = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#000',
         borderRadius: 5,
-        backgroundColor: 'white',
+        backgroundColor: '#ccd5ee',
+    },
+    input_button: {
+        flex: 1,
+        borderWidth: 4,
+        borderColor: '#087e2f',
+        borderRadius: 0,
+        backgroundColor: '#087e2f',
+        margin: 6,
     },
     header_text: {
         color: '#e3e004',

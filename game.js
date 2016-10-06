@@ -150,7 +150,7 @@ class Game extends React.Component {
                             <TextInput style={ styles.input_box }/>
                         </View>
                         <View style={ container_styles.guess_button_container }>
-                            <Button style={ styles.input_box }/>
+                            <Button style={ styles.input_button }/>
                         </View>
                     </View>
                     <View style={ container_styles.tiles_container }>
@@ -219,6 +219,8 @@ var container_styles = StyleSheet.create({
         width: window.width,
         backgroundColor: '#09146d',
         paddingTop: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
     },
     tiles_container: {
         flex: 21,
