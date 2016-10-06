@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid  } from 'react-native';
+import { StyleSheet, Text, TextInput, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid  } from 'react-native';
 
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -145,7 +145,14 @@ class Game extends React.Component {
                     <View style={ container_styles.clues_container }>
                         { this.clueRows() }
                     </View>
-                    <View style={ container_styles.UI_container } />
+                    <View style={ container_styles.UI_container }>
+                        <View style={ container_styles.input_container }>
+
+                        </View>
+                        <View style={ container_styles.guess_button_container }>
+
+                        </View>
+                    </View>
                     <View style={ container_styles.tiles_container }>
                         { this.drawTiles() }
                     </View>
@@ -196,12 +203,17 @@ var container_styles = StyleSheet.create({
         borderTopWidth: 2,
         borderTopColor: '#000',
     },
-    clue_rows_container: {
+    input_container: {
+        flex: 3,
+        backgroundColor: 'transparent',
+    },
+    guess_button_container: {
         flex: 1,
         backgroundColor: 'transparent',
     },
     UI_container: {
         flex: 5,
+        flexDirection: 'row',
         alignItems: 'center',
         flexDirection: 'row',
         width: window.width,
