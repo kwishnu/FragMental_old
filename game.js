@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, TextInput, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, AsyncStorage  } from 'react-native';
 
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -19,6 +19,7 @@ class Game extends React.Component {
             isOpen: false,
             code: this.props.code,
             title: this.props.title,
+            theData: this.props.theData,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -71,19 +72,19 @@ class Game extends React.Component {
     }
     drawTiles() {
         var result = [];
-        for (var row = 0; row < NUM_HIGH; row++) {
-            for (var col=0; col<NUM_WIDE; col++) {
-                var key = row * NUM_WIDE + col;
-                var style = {
-                    left: (col * CELL_WIDTH) + CELL_PADDING,
-                    top: (row * CELL_HEIGHT) + CELL_PADDING,
-                }
-                result.push(this.drawTile(key, style));
+        var data = this.props.theData;
+        for (var index = 0; index < data.length; ++index) {
+            var key = index;
+            var style = {
+                left: (parseInt(data[index].col, 10) * CELL_WIDTH) + CELL_PADDING,
+                top: (parseInt(data[index].row, 10) * CELL_HEIGHT) + CELL_PADDING,
             }
+            var text = data[index].word;
+        result.push(this.drawTile(key, style, text));
         }
         return result;
     }
-    drawTile(key, position) {
+    drawTile(key, position, frag) {
         return (
             <View  key={ key }>
                 <TouchableHighlight
@@ -91,7 +92,7 @@ class Game extends React.Component {
                     underlayColor='#0F0'
                     onPress={ () => this.show(key) } >
 
-                    <Text style={ styles.puzzle_text_large }>{ key }</Text>
+                    <Text style={ styles.puzzle_text_large }>{ frag }</Text>
                 </TouchableHighlight>
             </View>
         );
@@ -124,7 +125,6 @@ class Game extends React.Component {
     }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
-
         return (
             <SideMenu
                 menu={ menu }
@@ -142,12 +142,17 @@ class Game extends React.Component {
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
+
                     <View style={ container_styles.clues_container }>
-                        { this.clueRows() }
+
+
+
                     </View>
+
                     <View style={ container_styles.UI_container }>
                         <View style={ container_styles.input_container }>
-                            <TextInput style={ styles.input_box }/>
+                            <Text style={ styles.input_box }>
+                            </Text>
                         </View>
                         <View style={ container_styles.guess_button_container }>
                             <Button style={ styles.input_button }/>
@@ -197,9 +202,10 @@ var container_styles = StyleSheet.create({
         backgroundColor: '#3e05a6',
     },
     clues_container: {
-        justifyContent: 'center',
         flex: 19,
-        backgroundColor: '#bdcff7',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#09146d',
         borderTopWidth: 2,
         borderTopColor: '#000',
     },

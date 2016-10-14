@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated  } from 'react-native';
 
+var data = require('./data.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -75,6 +76,7 @@ class PuzzleLaunch extends React.Component{
             passProps: {
                 title: passed,
                 code: 'Foo',
+                theData: data,
                 },
        });
     }
