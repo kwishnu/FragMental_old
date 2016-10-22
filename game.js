@@ -10,6 +10,7 @@ var NUM_HIGH = 5;
 var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
+var dataBak;
 
 class Game extends React.Component {
     constructor(props) {
@@ -17,16 +18,22 @@ class Game extends React.Component {
         this.state = {
             id: 'game board',
             isOpen: false,
-            code: this.props.code,
             title: this.props.title,
             theData: this.props.theData,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
+        dataBak = this.props.theData;
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
     componentWillUnmount () {
+        var resetData = this.props.theData;
+                    for(var i=0; i <this.props.theData.length; i++){
+                    resetData[i].word = dataBak[i].word;
+                    }
+        this.setState({theData: resetData});
+
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
     handleHardwareBackButton() {
@@ -74,13 +81,12 @@ class Game extends React.Component {
         var result = [];
         var data = this.props.theData;
         for (var index = 0; index < data.length; ++index) {
-            var key = index;
             var style = {
                 left: (parseInt(data[index].col, 10) * CELL_WIDTH) + CELL_PADDING,
                 top: (parseInt(data[index].row, 10) * CELL_HEIGHT) + CELL_PADDING,
             }
             var text = data[index].word;
-        result.push(this.drawTile(key, style, text));
+        result.push(this.drawTile(index, style, text));
         }
         return result;
     }
@@ -121,7 +127,9 @@ class Game extends React.Component {
         return result;
     }
     show(which) {
-        window.alert(which);
+        var data = this.props.theData;
+                data[which].word = "hi";
+        this.setState({theData: data});
     }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
@@ -150,13 +158,9 @@ class Game extends React.Component {
                     </View>
 
                     <View style={ container_styles.UI_container }>
-                        <View style={ container_styles.input_container }>
-                            <Text style={ styles.input_box }>
-                            </Text>
-                        </View>
-                        <View style={ container_styles.guess_button_container }>
-                            <Button style={ styles.input_button }/>
-                        </View>
+
+
+
                     </View>
                     <View style={ container_styles.tiles_container }>
                         { this.drawTiles() }

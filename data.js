@@ -5,7 +5,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -20,7 +20,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -35,7 +35,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -50,7 +50,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -65,7 +65,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -80,7 +80,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -95,7 +95,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -110,7 +110,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -125,7 +125,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -140,7 +140,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -155,7 +155,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -170,7 +170,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -185,7 +185,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -200,7 +200,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -215,7 +215,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -230,7 +230,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -245,7 +245,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -260,7 +260,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -275,7 +275,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
@@ -290,7 +290,7 @@ module.exports = [
 	  "firstFragment": "true",
 	  "numFrags": "2",
 	  "initialPos": "2",
-	  "solved": "1,5",
+	  "solved": "0",
 	  "otherFrags": {
 					  "1": "NIC"
 					},
