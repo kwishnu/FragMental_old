@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, AsyncStorage  } from 'react-native';
 
+var deepCopy = require('./deepCopy.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -10,7 +11,7 @@ var NUM_HIGH = 5;
 var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
-var dataBak;
+var databackup = null;
 
 class Game extends React.Component {
     constructor(props) {
@@ -24,16 +25,10 @@ class Game extends React.Component {
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
-        dataBak = this.props.theData;
+        databackup = owl.deepCopy(this.props.theData);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
     componentWillUnmount () {
-        var resetData = this.props.theData;
-                    for(var i=0; i <this.props.theData.length; i++){
-                    resetData[i].word = dataBak[i].word;
-                    }
-        this.setState({theData: resetData});
-
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
     handleHardwareBackButton() {
@@ -79,7 +74,7 @@ class Game extends React.Component {
     }
     drawTiles() {
         var result = [];
-        var data = this.props.theData;
+        var data = this.state.theData;
         for (var index = 0; index < data.length; ++index) {
             var style = {
                 left: (parseInt(data[index].col, 10) * CELL_WIDTH) + CELL_PADDING,
@@ -127,10 +122,18 @@ class Game extends React.Component {
         return result;
     }
     show(which) {
-        var data = this.props.theData;
-                data[which].word = "hi";
+        var data =  this.state.theData;
+            data[which].word = "hi";
         this.setState({theData: data});
     }
+    reset_scene(){
+        var data =  this.state.theData;
+            for(var i=0; i<data.length; i++){
+                data[i].word = databackup[i].word;
+            }
+        this.setState({theData: data});
+    }
+
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
         return (
@@ -146,8 +149,8 @@ class Game extends React.Component {
                         </Button>
                         <Text style={styles.header_text} >{this.state.title}
                         </Text>
-                        <Button>
-                            <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
+                        <Button style={{right: 10}} onPress={ () => this.reset_scene() }>
+                            <Image source={ require('./images/replay.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
 

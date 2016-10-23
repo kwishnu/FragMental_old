@@ -1,6 +1,6 @@
 module.exports = [
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -15,7 +15,7 @@ module.exports = [
 	  "col": "0"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -45,7 +45,7 @@ module.exports = [
 	  "col": "2"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -60,7 +60,7 @@ module.exports = [
 	  "col": "3"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -75,7 +75,7 @@ module.exports = [
 	  "col": "0"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -90,7 +90,7 @@ module.exports = [
 	  "col": "1"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -105,7 +105,7 @@ module.exports = [
 	  "col": "2"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -120,7 +120,7 @@ module.exports = [
 	  "col": "3"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -135,7 +135,7 @@ module.exports = [
 	  "col": "0"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -150,7 +150,7 @@ module.exports = [
 	  "col": "1"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -165,7 +165,7 @@ module.exports = [
 	  "col": "2"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -180,7 +180,7 @@ module.exports = [
 	  "col": "3"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -195,7 +195,7 @@ module.exports = [
 	  "col": "0"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -210,7 +210,7 @@ module.exports = [
 	  "col": "1"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -225,7 +225,7 @@ module.exports = [
 	  "col": "2"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -240,7 +240,7 @@ module.exports = [
 	  "col": "3"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -255,7 +255,7 @@ module.exports = [
 	  "col": "0"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -270,7 +270,7 @@ module.exports = [
 	  "col": "1"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",
@@ -285,7 +285,7 @@ module.exports = [
 	  "col": "2"
 	},
 	{
-	  "word": "PICNIC",
+	  "word": "test",
 	  "frag": "PIC",
 	  "firstFragment": "true",
 	  "numFrags": "2",

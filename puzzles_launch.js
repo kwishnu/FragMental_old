@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated  } from 'react-native';
 
+var deepCopy = require('./deepCopy.js');
 var fileData = require('./data.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -24,17 +25,17 @@ class PuzzleLaunch extends React.Component{
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
-    setLauncherProps() {
-        var tilt = new Array(NUM_WIDE * NUM_ROWS);
-        for (var i = 0; i < tilt.length; i++) {
-          tilt[i] = new Animated.Value(0);
-        }
-            var opacities = new Array(NUM_WIDE * NUM_ROWS);
-            for (var i = 0; i < opacities.length; i++) {
-              opacities[i] = new Animated.Value(1);
-            }
-        return {tilt, opacities};
-    }
+//    setLauncherProps() {
+//        var tilt = new Array(NUM_WIDE * NUM_ROWS);
+//        for (var i = 0; i < tilt.length; i++) {
+//          tilt[i] = new Animated.Value(0);
+//        }
+//            var opacities = new Array(NUM_WIDE * NUM_ROWS);
+//            for (var i = 0; i < opacities.length; i++) {
+//              opacities[i] = new Animated.Value(1);
+//            }
+//        return {tilt, opacities};
+//    }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
@@ -71,18 +72,19 @@ class PuzzleLaunch extends React.Component{
         };
     }
     onSelect(passed) {
+        var copy = owl.deepCopy(fileData);
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
                 title: passed,
-                theData: fileData,
+                theData: copy,
                 },
        });
     }
 
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
-        this.setLauncherProps();
+        //this.setLauncherProps();
 
         return (
             <SideMenu
