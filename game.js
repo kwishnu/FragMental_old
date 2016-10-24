@@ -97,8 +97,9 @@ class Game extends React.Component {
     }
     guess(which) {
         var data =  this.state.theData;
-        var theWord = data[which].word;
-        theWord += this.state.answer_text;
+        var theFrag = data[which].word;
+        var theWord = this.state.answer_text;
+        theWord += theFrag;
             data[which].word = '';
             data[which].opacity = 0;
         this.setState({theData: data});
