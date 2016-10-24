@@ -108,6 +108,7 @@ class Game extends React.Component {
         var data =  this.state.theData;
             for(var i=0; i<data.length; i++){
                 data[i].word = databackup[i].word;
+                data[i].opacity = databackup[i].opacity;
             }
         this.setState({theData: data});
         this.setState({answer_text: ''});
