@@ -2,7 +2,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -17,7 +17,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -32,7 +32,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -47,7 +47,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -62,7 +62,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -77,7 +77,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -92,7 +92,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -107,7 +107,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -122,7 +122,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -137,7 +137,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -152,7 +152,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -167,7 +167,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -182,7 +182,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -197,7 +197,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -212,7 +212,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -227,7 +227,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -242,7 +242,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -257,7 +257,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -272,7 +272,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",
@@ -287,7 +287,7 @@ module.exports = [
 	{
 	  "word": "test",
 	  "frag": "PIC",
-	  "firstFragment": "true",
+	  "opacity": 1,
 	  "numFrags": "2",
 	  "initialPos": "2",
 	  "solved": "0",

@@ -6,13 +6,13 @@ import { StyleSheet } from 'react-native';
 var { width, height } = require('Dimensions').get('window');
 var NUM_WIDE = 4;
 var NUM_HIGH = 5;
-var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
+var CELL_WIDTH = Math.floor(width * .24); // 24% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
-var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
+var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 8% of the cell width
 var BORDER_RADIUS = CELL_PADDING * .2;
 var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
-var LETTER_SIZE = Math.floor(TILE_HEIGHT * .6);
+var LETTER_SIZE = Math.floor(TILE_HEIGHT * .7);
 
 
 module.exports = StyleSheet.create({
@@ -24,6 +24,8 @@ module.exports = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#dedffa',
+        backfaceVisibility: 'hidden',
+        padding: CELL_PADDING,
     },
     clue_row_light: {
         flex:1,

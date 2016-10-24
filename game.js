@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, AsyncStorage  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, AsyncStorage, Animated, TouchableWithoutFeedback, } from 'react-native';
 
 var deepCopy = require('./deepCopy.js');
 var SideMenu = require('react-native-side-menu');
@@ -8,9 +8,9 @@ var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
 var NUM_WIDE = 4;
 var NUM_HIGH = 5;
-var CELL_WIDTH = Math.floor(width * .24); // 20% of the screen width
+var CELL_WIDTH = Math.floor(width * .24); // 24% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
-var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width
+var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 8% of the cell width
 var databackup = null;
 
 class Game extends React.Component {
@@ -21,6 +21,7 @@ class Game extends React.Component {
             isOpen: false,
             title: this.props.title,
             theData: this.props.theData,
+            answer_text: '',
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -75,56 +76,33 @@ class Game extends React.Component {
     drawTiles() {
         var result = [];
         var data = this.state.theData;
+        //var opacity = this.state.opacity;
         for (var index = 0; index < data.length; ++index) {
             var style = {
-                left: (parseInt(data[index].col, 10) * CELL_WIDTH) + CELL_PADDING,
+                left: (parseInt(data[index].col, 10) * CELL_WIDTH) + CELL_PADDING + 6,
                 top: (parseInt(data[index].row, 10) * CELL_HEIGHT) + CELL_PADDING,
+                opacity: parseInt(data[index].opacity, 10)
             }
             var text = data[index].word;
         result.push(this.drawTile(index, style, text));
         }
         return result;
     }
-    drawTile(key, position, frag) {
+    drawTile(key, position, frag ) {
         return (
-            <View  key={ key }>
-                <TouchableHighlight
-                    style={ [styles.tile, position] }
-                    underlayColor='#0F0'
-                    onPress={ () => this.show(key) } >
-
+            <View  key={ key } style={ [styles.tile, position] } onStartShouldSetResponder={() => this.guess(key)} >
                     <Text style={ styles.puzzle_text_large }>{ frag }</Text>
-                </TouchableHighlight>
             </View>
         );
     }
-    clueRows(){
-        var result = [];
-        var rowStyle = styles.clue_row_light;
-        for (var row = 0; row < 7; row++) {
-            var key = row;
-            rowStyle = (rowStyle == styles.clue_row_light)?styles.clue_row_dark:styles.clue_row_light;
-            result.push(
-            <View  key={ key } style= {rowStyle}>
-                <View style= {styles.clue_section}>
-                <Text style= {styles.puzzle_text_small}>
-                    {"This is a clue for guessing a word"}
-                </Text>
-                </View>
-                 <View style= {styles.word_section}>
-                 <Text style= {styles.puzzle_text_small}>
-                     {"And..a word"}
-                 </Text>
-                 </View>
-            </View>
-            );
-        }
-        return result;
-    }
-    show(which) {
+    guess(which) {
         var data =  this.state.theData;
-            data[which].word = "hi";
+        var theWord = data[which].word;
+        theWord += this.state.answer_text;
+            data[which].word = '';
+            data[which].opacity = 0;
         this.setState({theData: data});
+        this.setState({answer_text: theWord});
     }
     reset_scene(){
         var data =  this.state.theData;
@@ -132,6 +110,7 @@ class Game extends React.Component {
                 data[i].word = databackup[i].word;
             }
         this.setState({theData: data});
+        this.setState({answer_text: ''});
     }
 
     render() {
@@ -155,9 +134,8 @@ class Game extends React.Component {
                     </View>
 
                     <View style={ container_styles.clues_container }>
-
-
-
+                        <Text style={styles.header_text} >{this.state.answer_text}
+                        </Text>
                     </View>
 
                     <View style={ container_styles.UI_container }>
@@ -238,7 +216,7 @@ var container_styles = StyleSheet.create({
     tiles_container: {
         flex: 21,
         backgroundColor: '#09146d',
-        padding: 6,
+        padding: 10,
     },
     footer: {
         flex: 4,
