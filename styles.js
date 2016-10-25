@@ -27,6 +27,25 @@ module.exports = StyleSheet.create({
         backfaceVisibility: 'hidden',
         padding: CELL_PADDING,
     },
+    skip_button: {
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#64aefa',
+        borderRadius: 12,
+        marginRight: 3,
+        padding: 2,
+    },
+    hint_button: {
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#4aeeb2',
+        borderRadius: 12,
+        marginLeft: 3,
+        padding: 2,
+    },
+
     clue_row_light: {
         flex:1,
         flexDirection: 'row',
@@ -99,7 +118,8 @@ module.exports = StyleSheet.create({
         textAlign: 'center',
         textAlignVertical: 'center',
         transform: [{ rotate: '270deg'}],
-    },    input_button: {
+    },
+    input_button: {
         flex: 1,
         borderWidth: 4,
         borderColor: '#087e2f',
@@ -110,6 +130,11 @@ module.exports = StyleSheet.create({
     header_text: {
         color: '#e3e004',
         fontSize: LETTER_SIZE,
+        backgroundColor: 'transparent',
+    },
+    button_text: {
+        color: '#fff',
+        fontSize: LETTER_SIZE*4/5,
         backgroundColor: 'transparent',
     },
     menu: {

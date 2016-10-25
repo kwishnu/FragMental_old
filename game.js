@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, BackAndroid, AsyncStorage, Animated, TouchableWithoutFeedback, } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, BackAndroid, AsyncStorage, Animated, } from 'react-native';
 
 var deepCopy = require('./deepCopy.js');
 var SideMenu = require('react-native-side-menu');
@@ -114,6 +114,19 @@ class Game extends React.Component {
         this.setState({theData: data});
         this.setState({answer_text: ''});
     }
+    score_increment(){
+        var score = parseInt(this.state.title, 10);
+        score += 1;
+        this.setState({title: score});
+
+    }
+    score_decrement(){
+        var score = parseInt(this.state.title, 10);
+        score -= 1;
+        this.setState({title: score});
+
+
+    }
 
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
@@ -149,7 +162,21 @@ class Game extends React.Component {
                         { this.drawTiles() }
                     </View>
                     <View style={ container_styles.footer }>
-                        <Text style={ styles.copyright }>Some fine print...</Text>
+                        <View style={ container_styles.stars_container }>
+                        <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
+                        <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
+                        </View>
+
+                        <View style={ container_styles.buttons_container }>
+                        <Button style={styles.skip_button} onPress={ () => this.score_decrement() }>
+                        <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
+                        </Button>
+                        <Button style={styles.hint_button} onPress={ () => this.score_increment() }>
+                        <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
+                        </Button>
+                        </View>
+                        <View style={ container_styles.stars_container }>
+                        </View>
                     </View>
                 </View>
             </SideMenu>
@@ -216,15 +243,40 @@ var container_styles = StyleSheet.create({
         paddingRight: 10,
     },
     tiles_container: {
-        flex: 21,
+        flex: 19,
         backgroundColor: '#09146d',
         padding: 10,
     },
     footer: {
-        flex: 4,
+        flex: 6,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#09146d',
+    },
+    buttons_container: {
+        flexDirection: 'row',
+        flex: 3,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#09146d',
+        padding: 12,
+    },
+    stars_container: {
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#09146d',
+        paddingLeft: 10,
+    },
+    star: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#09146d',
+        width: 20,
+        height: 20,
     },
 });
 
