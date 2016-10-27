@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated  } from 'react-native';
 
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
 var deepCopy = require('./deepCopy.js');
 var fileData = require('./data.js');
+var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -36,6 +47,7 @@ class PuzzleLaunch extends React.Component{
 //            }
 //        return {tilt, opacities};
 //    }
+
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
@@ -72,12 +84,43 @@ class PuzzleLaunch extends React.Component{
         };
     }
     onSelect(passed) {
-        var copy = owl.deepCopy(fileData);
+        var fragObject = owl.deepCopy(fragData);
+        var puzzString = 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous';
+        var puzzArray = puzzString.split('~');
+        var fragsArray = [];
+        var cluesArray = null;
+
+        var keyFrag = puzzString.substring(0, puzzString.indexOf('~'));
+        var fragsPlusClueArr =  puzzArray[1].split('**');
+
+
+        for(var i=0; i<fragsPlusClueArr.length; i++){
+            var splits = fragsPlusClueArr[i].split(':');
+
+            var frags = splits[0].split('|');
+            for(var j=0; j<frags.length; j++){
+                fragsArray.push(frags[j]);
+
+            };
+
+            //cluesArray[i] = splits[1];
+
+        };
+    fragsArray = shuffleArray(fragsArray);
+    var countTo20 = 0;
+        for(var k=0; k<fragsArray.length; k++){
+            if(fragsArray[k]!='^'){
+            fragObject[countTo20].frag= fragsArray[k];
+            countTo20++;
+                }
+        }
+
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
+                keyFrag: puzzArray[0],
                 title: passed,
-                theData: copy,
+                theData: fragObject,
                 },
        });
     }

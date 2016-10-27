@@ -25,7 +25,7 @@ module.exports = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#dedffa',
         backfaceVisibility: 'hidden',
-        padding: CELL_PADDING,
+        padding: 8,
     },
     skip_button: {
         flex:1,
@@ -79,12 +79,16 @@ module.exports = StyleSheet.create({
     puzzle_text_large: {
         color: '#000',
         fontSize: LETTER_SIZE,
-        backgroundColor: 'transparent',
     },
-    puzzle_text_small: {
-        color: '#000',
+    answer_text: {
+        color: 'white',
+        fontSize: LETTER_SIZE * 5/3,
         fontWeight: 'bold',
-        backgroundColor: 'transparent',
+    },
+    keyfrag_text: {
+        color: 'green',
+        fontSize: LETTER_SIZE * 5/3,
+        fontWeight: 'bold',
     },
     input_box: {
         flex: 1,

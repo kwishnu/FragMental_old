@@ -12,6 +12,7 @@ var CELL_WIDTH = Math.floor(width * .24); // 24% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 8% of the cell width
 var databackup = null;
+var dataObject = null;
 
 class Game extends React.Component {
     constructor(props) {
@@ -20,9 +21,15 @@ class Game extends React.Component {
             id: 'game board',
             isOpen: false,
             title: this.props.title,
+            keyFrag: this.props.keyFrag,
             theData: this.props.theData,
             answer_text: '',
+            score: 10,
+            frag_font_color: 'white',
+            score_color: 'white',
         };
+
+
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
@@ -83,7 +90,7 @@ class Game extends React.Component {
                 top: (parseInt(data[index].row, 10) * CELL_HEIGHT) + CELL_PADDING,
                 opacity: parseInt(data[index].opacity, 10)
             }
-            var text = data[index].word;
+            var text = data[index].frag;
         result.push(this.drawTile(index, style, text));
         }
         return result;
@@ -96,34 +103,44 @@ class Game extends React.Component {
         );
     }
     guess(which) {
+        var theFrag = '';
         var data =  this.state.theData;
-        var theFrag = data[which].word;
+            if(which==100){
+            theFrag ='inc';
+            }else{
+                var theFrag = data[which].frag;
+                data[which].frag = '';
+                data[which].opacity = 0;
+
+            }
         var theWord = this.state.answer_text;
         theWord += theFrag;
-            data[which].word = '';
-            data[which].opacity = 0;
         this.setState({theData: data});
         this.setState({answer_text: theWord});
     }
     reset_scene(){
         var data =  this.state.theData;
             for(var i=0; i<data.length; i++){
-                data[i].word = databackup[i].word;
+                data[i].frag = databackup[i].frag;
                 data[i].opacity = databackup[i].opacity;
             }
         this.setState({theData: data});
         this.setState({answer_text: ''});
     }
     score_increment(){
-        var score = parseInt(this.state.title, 10);
+        var score = parseInt(this.state.score, 10);
         score += 1;
-        this.setState({title: score});
+        this.setState({score: score,
+                       score_color: 'green',
+                      });
 
     }
     score_decrement(){
-        var score = parseInt(this.state.title, 10);
+        var score = parseInt(this.state.score, 10);
         score -= 1;
-        this.setState({title: score});
+        this.setState({score: score,
+                       score_color: 'red',
+                      });
 
 
     }
@@ -148,34 +165,41 @@ class Game extends React.Component {
                         </Button>
                     </View>
 
-                    <View style={ container_styles.clues_container }>
-                        <Text style={styles.header_text} >{this.state.answer_text}
-                        </Text>
+                    <View style={ container_styles.display_area }>
+                        <View style={ container_styles.answers_container }>
+
+                        </View>
+                        <View style={ container_styles.frag_container } onStartShouldSetResponder={() => this.guess(100)}>
+                            <Text style={styles.keyfrag_text} >{this.state.keyFrag}
+                            </Text>
+                        </View>
+                        <View style={ container_styles.clue_container }>
+                            <Text style={styles.answer_text} >{this.state.answer_text}
+                            </Text>
+                        </View>
                     </View>
 
-                    <View style={ container_styles.UI_container }>
-
-
-
-                    </View>
                     <View style={ container_styles.tiles_container }>
                         { this.drawTiles() }
                     </View>
+
                     <View style={ container_styles.footer }>
                         <View style={ container_styles.stars_container }>
-                        <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
-                        <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
+                            <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
+                            <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
                         </View>
 
                         <View style={ container_styles.buttons_container }>
-                        <Button style={styles.skip_button} onPress={ () => this.score_decrement() }>
-                        <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
-                        </Button>
-                        <Button style={styles.hint_button} onPress={ () => this.score_increment() }>
-                        <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
-                        </Button>
+                            <Button style={styles.skip_button} onPress={ () => this.score_decrement() }>
+                                <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
+                            </Button>
+                            <Button style={styles.hint_button} onPress={ () => this.score_increment() }>
+                                <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
+                            </Button>
                         </View>
                         <View style={ container_styles.stars_container }>
+                            <Text style={[styles.answer_text, {right: 10}, {color: this.state.score_color}]} >{this.state.score}
+                            </Text>
                         </View>
                     </View>
                 </View>
@@ -215,16 +239,26 @@ var container_styles = StyleSheet.create({
         width: window.width,
         backgroundColor: '#3e05a6',
     },
-    clues_container: {
-        flex: 19,
+    display_area: {
+        flex: 24,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#09146d',
         borderTopWidth: 2,
         borderTopColor: '#000',
     },
-    input_container: {
+    answers_container: {
         flex: 3,
+        backgroundColor: 'transparent',
+    },
+    frag_container: {
+        flex: 1,
+        backgroundColor: 'transparent',
+    },
+    clue_container: {
+        flex: 2,
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: 'transparent',
     },
     guess_button_container: {
