@@ -85,12 +85,9 @@ class PuzzleLaunch extends React.Component{
     }
     onSelect(passed) {
         var fragObject = owl.deepCopy(fragData);
-        var puzzString = 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous';
+        var puzzString = 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something';
         var puzzArray = puzzString.split('~');
         var fragsArray = [];
-        var cluesArray = null;
-
-        var keyFrag = puzzString.substring(0, puzzString.indexOf('~'));
         var fragsPlusClueArr =  puzzArray[1].split('**');
 
 
@@ -101,18 +98,15 @@ class PuzzleLaunch extends React.Component{
             for(var j=0; j<frags.length; j++){
                 fragsArray.push(frags[j]);
 
-            };
-
-            //cluesArray[i] = splits[1];
-
-        };
-    fragsArray = shuffleArray(fragsArray);
+            }
+        }
+    fragsArrayShuffled = shuffleArray(fragsArray);
     var countTo20 = 0;
-        for(var k=0; k<fragsArray.length; k++){
-            if(fragsArray[k]!='^'){
-            fragObject[countTo20].frag= fragsArray[k];
+        for(var k=0; k<fragsArrayShuffled.length; k++){
+            if(fragsArrayShuffled[k]!='^'){
+            fragObject[countTo20].frag= fragsArrayShuffled[k];
             countTo20++;
-                }
+            }
         }
 
         this.props.navigator.replace({
@@ -121,6 +115,7 @@ class PuzzleLaunch extends React.Component{
                 keyFrag: puzzArray[0],
                 title: passed,
                 theData: fragObject,
+                theCluesArray: fragsPlusClueArr,
                 },
        });
     }

@@ -11,6 +11,9 @@ var NUM_HIGH = 5;
 var CELL_WIDTH = Math.floor(width * .24); // 24% of the screen width
 var CELL_HEIGHT = CELL_WIDTH * .55;
 var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 8% of the cell width
+var BORDER_RADIUS = CELL_PADDING * .2;
+var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
+var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var databackup = null;
 var dataObject = null;
 
@@ -23,9 +26,11 @@ class Game extends React.Component {
             title: this.props.title,
             keyFrag: this.props.keyFrag,
             theData: this.props.theData,
+            theCluesArray: this.props.theCluesArray,
+            currentClue: this.props.theCluesArray[0],
             answer_text: '',
             score: 10,
-            frag_font_color: 'white',
+            onThisClue: 0,
             score_color: 'white',
         };
 
@@ -141,8 +146,15 @@ class Game extends React.Component {
         this.setState({score: score,
                        score_color: 'red',
                       });
-
-
+    }
+    skip_to_next(){
+        this.score_decrement();
+        var cc = this.state.onThisClue;
+        cc++;
+        cc=(cc == this.props.theCluesArray.length)?0:cc;
+        this.setState({currentClue: this.props.theCluesArray[cc],
+                       onThisClue: cc,
+                        });
     }
 
     render() {
@@ -169,13 +181,20 @@ class Game extends React.Component {
                         <View style={ container_styles.answers_container }>
 
                         </View>
-                        <View style={ container_styles.frag_container } onStartShouldSetResponder={() => this.guess(100)}>
-                            <Text style={styles.keyfrag_text} >{this.state.keyFrag}
+                        <View style={ container_styles.clue_container }>
+                            <Text style={styles.clue_text} >{'Clue ' + parseInt(this.state.onThisClue + 1, 10) + ':  ' + this.state.currentClue.substring(this.state.currentClue.indexOf(':') + 1)}
                             </Text>
                         </View>
-                        <View style={ container_styles.clue_container }>
-                            <Text style={styles.answer_text} >{this.state.answer_text}
-                            </Text>
+
+                        <View style={ container_styles.word_and_frag }>
+                            <View style={ container_styles.frag_container } onStartShouldSetResponder={() => this.guess(100)}>
+                                <Text style={styles.keyfrag_text} >{this.state.keyFrag}
+                                </Text>
+                            </View>
+                            <Animated.View style={ container_styles.word_container }>
+                                <Text style={styles.answer_text} >{this.state.answer_text}
+                                </Text>
+                            </Animated.View>
                         </View>
                     </View>
 
@@ -190,7 +209,7 @@ class Game extends React.Component {
                         </View>
 
                         <View style={ container_styles.buttons_container }>
-                            <Button style={styles.skip_button} onPress={ () => this.score_decrement() }>
+                            <Button style={styles.skip_button} onPress={ () => this.skip_to_next() }>
                                 <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
                             </Button>
                             <Button style={styles.hint_button} onPress={ () => this.score_increment() }>
@@ -223,6 +242,7 @@ class Button extends Component {
             </TouchableOpacity>
         );
     }
+//        backgroundColor: '#3e05a6',
 }
 
 
@@ -237,7 +257,7 @@ var container_styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: window.width,
-        backgroundColor: '#3e05a6',
+        backgroundColor: '#050e59',
     },
     display_area: {
         flex: 24,
@@ -248,22 +268,42 @@ var container_styles = StyleSheet.create({
         borderTopColor: '#000',
     },
     answers_container: {
-        flex: 3,
-        backgroundColor: 'transparent',
-    },
-    frag_container: {
-        flex: 1,
+        flex: 5,
         backgroundColor: 'transparent',
     },
     clue_container: {
-        flex: 2,
+        flex: 5,
+        backgroundColor: 'blue',
+        width: width - 30,
+        padding: 10,
+        borderRadius: 10,
+        margin: 10,
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
     },
-    guess_button_container: {
-        flex: 1,
+    word_and_frag: {
+        flex: 3,
+        flexDirection: 'row',
+        padding: 6,
+        paddingLeft: 15,
+    },
+    frag_container: {
+        flex: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#dedffa',
+        borderWidth: 2,
+        borderColor: '#000',
+        borderRadius: 2,
+        padding: 6,
+    },
+    word_container: {
+        flex: 17,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         backgroundColor: 'transparent',
+        paddingLeft: 12,
+        padding: 6,
     },
     UI_container: {
         flex: 5,

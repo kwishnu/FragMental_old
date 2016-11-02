@@ -24,7 +24,6 @@ module.exports = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#dedffa',
-        backfaceVisibility: 'hidden',
         padding: 8,
     },
     skip_button: {
@@ -85,8 +84,13 @@ module.exports = StyleSheet.create({
         fontSize: LETTER_SIZE * 5/3,
         fontWeight: 'bold',
     },
+    clue_text: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
     keyfrag_text: {
-        color: 'green',
+        color: '#036724',
         fontSize: LETTER_SIZE * 5/3,
         fontWeight: 'bold',
     },
