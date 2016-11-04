@@ -16,6 +16,7 @@ var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var databackup = null;
 var dataObject = null;
+var SPRING_CONFIG = {tension: 100, velocity: 20};
 
 class Game extends React.Component {
     constructor(props) {
@@ -32,6 +33,9 @@ class Game extends React.Component {
             score: 10,
             onThisClue: 0,
             score_color: 'white',
+            pan: new Animated.ValueXY(),
+            fadeAnim: new Animated.Value(1),
+            goLeft: -140,
         };
 
 
@@ -88,7 +92,6 @@ class Game extends React.Component {
     drawTiles() {
         var result = [];
         var data = this.state.theData;
-        //var opacity = this.state.opacity;
         for (var index = 0; index < data.length; ++index) {
             var style = {
                 left: (parseInt(data[index].col, 10) * CELL_WIDTH) + CELL_PADDING + 6,
@@ -116,7 +119,6 @@ class Game extends React.Component {
                 var theFrag = data[which].frag;
                 data[which].frag = '';
                 data[which].opacity = 0;
-
             }
         var theWord = this.state.answer_text;
         theWord += theFrag;
@@ -129,8 +131,11 @@ class Game extends React.Component {
                 data[i].frag = databackup[i].frag;
                 data[i].opacity = databackup[i].opacity;
             }
-        this.setState({theData: data});
-        this.setState({answer_text: ''});
+        var resetOpacity = new Animated.Value(1);
+        this.setState({ theData: data,
+                        answer_text: '',
+                        fadeAnim: resetOpacity,
+                        });
     }
     score_increment(){
         var score = parseInt(this.state.score, 10);
@@ -138,7 +143,6 @@ class Game extends React.Component {
         this.setState({score: score,
                        score_color: 'green',
                       });
-
     }
     score_decrement(){
         var score = parseInt(this.state.score, 10);
@@ -155,6 +159,45 @@ class Game extends React.Component {
         this.setState({currentClue: this.props.theCluesArray[cc],
                        onThisClue: cc,
                         });
+    }
+    getStyle() {
+    return [
+              container_styles.word_container,
+              {opacity: this.state.fadeAnim},
+              {transform: this.state.pan.getTranslateTransform()}
+            ];
+    }
+    animate_word(){
+        Animated.sequence([
+            Animated.spring(
+                this.state.pan, {
+                    ...SPRING_CONFIG,
+                    toValue: {x: this.state.goLeft, y: -500}
+                }),
+            Animated.timing(
+                this.state.fadeAnim, {
+                    toValue: 0,
+                    duration: 200,
+                }),
+        ]).start();
+        setTimeout(() => {this.restore_word()}, 1000);
+    }
+    restore_word(){
+        this.setState({answer_text:'',
+                       goLeft: -this.state.goLeft,
+                      });
+        Animated.sequence([
+            Animated.spring(
+                this.state.pan, {
+                    ...SPRING_CONFIG,
+                    toValue: {x: 0, y: 0}
+                }),
+            Animated.timing(
+                this.state.fadeAnim, {
+                    toValue: 1,
+                    duration: 0,
+                }),
+        ]).start();
     }
 
     render() {
@@ -191,7 +234,7 @@ class Game extends React.Component {
                                 <Text style={styles.keyfrag_text} >{this.state.keyFrag}
                                 </Text>
                             </View>
-                            <Animated.View style={ container_styles.word_container }>
+                            <Animated.View style={this.getStyle()}>
                                 <Text style={styles.answer_text} >{this.state.answer_text}
                                 </Text>
                             </Animated.View>
@@ -212,7 +255,7 @@ class Game extends React.Component {
                             <Button style={styles.skip_button} onPress={ () => this.skip_to_next() }>
                                 <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
                             </Button>
-                            <Button style={styles.hint_button} onPress={ () => this.score_increment() }>
+                            <Button style={styles.hint_button} onPress={ () => this.animate_word() }>
                                 <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
                             </Button>
                         </View>
