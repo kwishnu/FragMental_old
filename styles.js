@@ -84,6 +84,10 @@ module.exports = StyleSheet.create({
         fontSize: LETTER_SIZE * 5/3,
         fontWeight: 'bold',
     },
+    answer_column_text: {
+        color: 'white',
+        fontSize: LETTER_SIZE * 2/3,
+    },
     clue_text: {
         color: '#fff',
         fontSize: 16,

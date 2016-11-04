@@ -14,9 +14,9 @@ var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 8% of the cell width
 var BORDER_RADIUS = CELL_PADDING * .2;
 var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
-var databackup = null;
+var dataBackup = null;
 var dataObject = null;
-var SPRING_CONFIG = {tension: 100, velocity: 20};
+var SPRING_CONFIG = {tension: 100, velocity: 3};
 
 class Game extends React.Component {
     constructor(props) {
@@ -35,16 +35,24 @@ class Game extends React.Component {
             score_color: 'white',
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
-            goLeft: -140,
+            goLeft: -100,
+            answer0: '',
+            answer1: '',
+            answer2: '',
+            answer3: '',
+            answer4: '',
+            answer5: '',
+            answer6: '',
+            answer7: '',
+
         };
-
-
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
-        databackup = owl.deepCopy(this.props.theData);
+        dataBackup = owl.deepCopy(this.props.theData);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
+
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
@@ -124,17 +132,32 @@ class Game extends React.Component {
         theWord += theFrag;
         this.setState({theData: data});
         this.setState({answer_text: theWord});
+
+        if (theWord.length>7){setTimeout(() => {this.animate_word()}, 10);
+};
     }
     reset_scene(){
         var data =  this.state.theData;
             for(var i=0; i<data.length; i++){
-                data[i].frag = databackup[i].frag;
-                data[i].opacity = databackup[i].opacity;
+                data[i].frag = dataBackup[i].frag;
+                data[i].opacity = dataBackup[i].opacity;
             }
         var resetOpacity = new Animated.Value(1);
         this.setState({ theData: data,
                         answer_text: '',
                         fadeAnim: resetOpacity,
+                        onThisClue: 0,
+                        currentClue: this.props.theCluesArray[0],
+                        score: 10,
+                        score_color: 'white',
+                        answer0: '',
+                        answer1: '',
+                        answer2: '',
+                        answer3: '',
+                        answer4: '',
+                        answer5: '',
+                        answer6: '',
+                        answer7: '',
                         });
     }
     score_increment(){
@@ -168,23 +191,56 @@ class Game extends React.Component {
             ];
     }
     animate_word(){
-        Animated.sequence([
+        Animated.parallel([
             Animated.spring(
                 this.state.pan, {
                     ...SPRING_CONFIG,
-                    toValue: {x: this.state.goLeft, y: -500}
+                    toValue: {x: this.state.goLeft, y: -height/2}
                 }),
             Animated.timing(
                 this.state.fadeAnim, {
                     toValue: 0,
-                    duration: 200,
+                    duration: 100,
                 }),
-        ]).start();
-        setTimeout(() => {this.restore_word()}, 1000);
+        ]).start(this.set_column_word());
+        setTimeout(() => {this.restore_word()}, 300);
+    }
+    set_column_word(){
+        switch(this.state.onThisClue){
+            case 0:
+                this.setState({ answer0: this.state.answer_text});
+                break;
+            case 1:
+                this.setState({ answer1: this.state.answer_text});
+                break;
+            case 2:
+                this.setState({ answer2: this.state.answer_text});
+                break;
+            case 3:
+                this.setState({ answer3: this.state.answer_text});
+                break;
+            case 4:
+                this.setState({ answer4: this.state.answer_text});
+                break;
+            case 5:
+                this.setState({ answer5: this.state.answer_text});
+                break;
+            case 6:
+                this.setState({ answer6: this.state.answer_text});
+                break;
+            case 7:
+                this.setState({ answer7: this.state.answer_text});
+                break;
+            default:
+        }
+        var incrementClue = this.state.onThisClue + 1;
+        this.setState({ onThisClue: incrementClue,
+                        currentClue: this.props.theCluesArray[incrementClue],
+                        });
     }
     restore_word(){
-        this.setState({answer_text:'',
-                       goLeft: -this.state.goLeft,
+        this.setState({ answer_text:'',
+                        goLeft: -this.state.goLeft,
                       });
         Animated.sequence([
             Animated.spring(
@@ -222,6 +278,18 @@ class Game extends React.Component {
 
                     <View style={ container_styles.display_area }>
                         <View style={ container_styles.answers_container }>
+                            <View style={ container_styles.answers_column }>
+                                <Text style={styles.answer_column_text}>{this.state.answer0}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer2}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer4}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer6}</Text>
+                            </View>
+                            <View style={ container_styles.answers_column }>
+                                <Text style={styles.answer_column_text}>{this.state.answer1}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer3}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer5}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer7}</Text>
+                            </View>
 
                         </View>
                         <View style={ container_styles.clue_container }>
@@ -311,11 +379,18 @@ var container_styles = StyleSheet.create({
         borderTopColor: '#000',
     },
     answers_container: {
-        flex: 5,
+        flex: 6,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+    },
+    answers_column: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: 'transparent',
     },
     clue_container: {
-        flex: 5,
+        flex: 4,
         backgroundColor: 'blue',
         width: width - 30,
         padding: 10,
