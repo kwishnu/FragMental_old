@@ -47,6 +47,7 @@ class Game extends React.Component {
             answer5: '',
             answer6: '',
             answer7: '',
+            puzzle_solved: false,
 
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
@@ -121,10 +122,14 @@ class Game extends React.Component {
         );
     }
     guess(which) {
-        var solved = false;
+        var solved = this.state.puzzle_solved;
+        var entire_puzzle_solved = false;
         var theFrag = '';
         var scoreToAdd = 1;
         var data =  this.state.theData;
+
+        if(solved)return;
+
         if(which==100){
             theFrag = this.props.keyFrag;
         }else{
@@ -149,6 +154,9 @@ class Game extends React.Component {
                 if(this.state.onThisClue + 1 < this.props.theCluesArray.length){
                 newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
                 newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
+                entire_puzzle_solved = false;
+                }else{
+                entire_puzzle_solved = true;
                 }
             }
             this.setState({ theData: data,
@@ -156,6 +164,7 @@ class Game extends React.Component {
                             onThisFrag: onFrag,
                             currentFrags: newCurrentFrags,
                             numFrags: newNumFrags,
+                            puzzle_solved: entire_puzzle_solved,
                             });
             this.score_increment(scoreToAdd);
         }else{
@@ -181,7 +190,10 @@ class Game extends React.Component {
                         fadeAnim: resetOpacity,
                         goLeft: -100,
                         onThisClue: 0,
+                        onThisFrag: 0,
                         currentClue: this.props.theCluesArray[0],
+                        currentFrags: this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
+                        numFrags:  (this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
                         score: 10,
                         score_color: 'white',
                         answer0: '',
@@ -192,6 +204,9 @@ class Game extends React.Component {
                         answer5: '',
                         answer6: '',
                         answer7: '',
+                        answer8: '',
+                        answer9: '',
+                        puzzle_solved: false,
                         });
     }
     score_increment(howMuch){
@@ -215,6 +230,7 @@ class Game extends React.Component {
         cc=(cc == this.props.theCluesArray.length)?0:cc;
         this.setState({currentClue: this.props.theCluesArray[cc],
                        onThisClue: cc,
+                       onThisFrag: 0,
                         });
     }
     getStyle() {
@@ -264,6 +280,12 @@ class Game extends React.Component {
                 break;
             case 7:
                 this.setState({ answer7: this.state.answer_text});
+                break;
+            case 8:
+                this.setState({ answer8: this.state.answer_text});
+                break;
+            case 9:
+                this.setState({ answer9: this.state.answer_text});
                 break;
             default:
         }
@@ -320,12 +342,14 @@ class Game extends React.Component {
                                 <Text style={styles.answer_column_text}>{this.state.answer2}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer4}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer6}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer8}</Text>
                             </View>
                             <View style={ container_styles.answers_column }>
                                 <Text style={styles.answer_column_text}>{this.state.answer1}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer3}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer5}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer7}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer9}</Text>
                             </View>
 
                         </View>
@@ -416,7 +440,7 @@ var container_styles = StyleSheet.create({
         borderTopColor: '#000',
     },
     answers_container: {
-        flex: 6,
+        flex: 14,
         flexDirection: 'row',
         backgroundColor: 'transparent',
     },
@@ -427,7 +451,7 @@ var container_styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     clue_container: {
-        flex: 4,
+        flex: 9,
         backgroundColor: 'blue',
         width: width - 30,
         padding: 10,
@@ -436,9 +460,9 @@ var container_styles = StyleSheet.create({
         justifyContent: 'center',
     },
     word_and_frag: {
-        flex: 3,
+        flex: 6,
         flexDirection: 'row',
-        padding: 6,
+        marginBottom: 3,
         paddingLeft: 15,
     },
     frag_container: {
@@ -450,6 +474,7 @@ var container_styles = StyleSheet.create({
         borderColor: '#000',
         borderRadius: 2,
         padding: 6,
+        paddingBottom: 8,
     },
     word_container: {
         flex: 17,

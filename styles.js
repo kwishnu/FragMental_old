@@ -95,7 +95,7 @@ module.exports = StyleSheet.create({
     },
     keyfrag_text: {
         color: '#036724',
-        fontSize: LETTER_SIZE * 5/3,
+        fontSize: LETTER_SIZE * 4/3,
         fontWeight: 'bold',
     },
     input_box: {
