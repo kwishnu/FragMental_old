@@ -90,25 +90,21 @@ class PuzzleLaunch extends React.Component{
         var fragsArray = [];
         var fragsPlusClueArr =  puzzArray[1].split('**');
 
-
         for(var i=0; i<fragsPlusClueArr.length; i++){
             var splits = fragsPlusClueArr[i].split(':');
-
             var frags = splits[0].split('|');
             for(var j=0; j<frags.length; j++){
                 fragsArray.push(frags[j]);
-
             }
         }
-    fragsArrayShuffled = shuffleArray(fragsArray);
-    var countTo20 = 0;
+        fragsArrayShuffled = shuffleArray(fragsArray);
+        var countTo20 = 0;
         for(var k=0; k<fragsArrayShuffled.length; k++){
             if(fragsArrayShuffled[k]!='^'){
             fragObject[countTo20].frag= fragsArrayShuffled[k];
             countTo20++;
             }
         }
-
         this.props.navigator.replace({
             id: 'game board',
             passProps: {

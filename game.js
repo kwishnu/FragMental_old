@@ -16,7 +16,7 @@ var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var dataBackup = null;
 var dataObject = null;
-var SPRING_CONFIG = {tension: 100, velocity: 3};
+var SPRING_CONFIG = {tension: 3, velocity: 3};
 
 class Game extends React.Component {
     constructor(props) {
@@ -29,9 +29,12 @@ class Game extends React.Component {
             theData: this.props.theData,
             theCluesArray: this.props.theCluesArray,
             currentClue: this.props.theCluesArray[0],
+            currentFrags: this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
+            numFrags:  (this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
             answer_text: '',
             score: 10,
             onThisClue: 0,
+            onThisFrag: 0,
             score_color: 'white',
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
@@ -52,7 +55,6 @@ class Game extends React.Component {
         dataBackup = owl.deepCopy(this.props.theData);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
-
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
@@ -119,21 +121,52 @@ class Game extends React.Component {
         );
     }
     guess(which) {
+        var solved = false;
         var theFrag = '';
+        var scoreToAdd = 1;
         var data =  this.state.theData;
-            if(which==100){
-            theFrag ='inc';
-            }else{
-                var theFrag = data[which].frag;
+        if(which==100){
+            theFrag = this.props.keyFrag;
+        }else{
+            var theFrag = data[which].frag;
+        }
+        var guessFragsArray = this.state.currentFrags.split('|');
+        var onFrag = this.state.onThisFrag;
+        if(theFrag == guessFragsArray[onFrag] || (theFrag == this.props.keyFrag && guessFragsArray[onFrag] == '^')){
+            if(which<100){
                 data[which].frag = '';
                 data[which].opacity = 0;
             }
-        var theWord = this.state.answer_text;
-        theWord += theFrag;
-        this.setState({theData: data});
-        this.setState({answer_text: theWord});
+            var theWord = this.state.answer_text;
+            theWord += theFrag;
+            onFrag++;
+            var newCurrentFrags = this.props.theCluesArray[this.state.onThisClue].substring(0, this.props.theCluesArray[this.state.onThisClue].indexOf(':'));
+            var newNumFrags = (this.props.theCluesArray[this.state.onThisClue].substring(0, this.props.theCluesArray[this.state.onThisClue].indexOf(':')).split('|')).length;
+            solved = (onFrag ==  this.state.numFrags)?true:false;
+            if(solved){
+                onFrag  = 0;
+                scoreToAdd = 3;
+                if(this.state.onThisClue + 1 < this.props.theCluesArray.length){
+                newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
+                newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
+                }
+            }
+            this.setState({ theData: data,
+                            answer_text: theWord,
+                            onThisFrag: onFrag,
+                            currentFrags: newCurrentFrags,
+                            numFrags: newNumFrags,
+                            });
+            this.score_increment(scoreToAdd);
+        }else{
+            this.score_decrement();
+        }
 
-        if (theWord.length>7){setTimeout(() => {this.animate_word()}, 10);
+
+
+
+
+        if (solved){setTimeout(() => {this.animate_word()}, 20);
 };
     }
     reset_scene(){
@@ -146,6 +179,7 @@ class Game extends React.Component {
         this.setState({ theData: data,
                         answer_text: '',
                         fadeAnim: resetOpacity,
+                        goLeft: -100,
                         onThisClue: 0,
                         currentClue: this.props.theCluesArray[0],
                         score: 10,
@@ -160,9 +194,9 @@ class Game extends React.Component {
                         answer7: '',
                         });
     }
-    score_increment(){
+    score_increment(howMuch){
         var score = parseInt(this.state.score, 10);
-        score += 1;
+        score += howMuch;
         this.setState({score: score,
                        score_color: 'green',
                       });
@@ -200,10 +234,10 @@ class Game extends React.Component {
             Animated.timing(
                 this.state.fadeAnim, {
                     toValue: 0,
-                    duration: 100,
+                    duration: 200,
                 }),
         ]).start(this.set_column_word());
-        setTimeout(() => {this.restore_word()}, 300);
+        setTimeout(() => {this.restore_word()}, 400);
     }
     set_column_word(){
         switch(this.state.onThisClue){
@@ -233,10 +267,13 @@ class Game extends React.Component {
                 break;
             default:
         }
+        if(this.state.onThisClue + 1 < this.props.theCluesArray.length){
         var incrementClue = this.state.onThisClue + 1;
         this.setState({ onThisClue: incrementClue,
                         currentClue: this.props.theCluesArray[incrementClue],
                         });
+
+        }
     }
     restore_word(){
         this.setState({ answer_text:'',
