@@ -48,7 +48,7 @@ class Game extends React.Component {
             answer6: '',
             answer7: '',
             puzzle_solved: false,
-
+            bgColor: '#09146d',
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -152,11 +152,11 @@ class Game extends React.Component {
                 onFrag  = 0;
                 scoreToAdd = 3;
                 if(this.state.onThisClue + 1 < this.props.theCluesArray.length){
-                newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
-                newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
-                entire_puzzle_solved = false;
+                    newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
+                    newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
+                    entire_puzzle_solved = false;
                 }else{
-                entire_puzzle_solved = true;
+                    entire_puzzle_solved = true;
                 }
             }
             this.setState({ theData: data,
@@ -168,15 +168,11 @@ class Game extends React.Component {
                             });
             this.score_increment(scoreToAdd);
         }else{
-            this.score_decrement();
+            this.score_decrement(1);
         }
-
-
-
-
-
-        if (solved){setTimeout(() => {this.animate_word()}, 20);
-};
+        if (solved){
+            setTimeout(() => {this.animate_word()}, 20);
+        };
     }
     reset_scene(){
         var data =  this.state.theData;
@@ -216,15 +212,17 @@ class Game extends React.Component {
                        score_color: 'green',
                       });
     }
-    score_decrement(){
+    score_decrement(howMuch){
         var score = parseInt(this.state.score, 10);
-        score -= 1;
+        score -= howMuch;
+        var bgc = (score < 1)?'#cd0404':'#09146d';
         this.setState({score: score,
                        score_color: 'red',
+                       bgColor: bgc,
                       });
     }
     skip_to_next(){
-        this.score_decrement();
+        this.score_decrement(1);
         var cc = this.state.onThisClue;
         cc++;
         cc=(cc == this.props.theCluesArray.length)?0:cc;
@@ -232,6 +230,11 @@ class Game extends React.Component {
                        onThisClue: cc,
                        onThisFrag: 0,
                         });
+    }
+    give_hint(){
+        this.score_decrement(1);
+
+
     }
     getStyle() {
     return [
@@ -323,7 +326,7 @@ class Game extends React.Component {
                 isOpen={ this.state.isOpen }
                 onChange={ (isOpen) => this.updateMenuState(isOpen) } >
 
-                <View style={ [container_styles.container, this.border('black')] }>
+                <View style={ [container_styles.container, {backgroundColor: this.state.bgColor}, this.border('black')] }>
                     <View style={ container_styles.game_header }>
                         <Button style={{left: 10}} onPress={ () => this.closeGame() }>
                             <Image source={ require('./images/close.png') } style={ { width: 32, height: 32 } } />
@@ -384,7 +387,7 @@ class Game extends React.Component {
                             <Button style={styles.skip_button} onPress={ () => this.skip_to_next() }>
                                 <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
                             </Button>
-                            <Button style={styles.hint_button} onPress={ () => this.animate_word() }>
+                            <Button style={styles.hint_button} onPress={ () => this.give_hint() }>
                                 <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
                             </Button>
                         </View>
@@ -421,7 +424,6 @@ class Button extends Component {
 var container_styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#09146d',
     },
     game_header: {
         flex: 4,
@@ -435,7 +437,7 @@ var container_styles = StyleSheet.create({
         flex: 24,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
         borderTopWidth: 2,
         borderTopColor: '#000',
     },
@@ -491,14 +493,14 @@ var container_styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         width: window.width,
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
         paddingTop: 10,
         paddingLeft: 10,
         paddingRight: 10,
     },
     tiles_container: {
         flex: 19,
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
         padding: 10,
     },
     footer: {
@@ -506,14 +508,14 @@ var container_styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
     },
     buttons_container: {
         flexDirection: 'row',
         flex: 3,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
         padding: 12,
     },
     stars_container: {
@@ -521,14 +523,14 @@ var container_styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
         paddingLeft: 10,
     },
     star: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#09146d',
+        backgroundColor: 'transparent',
         width: 20,
         height: 20,
     },
