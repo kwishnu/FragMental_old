@@ -58,6 +58,7 @@ class Game extends React.Component {
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+
     }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
@@ -81,6 +82,7 @@ class Game extends React.Component {
     }
     updateMenuState(isOpen) {
         this.setState({ isOpen, });
+
     }
     onMenuItemSelected(item) {
         this.setState({
@@ -116,12 +118,12 @@ class Game extends React.Component {
     }
     drawTile(key, position, frag ) {
         return (
-            <View  key={ key } style={ [styles.tile, position] } onStartShouldSetResponder={() => this.guess(key)} >
+            <View  key={ key } style={ [styles.tile, position] } onStartShouldSetResponder={() => this.guess(key, 1)} >
                     <Text style={ styles.puzzle_text_large }>{ frag }</Text>
             </View>
         );
     }
-    guess(which) {
+    guess(which, howMuchToScore) {
         var solved = this.state.puzzle_solved;
         var entire_puzzle_solved = false;
         var theFrag = '';
@@ -166,7 +168,11 @@ class Game extends React.Component {
                             numFrags: newNumFrags,
                             puzzle_solved: entire_puzzle_solved,
                             });
+            if(howMuchToScore>0) {
             this.score_increment(scoreToAdd);
+            }else{
+            this.score_decrement(scoreToAdd);
+            }
         }else{
             this.score_decrement(1);
         }
@@ -203,6 +209,7 @@ class Game extends React.Component {
                         answer8: '',
                         answer9: '',
                         puzzle_solved: false,
+                        bgColor: '#09146d',
                         });
     }
     score_increment(howMuch){
@@ -215,6 +222,7 @@ class Game extends React.Component {
     score_decrement(howMuch){
         var score = parseInt(this.state.score, 10);
         score -= howMuch;
+        score = (score < 0)?0:score;
         var bgc = (score < 1)?'#cd0404':'#09146d';
         this.setState({score: score,
                        score_color: 'red',
@@ -222,19 +230,37 @@ class Game extends React.Component {
                       });
     }
     skip_to_next(){
-        this.score_decrement(1);
-        var cc = this.state.onThisClue;
-        cc++;
-        cc=(cc == this.props.theCluesArray.length)?0:cc;
-        this.setState({currentClue: this.props.theCluesArray[cc],
-                       onThisClue: cc,
-                       onThisFrag: 0,
-                        });
+        var onFrag = this.state.onThisFrag;
+        if(onFrag > 0){
+            this.give_hint();
+        }else{
+            var newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
+            var newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
+            var cc = this.state.onThisClue;
+            cc++;
+            cc=(cc == this.props.theCluesArray.length)?0:cc;
+            this.setState({ currentClue: this.props.theCluesArray[cc],
+                            onThisClue: cc,
+                            currentFrags: newCurrentFrags,
+                            numFrags: newNumFrags,
+                            });
+        }
     }
     give_hint(){
-        this.score_decrement(1);
+        var data =  this.state.theData;
+        var guessFragsArray = this.state.currentFrags.split('|');
+        var onFrag = this.state.onThisFrag;
 
-
+        if(guessFragsArray[onFrag] == '^'){
+            this.guess(100, -1);
+            return;
+        }
+        for(var goThruData = 0; goThruData<data.length; goThruData++){
+            if(data[goThruData].frag == guessFragsArray[onFrag]){
+            this.guess(goThruData, -1);
+            return;
+            }
+        }
     }
     getStyle() {
     return [
@@ -362,7 +388,7 @@ class Game extends React.Component {
                         </View>
 
                         <View style={ container_styles.word_and_frag }>
-                            <View style={ container_styles.frag_container } onStartShouldSetResponder={() => this.guess(100)}>
+                            <View style={ container_styles.frag_container } onStartShouldSetResponder={() => this.guess(100, 1)}>
                                 <Text style={styles.keyfrag_text} >{this.state.keyFrag}
                                 </Text>
                             </View>
