@@ -16,7 +16,7 @@ var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var dataBackup = null;
 var dataObject = null;
-var SPRING_CONFIG = {tension: 3, velocity: 3};
+var SPRING_CONFIG = {tension: 10, velocity: 10};
 
 class Game extends React.Component {
     constructor(props) {
@@ -28,6 +28,7 @@ class Game extends React.Component {
             keyFrag: this.props.keyFrag,
             theData: this.props.theData,
             theCluesArray: this.props.theCluesArray,
+            solvedArray: new Array(this.props.theCluesArray.length),
             currentClue: this.props.theCluesArray[0],
             currentFrags: this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
             numFrags:  (this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
@@ -38,7 +39,8 @@ class Game extends React.Component {
             score_color: 'white',
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
-            goLeft: -100,
+            goLeft: 100,
+            columnSort: -1,
             answer0: '',
             answer1: '',
             answer2: '',
@@ -49,12 +51,16 @@ class Game extends React.Component {
             answer7: '',
             puzzle_solved: false,
             bgColor: '#09146d',
+            starImage1: require('./images/star_grey.png'),
+            starImage2: require('./images/star_grey.png'),
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
+        var arr = Array(this.state.solvedArray.length).fill('');
         dataBackup = owl.deepCopy(this.props.theData);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
+        this.setState({solvedArray: arr})
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -125,12 +131,16 @@ class Game extends React.Component {
     }
     guess(which, howMuchToScore) {
         var solved = this.state.puzzle_solved;
+            if(solved)return;
+
         var entire_puzzle_solved = false;
         var theFrag = '';
         var scoreToAdd = 1;
         var data =  this.state.theData;
-
-        if(solved)return;
+        var onClue = this.state.onThisClue;
+        var currClue = this.state.currentClue;
+        var gl = this.state.goLeft;
+        var colSort = this.state.columnSort;
 
         if(which==100){
             theFrag = this.props.keyFrag;
@@ -147,37 +157,55 @@ class Game extends React.Component {
             var theWord = this.state.answer_text;
             theWord += theFrag;
             onFrag++;
-            var newCurrentFrags = this.props.theCluesArray[this.state.onThisClue].substring(0, this.props.theCluesArray[this.state.onThisClue].indexOf(':'));
-            var newNumFrags = (this.props.theCluesArray[this.state.onThisClue].substring(0, this.props.theCluesArray[this.state.onThisClue].indexOf(':')).split('|')).length;
+            var newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
+            var newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
+            var sArray = this.state.solvedArray;
             solved = (onFrag ==  this.state.numFrags)?true:false;
+
             if(solved){
                 onFrag  = 0;
                 scoreToAdd = 3;
-                if(this.state.onThisClue + 1 < this.props.theCluesArray.length){
-                    newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
-                    newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
-                    entire_puzzle_solved = false;
-                }else{
-                    entire_puzzle_solved = true;
+                sArray[onClue]='solved';
+                entire_puzzle_solved = true;
+                colSort++;
+                gl = -gl;
+
+                for(goThru_sArray=onClue + 1;goThru_sArray<onClue + sArray.length;goThru_sArray++){
+                    if(sArray[goThru_sArray % sArray.length]==''){
+                        onClue = goThru_sArray % sArray.length;
+                        currClue =  this.props.theCluesArray[onClue]
+                        entire_puzzle_solved = false;
+                        newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
+                        newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
+
+                        break;
+                    }
+                }
+                if (entire_puzzle_solved){
+                    currClue = (this.state.score < 20)?'1':'2';
                 }
             }
             this.setState({ theData: data,
                             answer_text: theWord,
+                            onThisClue: onClue,
                             onThisFrag: onFrag,
                             currentFrags: newCurrentFrags,
                             numFrags: newNumFrags,
                             puzzle_solved: entire_puzzle_solved,
+                            solvedArray: sArray,
+                            goLeft: gl,
+                            columnSort: colSort,
                             });
             if(howMuchToScore>0) {
-            this.score_increment(scoreToAdd);
+                this.score_increment(scoreToAdd);
             }else{
-            this.score_decrement(scoreToAdd);
+                this.score_decrement(scoreToAdd);
             }
         }else{
             this.score_decrement(1);
         }
         if (solved){
-            setTimeout(() => {this.animate_word()}, 20);
+            setTimeout(() => {this.animate_word(currClue)}, 20);
         };
     }
     reset_scene(){
@@ -186,16 +214,20 @@ class Game extends React.Component {
                 data[i].frag = dataBackup[i].frag;
                 data[i].opacity = dataBackup[i].opacity;
             }
+        var arr = Array(this.state.solvedArray.length).fill('');
         var resetOpacity = new Animated.Value(1);
+        setTimeout(() => {this.changeStarImage(0)}, 50);
         this.setState({ theData: data,
                         answer_text: '',
                         fadeAnim: resetOpacity,
-                        goLeft: -100,
+                        goLeft: 100,
+                        columnSort: -1,
                         onThisClue: 0,
                         onThisFrag: 0,
                         currentClue: this.props.theCluesArray[0],
                         currentFrags: this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
                         numFrags:  (this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
+                        solvedArray: arr,
                         score: 10,
                         score_color: 'white',
                         answer0: '',
@@ -210,7 +242,7 @@ class Game extends React.Component {
                         answer9: '',
                         puzzle_solved: false,
                         bgColor: '#09146d',
-                        });
+                    });
     }
     score_increment(howMuch){
         var score = parseInt(this.state.score, 10);
@@ -230,23 +262,40 @@ class Game extends React.Component {
                       });
     }
     skip_to_next(){
+        var solved = this.state.puzzle_solved;
+            if(solved)return;
         var onFrag = this.state.onThisFrag;
         if(onFrag > 0){
             this.give_hint();
         }else{
-            var newCurrentFrags = this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':'));
-            var newNumFrags = (this.props.theCluesArray[this.state.onThisClue + 1].substring(0, this.props.theCluesArray[this.state.onThisClue + 1].indexOf(':')).split('|')).length;
-            var cc = this.state.onThisClue;
-            cc++;
-            cc=(cc == this.props.theCluesArray.length)?0:cc;
-            this.setState({ currentClue: this.props.theCluesArray[cc],
-                            onThisClue: cc,
+            var onClue = this.state.onThisClue;
+            var currClue = this.state.currentClue;
+            var sArray = this.state.solvedArray;
+            var onClue = 0;
+            var newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
+            var newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
+
+            for(goThru_sArray=this.state.onThisClue + 1;goThru_sArray<this.state.onThisClue + sArray.length;goThru_sArray++){
+                if(sArray[goThru_sArray % sArray.length]==''){
+                    onClue = goThru_sArray % sArray.length;
+                    currClue =  this.props.theCluesArray[onClue]
+                    newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
+                    newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
+
+                    break;
+                }
+            }
+            this.setState({ currentClue: currClue,
+                            onThisClue: onClue,
+                            onThisFrag: onFrag,
                             currentFrags: newCurrentFrags,
                             numFrags: newNumFrags,
                             });
         }
     }
     give_hint(){
+        var solved = this.state.puzzle_solved;
+            if(solved)return;
         var data =  this.state.theData;
         var guessFragsArray = this.state.currentFrags.split('|');
         var onFrag = this.state.onThisFrag;
@@ -269,7 +318,7 @@ class Game extends React.Component {
               {transform: this.state.pan.getTranslateTransform()}
             ];
     }
-    animate_word(){
+    animate_word(newClue){
         Animated.parallel([
             Animated.spring(
                 this.state.pan, {
@@ -281,55 +330,11 @@ class Game extends React.Component {
                     toValue: 0,
                     duration: 200,
                 }),
-        ]).start(this.set_column_word());
+        ]).start(this.call_set_column(newClue));
         setTimeout(() => {this.restore_word()}, 400);
     }
-    set_column_word(){
-        switch(this.state.onThisClue){
-            case 0:
-                this.setState({ answer0: this.state.answer_text});
-                break;
-            case 1:
-                this.setState({ answer1: this.state.answer_text});
-                break;
-            case 2:
-                this.setState({ answer2: this.state.answer_text});
-                break;
-            case 3:
-                this.setState({ answer3: this.state.answer_text});
-                break;
-            case 4:
-                this.setState({ answer4: this.state.answer_text});
-                break;
-            case 5:
-                this.setState({ answer5: this.state.answer_text});
-                break;
-            case 6:
-                this.setState({ answer6: this.state.answer_text});
-                break;
-            case 7:
-                this.setState({ answer7: this.state.answer_text});
-                break;
-            case 8:
-                this.setState({ answer8: this.state.answer_text});
-                break;
-            case 9:
-                this.setState({ answer9: this.state.answer_text});
-                break;
-            default:
-        }
-        if(this.state.onThisClue + 1 < this.props.theCluesArray.length){
-        var incrementClue = this.state.onThisClue + 1;
-        this.setState({ onThisClue: incrementClue,
-                        currentClue: this.props.theCluesArray[incrementClue],
-                        });
-
-        }
-    }
     restore_word(){
-        this.setState({ answer_text:'',
-                        goLeft: -this.state.goLeft,
-                      });
+        this.setState({ answer_text:''});
         Animated.sequence([
             Animated.spring(
                 this.state.pan, {
@@ -342,6 +347,83 @@ class Game extends React.Component {
                     duration: 0,
                 }),
         ]).start();
+    }
+    call_set_column(newClue){
+        setTimeout(() => {this.set_column_word(newClue)}, 200);
+
+    }
+    set_column_word(newClue){
+        switch(this.state.columnSort){
+            case 0:
+                this.setState({ answer0: this.state.answer_text, currentClue: newClue});
+                break;
+            case 1:
+                this.setState({ answer1: this.state.answer_text, currentClue: newClue});
+                break;
+            case 2:
+                this.setState({ answer2: this.state.answer_text, currentClue: newClue});
+                break;
+            case 3:
+                this.setState({ answer3: this.state.answer_text, currentClue: newClue});
+                break;
+            case 4:
+                this.setState({ answer4: this.state.answer_text, currentClue: newClue});
+                break;
+            case 5:
+                this.setState({ answer5: this.state.answer_text, currentClue: newClue});
+                break;
+            case 6:
+                this.setState({ answer6: this.state.answer_text, currentClue: newClue});
+                break;
+            case 7:
+                this.setState({ answer7: this.state.answer_text, currentClue: newClue});
+                break;
+            case 8:
+                this.setState({ answer8: this.state.answer_text, currentClue: newClue});
+                break;
+            case 9:
+                this.setState({ answer9: this.state.answer_text, currentClue: newClue});
+                break;
+            default:
+        }
+    }
+    getClueText(){
+        var textToReturn = '';
+        var currClue = this.state.currentClue;
+        if (currClue.indexOf(':') > 0){
+            textToReturn = 'Clue ' + parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
+        }else{
+           if (currClue == '1'){
+                textToReturn = 'Congratulations...one star for solving the puzzle!';
+                setTimeout(() => {this.changeStarImage(1)}, 50);
+            }else{
+                textToReturn = 'Excellent:  you get both stars for solving the puzzle with ' + this.state.score + ' points!';
+                setTimeout(() => {this.changeStarImage(2)}, 50);
+            }
+        }
+        return textToReturn;
+    }
+    changeStarImage(howMany){
+        switch(howMany){
+            case 0:
+                this.setState({
+                    starImage1: require('./images/star_grey.png'),
+                    starImage2: require('./images/star_grey.png'),
+                });
+                break;
+            case 1:
+                this.setState({
+                    starImage1: require('./images/star_green.png'),
+                });
+                break;
+            case 2:
+                this.setState({
+                    starImage1: require('./images/star_green.png'),
+                    starImage2: require('./images/star_green.png'),
+                });
+                break;
+            default:
+        }
     }
 
     render() {
@@ -383,7 +465,7 @@ class Game extends React.Component {
 
                         </View>
                         <View style={ container_styles.clue_container }>
-                            <Text style={styles.clue_text} >{'Clue ' + parseInt(this.state.onThisClue + 1, 10) + ':  ' + this.state.currentClue.substring(this.state.currentClue.indexOf(':') + 1)}
+                            <Text style={styles.clue_text} >{this.getClueText()}
                             </Text>
                         </View>
 
@@ -405,8 +487,8 @@ class Game extends React.Component {
 
                     <View style={ container_styles.footer }>
                         <View style={ container_styles.stars_container }>
-                            <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
-                            <Image source={ require('./images/star_grey.png') } style={ container_styles.star } />
+                            <Image source={this.state.starImage1} style={ container_styles.star } />
+                            <Image source={this.state.starImage2} style={ container_styles.star } />
                         </View>
 
                         <View style={ container_styles.buttons_container }>
@@ -485,6 +567,7 @@ var container_styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         margin: 10,
+        alignItems: 'center',
         justifyContent: 'center',
     },
     word_and_frag: {
