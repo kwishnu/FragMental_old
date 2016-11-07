@@ -36,18 +36,6 @@ class PuzzleLaunch extends React.Component{
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
-//    setLauncherProps() {
-//        var tilt = new Array(NUM_WIDE * NUM_ROWS);
-//        for (var i = 0; i < tilt.length; i++) {
-//          tilt[i] = new Animated.Value(0);
-//        }
-//            var opacities = new Array(NUM_WIDE * NUM_ROWS);
-//            for (var i = 0; i < opacities.length; i++) {
-//              opacities[i] = new Animated.Value(1);
-//            }
-//        return {tilt, opacities};
-//    }
-
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
@@ -85,7 +73,7 @@ class PuzzleLaunch extends React.Component{
     }
     onSelect(passed) {
         var fragObject = owl.deepCopy(fragData);
-        var puzzString = 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something';
+        var puzzString = fileData[passed].puzzle;
         var puzzArray = puzzString.split('~');
         var fragsArray = [];
         var fragsPlusClueArr =  puzzArray[1].split('**');

@@ -1,302 +1,153 @@
 module.exports = [
 	{
-	  "word": "FOR",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "0",
-	  "col": "0"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "ES",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "0",
-	  "col": "1"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "ING",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "0",
-	  "col": "2"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "GHT",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "0",
-	  "col": "3"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "RDG",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "1",
-	  "col": "0"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "JI",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "1",
-	  "col": "1"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "NING",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "1",
-	  "col": "2"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "SAN",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "1",
-	  "col": "3"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "VC",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "2",
-	  "col": "0"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "KL",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "2",
-	  "col": "1"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "ES",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "2",
-	  "col": "2"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "ELT",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "2",
-	  "col": "3"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "KN",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "3",
-	  "col": "0"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "RES",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "3",
-	  "col": "1"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "BOP",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "3",
-	  "col": "2"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "WES",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "3",
-	  "col": "3"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "GNO",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "4",
-	  "col": "0"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "THI",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "4",
-	  "col": "1"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "NG",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "4",
-	  "col": "2"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
 	{
-	  "word": "EX",
-	  "frag": "PIC",
-	  "opacity": 1,
-	  "numFrags": "2",
-	  "initialPos": "2",
-	  "solved": "0",
-	  "otherFrags": {
-					  "1": "NIC"
-					},
-	  "clue": "6 letters: A walk in the park, or a meal there",
-	  "color": "#3bf875",
-	  "row": "4",
-	  "col": "3"
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
 	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+	{
+puzzle: 'inc~co|nv|^|ed:Certain of something, or made so**^|re|ase:To make greater or add to**un|pr|^|ip|led:Crooked, immoral, or otherwise without scruples**prov|^|ial|ly:In an unsophisticated or narrow-minded manner**co|^|ide|nce:A remarkable concurrence of events**^|apa|ble:Unable to do or achieve (something)**^|ong|ru|ous:Not in harmony or keeping with the surroundings or other aspects of something'
+	},
+
 ];
