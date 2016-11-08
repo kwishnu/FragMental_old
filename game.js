@@ -37,6 +37,7 @@ class Game extends React.Component {
             onThisClue: 0,
             onThisFrag: 0,
             score_color: 'white',
+            fragOpacity: 1,
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
             goLeft: 100,
@@ -242,6 +243,7 @@ class Game extends React.Component {
                         answer9: '',
                         puzzle_solved: false,
                         bgColor: '#09146d',
+                        fragOpacity: 1,
                     });
     }
     score_increment(howMuch){
@@ -414,12 +416,14 @@ class Game extends React.Component {
             case 1:
                 this.setState({
                     starImage1: require('./images/star_green.png'),
+                    fragOpacity: 0
                 });
                 break;
             case 2:
                 this.setState({
                     starImage1: require('./images/star_green.png'),
                     starImage2: require('./images/star_green.png'),
+                    fragOpacity: 0
                 });
                 break;
             default:
@@ -470,7 +474,7 @@ class Game extends React.Component {
                         </View>
 
                         <View style={ container_styles.word_and_frag }>
-                            <View style={ container_styles.frag_container } onStartShouldSetResponder={() => this.guess(100, 1)}>
+                            <View style={ [container_styles.frag_container, {opacity: this.state.fragOpacity}] } onStartShouldSetResponder={() => this.guess(100, 1)}>
                                 <Text style={styles.keyfrag_text} >{this.state.keyFrag}
                                 </Text>
                             </View>
