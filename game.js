@@ -17,6 +17,7 @@ var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
 var dataBackup = null;
 var dataObject = null;
 var SPRING_CONFIG = {tension: 10, velocity: 10};
+var timeoutHandle;
 
 class Game extends React.Component {
     constructor(props) {
@@ -65,7 +66,6 @@ class Game extends React.Component {
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
-
     }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
@@ -97,7 +97,7 @@ class Game extends React.Component {
             selectedItem: item,
         });
         window.alert(item);
-    }
+}
     border(color) {
         return {
             borderColor: color,
@@ -243,7 +243,6 @@ class Game extends React.Component {
                         answer9: '',
                         puzzle_solved: false,
                         bgColor: '#09146d',
-                        fragOpacity: 1,
                     });
     }
     score_increment(howMuch){
@@ -333,6 +332,7 @@ class Game extends React.Component {
                     duration: 200,
                 }),
         ]).start(this.call_set_column(newClue));
+
         setTimeout(() => {this.restore_word()}, 400);
     }
     restore_word(){
@@ -397,10 +397,10 @@ class Game extends React.Component {
         }else{
            if (currClue == '1'){
                 textToReturn = 'Congratulations...one star for solving the puzzle!';
-                setTimeout(() => {this.changeStarImage(1)}, 50);
+                timeoutHandle = setTimeout(() => {this.changeStarImage(1)}, 50);
             }else{
                 textToReturn = 'Excellent:  you get both stars for solving the puzzle with ' + this.state.score + ' points!';
-                setTimeout(() => {this.changeStarImage(2)}, 50);
+                timeoutHandle = setTimeout(() => {this.changeStarImage(2)}, 50);
             }
         }
         return textToReturn;
@@ -411,6 +411,7 @@ class Game extends React.Component {
                 this.setState({
                     starImage1: require('./images/star_grey.png'),
                     starImage2: require('./images/star_grey.png'),
+                    fragOpacity: 1,
                 });
                 break;
             case 1:
@@ -428,6 +429,8 @@ class Game extends React.Component {
                 break;
             default:
         }
+        clearTimeout(timeoutHandle);
+
     }
 
     render() {

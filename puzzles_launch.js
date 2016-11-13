@@ -64,7 +64,7 @@ class PuzzleLaunch extends React.Component{
             selectedItem: item,
         });
         window.alert(item);
-    }
+}
     border(color) {
         return {
             borderColor: color,
@@ -72,6 +72,7 @@ class PuzzleLaunch extends React.Component{
         };
     }
     onSelect(passed) {
+        passed = passed - 1;
         var fragObject = owl.deepCopy(fragData);
         var puzzString = fileData[passed].puzzle;
         var puzzArray = puzzString.split('~');
@@ -97,7 +98,7 @@ class PuzzleLaunch extends React.Component{
             id: 'game board',
             passProps: {
                 keyFrag: puzzArray[0],
-                title: passed,
+                title: passed + 1,
                 theData: fragObject,
                 theCluesArray: fragsPlusClueArr,
                 },
@@ -106,8 +107,6 @@ class PuzzleLaunch extends React.Component{
 
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
-        //this.setLauncherProps();
-
         return (
             <SideMenu
                 menu={ menu }
