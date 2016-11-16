@@ -51,6 +51,13 @@ class Game extends React.Component {
             answer5: '',
             answer6: '',
             answer7: '',
+            answer8: '',
+            answer9: '',
+            answer10: '',
+            answer11: '',
+            answer12: '',
+            answer13: '',
+            answer14: '',
             puzzle_solved: false,
             bgColor: '#09146d',
             starImage1: require('./images/star_grey.png'),
@@ -169,7 +176,18 @@ class Game extends React.Component {
                 sArray[onClue]='solved';
                 entire_puzzle_solved = true;
                 colSort++;
-                gl = -gl;
+                switch(gl){
+                    case 100:
+                        gl = -100;
+                        break;
+                    case -100:
+                        gl = 20;
+                        break;
+                    case 20:
+                        gl = 100;
+                        break;
+                    default: gl = -100;
+                }
 
                 for(goThru_sArray=onClue + 1;goThru_sArray<onClue + sArray.length;goThru_sArray++){
                     if(sArray[goThru_sArray % sArray.length]==''){
@@ -241,6 +259,11 @@ class Game extends React.Component {
                         answer7: '',
                         answer8: '',
                         answer9: '',
+                        answer10: '',
+                        answer11: '',
+                        answer12: '',
+                        answer13: '',
+                        answer14: '',
                         puzzle_solved: false,
                         bgColor: '#09146d',
                     });
@@ -386,6 +409,21 @@ class Game extends React.Component {
             case 9:
                 this.setState({ answer9: this.state.answer_text, currentClue: newClue});
                 break;
+            case 10:
+                this.setState({ answer10: this.state.answer_text, currentClue: newClue});
+                break;
+            case 11:
+                this.setState({ answer11: this.state.answer_text, currentClue: newClue});
+                break;
+            case 12:
+                this.setState({ answer12: this.state.answer_text, currentClue: newClue});
+                break;
+            case 13:
+                this.setState({ answer13: this.state.answer_text, currentClue: newClue});
+                break;
+            case 14:
+                this.setState({ answer14: this.state.answer_text, currentClue: newClue});
+                break;
             default:
         }
     }
@@ -457,17 +495,24 @@ class Game extends React.Component {
                         <View style={ container_styles.answers_container }>
                             <View style={ container_styles.answers_column }>
                                 <Text style={styles.answer_column_text}>{this.state.answer0}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer2}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer4}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer3}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer6}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer8}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer9}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer12}</Text>
                             </View>
                             <View style={ container_styles.answers_column }>
                                 <Text style={styles.answer_column_text}>{this.state.answer1}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer3}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer5}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer4}</Text>
                                 <Text style={styles.answer_column_text}>{this.state.answer7}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer9}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer10}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer13}</Text>
+                            </View>
+                            <View style={ container_styles.answers_column }>
+                                <Text style={styles.answer_column_text}>{this.state.answer2}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer5}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer8}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer11}</Text>
+                                <Text style={styles.answer_column_text}>{this.state.answer14}</Text>
                             </View>
 
                         </View>
