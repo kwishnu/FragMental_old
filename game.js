@@ -41,7 +41,7 @@ class Game extends React.Component {
             fragOpacity: 1,
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
-            goLeft: 100,
+            goLeft: 250,
             columnSort: -1,
             answer0: '',
             answer1: '',
@@ -154,6 +154,7 @@ class Game extends React.Component {
             theFrag = this.props.keyFrag;
         }else{
             var theFrag = data[which].frag;
+            if(data[which].opacity==0)return;
         }
         var guessFragsArray = this.state.currentFrags.split('|');
         var onFrag = this.state.onThisFrag;
@@ -177,14 +178,14 @@ class Game extends React.Component {
                 entire_puzzle_solved = true;
                 colSort++;
                 switch(gl){
-                    case 100:
+                    case 250:
                         gl = -100;
                         break;
                     case -100:
                         gl = 20;
                         break;
                     case 20:
-                        gl = 100;
+                        gl = 250;
                         break;
                     default: gl = -100;
                 }
@@ -287,7 +288,7 @@ class Game extends React.Component {
     }
     skip_to_next(){
         var solved = this.state.puzzle_solved;
-            if(solved)return;
+            if(solved){return;}
         var onFrag = this.state.onThisFrag;
         if(onFrag > 0){
             this.give_hint();
@@ -295,7 +296,6 @@ class Game extends React.Component {
             var onClue = this.state.onThisClue;
             var currClue = this.state.currentClue;
             var sArray = this.state.solvedArray;
-            var onClue = 0;
             var newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
             var newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
 
@@ -347,7 +347,7 @@ class Game extends React.Component {
             Animated.spring(
                 this.state.pan, {
                     ...SPRING_CONFIG,
-                    toValue: {x: this.state.goLeft, y: -height/2}
+                    toValue: {x: this.state.goLeft, y: -300}
                 }),
             Animated.timing(
                 this.state.fadeAnim, {
@@ -430,6 +430,9 @@ class Game extends React.Component {
     getClueText(){
         var textToReturn = '';
         var currClue = this.state.currentClue;
+        var lastOne = false;
+        var counter = 0;
+
         if (currClue.indexOf(':') > 0){
             textToReturn = 'Clue ' + parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
         }else{
