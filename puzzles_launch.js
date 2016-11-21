@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -24,6 +24,8 @@ var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the scree
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
 var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
+var _scrollView = ListView;
+var KEY_ScrollPosition = 'scrollPositionKey';
 
 class PuzzleLaunch extends React.Component{
     constructor(props) {
@@ -33,8 +35,14 @@ class PuzzleLaunch extends React.Component{
             id: 'puzzle launcher',
             isOpen: false,
             dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
+            scrollPosition: 0,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
+    }
+    componentDidMount() {
+         AsyncStorage.getItem(KEY_ScrollPosition).then((value) => {
+         this.setState({scrollPosition: parseInt(value, 10)});
+              });
     }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
@@ -125,7 +133,7 @@ class PuzzleLaunch extends React.Component{
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.border('black')] }>
-                         <ListView initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
+                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
                          renderRow={(rowData) =>
                              <View>
                              <TouchableHighlight  onPress={ () => this.onSelect(rowData.toString()) } style={ container_styles.launcher } underlayColor='#0F0' >
@@ -158,6 +166,9 @@ class Button extends Component {
             </TouchableOpacity>
         );
     }
+//        backgroundColor: '#3e05a6',
+//        backgroundColor: '#09146d',
+
 }
 
 var container_styles = StyleSheet.create({
@@ -177,11 +188,11 @@ var container_styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: window.width,
-        backgroundColor: '#3e05a6',
+        backgroundColor: '#09146d',
     },
     tiles_container: {
         flex: 45,
-        backgroundColor: '#09146d',
+        backgroundColor: '#3043e2',
         padding: 6,
     },
     footer: {

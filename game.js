@@ -18,6 +18,7 @@ var dataBackup = null;
 var dataObject = null;
 var SPRING_CONFIG = {tension: 10, velocity: 10};
 var timeoutHandle;
+var KEY_ScrollPosition = 'scrollPositionKey';
 
 class Game extends React.Component {
     constructor(props) {
@@ -59,6 +60,7 @@ class Game extends React.Component {
             answer13: '',
             answer14: '',
             puzzle_solved: false,
+            wentBust: false,
             bgColor: '#09146d',
             starImage1: require('./images/star_grey.png'),
             starImage2: require('./images/star_grey.png'),
@@ -73,6 +75,13 @@ class Game extends React.Component {
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+    }
+    setScrollPosition(){
+        try {
+            AsyncStorage.setItem(KEY_ScrollPosition, '1000');
+        } catch (error) {
+            this._appendMessage('AsyncStorage error: ' + error.message);
+        }
     }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
@@ -139,7 +148,8 @@ class Game extends React.Component {
     }
     guess(which, howMuchToScore) {
         var solved = this.state.puzzle_solved;
-            if(solved)return;
+        var bust = this.state.wentBust;
+            if(solved || bust){return;}
 
         var entire_puzzle_solved = false;
         var theFrag = '';
@@ -266,6 +276,7 @@ class Game extends React.Component {
                         answer13: '',
                         answer14: '',
                         puzzle_solved: false,
+                        wentBust: false,
                         bgColor: '#09146d',
                     });
     }
@@ -277,18 +288,22 @@ class Game extends React.Component {
                       });
     }
     score_decrement(howMuch){
+    this.setScrollPosition();
         var score = parseInt(this.state.score, 10);
         score -= howMuch;
         score = (score < 0)?0:score;
         var bgc = (score < 1)?'#cd0404':'#09146d';
+        var bustOrNot = (score < 1)?true:false;
         this.setState({score: score,
                        score_color: 'red',
                        bgColor: bgc,
+                       wentBust: bustOrNot,
                       });
     }
     skip_to_next(){
         var solved = this.state.puzzle_solved;
-            if(solved){return;}
+        var bust = this.state.wentBust;
+            if(solved || bust){return;}
         var onFrag = this.state.onThisFrag;
         if(onFrag > 0){
             this.give_hint();
@@ -319,7 +334,8 @@ class Game extends React.Component {
     }
     give_hint(){
         var solved = this.state.puzzle_solved;
-            if(solved)return;
+        var bust = this.state.wentBust;
+            if(solved || bust)return;
         var data =  this.state.theData;
         var guessFragsArray = this.state.currentFrags.split('|');
         var onFrag = this.state.onThisFrag;
@@ -434,7 +450,7 @@ class Game extends React.Component {
         var counter = 0;
 
         if (currClue.indexOf(':') > 0){
-            textToReturn = 'Clue ' + parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
+            textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
         }else{
            if (currClue == '1'){
                 textToReturn = 'Congratulations...one star for solving the puzzle!';
