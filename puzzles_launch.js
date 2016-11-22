@@ -36,6 +36,7 @@ class PuzzleLaunch extends React.Component{
             isOpen: false,
             dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
             scrollPosition: 0,
+            levelsSolved: 0,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -79,6 +80,12 @@ class PuzzleLaunch extends React.Component{
             borderWidth: 2,
         };
     }
+    bg(num){
+         var strToReturn= (num<14)?'green':'gray';
+         return {
+         backgroundColor: strToReturn
+         };
+    }
     onSelect(passed) {
         passed = passed - 1;
         var fragObject = owl.deepCopy(fragData);
@@ -121,7 +128,7 @@ class PuzzleLaunch extends React.Component{
                 isOpen={ this.state.isOpen }
                 onChange={ (isOpen) => this.updateMenuState(isOpen) }>
 
-                <View style={ [container_styles.container, this.border('black')] }>
+                <View style={ [container_styles.container, this.border('#070f4e')] }>
                     <View style={ container_styles.header }>
                         <Button style={{left: 10}} onPress={ () => this.toggle() }>
                             <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
@@ -132,11 +139,11 @@ class PuzzleLaunch extends React.Component{
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
-                    <View style={ [container_styles.tiles_container, this.border('black')] }>
+                    <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
                          <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
                          renderRow={(rowData) =>
                              <View>
-                             <TouchableHighlight  onPress={ () => this.onSelect(rowData.toString()) } style={ container_styles.launcher } underlayColor='#0F0' >
+                             <TouchableHighlight underlayColor='#0F0' onPress={() => this.onSelect(rowData.toString())} style={[container_styles.launcher,  this.bg(rowData)]} >
                              <Text style={ styles.puzzle_text_large }>{rowData}</Text>
                              </TouchableHighlight>
                              </View>}
@@ -168,6 +175,7 @@ class Button extends Component {
     }
 //        backgroundColor: '#3e05a6',
 //        backgroundColor: '#09146d',
+//        backgroundColor: '#dedffa',
 
 }
 
@@ -193,7 +201,8 @@ var container_styles = StyleSheet.create({
     tiles_container: {
         flex: 45,
         backgroundColor: '#3043e2',
-        padding: 6,
+        paddingLeft: 6,
+        paddingRight: 6,
     },
     footer: {
         flex: 4,
@@ -208,7 +217,6 @@ var container_styles = StyleSheet.create({
         margin: CELL_PADDING,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#dedffa',
     },
 });
 
