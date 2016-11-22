@@ -81,12 +81,21 @@ class PuzzleLaunch extends React.Component{
         };
     }
     bg(num){
-         var strToReturn= (num<14)?'green':'gray';
+         var strToReturn='';
+         if(num<14){
+             strToReturn='#079707';
+             }else if(num==14){
+             strToReturn='#0F0';
+             }else{
+             strToReturn='#999ba0';
+             }
+
          return {
          backgroundColor: strToReturn
          };
     }
     onSelect(passed) {
+    if(passed>14)return;
         passed = passed - 1;
         var fragObject = owl.deepCopy(fragData);
         var puzzString = fileData[passed].puzzle;
@@ -143,7 +152,7 @@ class PuzzleLaunch extends React.Component{
                          <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
                          renderRow={(rowData) =>
                              <View>
-                             <TouchableHighlight underlayColor='#0F0' onPress={() => this.onSelect(rowData.toString())} style={[container_styles.launcher,  this.bg(rowData)]} >
+                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} style={[container_styles.launcher,  this.bg(rowData)]} >
                              <Text style={ styles.puzzle_text_large }>{rowData}</Text>
                              </TouchableHighlight>
                              </View>}
@@ -176,6 +185,7 @@ class Button extends Component {
 //        backgroundColor: '#3e05a6',
 //        backgroundColor: '#09146d',
 //        backgroundColor: '#dedffa',
+//        backgroundColor: '#3043e2',
 
 }
 
@@ -200,7 +210,7 @@ var container_styles = StyleSheet.create({
     },
     tiles_container: {
         flex: 45,
-        backgroundColor: '#3043e2',
+        backgroundColor: '#597ae6',
         paddingLeft: 6,
         paddingRight: 6,
     },
