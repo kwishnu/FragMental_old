@@ -94,6 +94,30 @@ class PuzzleLaunch extends React.Component{
          backgroundColor: strToReturn
          };
     }
+    getUnderlay(num){
+         var strToReturn='';
+         if(num<14){
+             strToReturn='#079707';
+             }else if(num==14){
+             strToReturn='#01ff01';
+             }else{
+             strToReturn='#999ba0';
+             }
+
+         return {strToReturn};
+    }
+    getBorder(num){
+         var strToReturn='';
+         if(num<14){
+             strToReturn='#00a700';
+             }else if(num==14){
+             strToReturn='#0F0';
+             }else{
+             strToReturn='#7e867e';
+             }
+
+         return {borderColor: strToReturn};
+    }
     onSelect(passed) {
     if(passed>14)return;
         passed = passed - 1;
@@ -152,7 +176,7 @@ class PuzzleLaunch extends React.Component{
                          <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
                          renderRow={(rowData) =>
                              <View>
-                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} style={[container_styles.launcher,  this.bg(rowData)]} >
+                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} underlayColor={() => this.getUnderlay(rowData) } style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
                              <Text style={ styles.puzzle_text_large }>{rowData}</Text>
                              </TouchableHighlight>
                              </View>}
@@ -210,7 +234,7 @@ var container_styles = StyleSheet.create({
     },
     tiles_container: {
         flex: 45,
-        backgroundColor: '#597ae6',
+        backgroundColor: '#486bdd',
         paddingLeft: 6,
         paddingRight: 6,
     },
@@ -224,6 +248,7 @@ var container_styles = StyleSheet.create({
         width: TILE_WIDTH,
         height: TILE_WIDTH,
         borderRadius: BORDER_RADIUS,
+        borderWidth: 1,
         margin: CELL_PADDING,
         justifyContent: 'center',
         alignItems: 'center',
