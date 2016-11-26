@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
-
-function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    return array;
-}
+import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage } from 'react-native';
 
 var deepCopy = require('./deepCopy.js');
 var fileData = require('./data.js');
@@ -18,7 +8,7 @@ var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
-var NUM_WIDE = 5;
+var NUM_WIDE = 1;
 var NUM_ROWS = 10;
 var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the screen width
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
@@ -28,13 +18,13 @@ var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
-class PuzzleLaunch extends React.Component{
+
+class PuzzleContents extends React.Component{
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            id: 'puzzle launcher',
-            title: this.props.title,
+            id: 'puzzles contents',
             isOpen: false,
             dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
             scrollPosition: 0,
@@ -42,8 +32,14 @@ class PuzzleLaunch extends React.Component{
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
+    handleHardwareBackButton() {
+        if (this.state.isOpen) {
+            this.toggle();
+            return true;
+        }
+    }
+
     componentDidMount() {
-        BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
         });
@@ -51,32 +47,21 @@ class PuzzleLaunch extends React.Component{
                  this.setState({scrollPosition: parseInt(value2, 10)});
         });
     }
-    componentWillUnmount () {
-        BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
-    }
-    handleHardwareBackButton() {
+    toggle() {
+        this.setState({ isOpen: !this.state.isOpen });
         if (this.state.isOpen) {
-            this.toggle();
-            return true;
-        }else{
-            try {
-            this.props.navigator.replace({
-                id: 'puzzles contents',
-            });
-                return true;
-            } catch(err)  {
-                return false;
-            }
+            BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
+        } else {
+            BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
         }
     }
-    toggle() {
-        this.setState({
-            isOpen: !this.state.isOpen,
-        });
-    }
     updateMenuState(isOpen) {
-        this.setState({ isOpen, });
-
+        this.setState({ isOpen });
+        if (isOpen) {
+            BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
+        } else {
+            BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+        }
     }
     onMenuItemSelected(item) {
         this.setState({
@@ -132,34 +117,11 @@ class PuzzleLaunch extends React.Component{
     onSelect(passed) {
     if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
         passed = passed - 1;
-        var fragObject = owl.deepCopy(fragData);
-        var puzzString = fileData[passed].puzzle;
-        var puzzArray = puzzString.split('~');
-        var fragsArray = [];
-        var fragsPlusClueArr =  puzzArray[1].split('**');
 
-        for(var i=0; i<fragsPlusClueArr.length; i++){
-            var splits = fragsPlusClueArr[i].split(':');
-            var frags = splits[0].split('|');
-            for(var j=0; j<frags.length; j++){
-                fragsArray.push(frags[j]);
-            }
-        }
-        fragsArrayShuffled = shuffleArray(fragsArray);
-        var countTo20 = 0;
-        for(var k=0; k<fragsArrayShuffled.length; k++){
-            if(fragsArrayShuffled[k]!='^'){
-            fragObject[countTo20].frag= fragsArrayShuffled[k];
-            countTo20++;
-            }
-        }
         this.props.navigator.replace({
-            id: 'game board',
+            id: 'puzzle launcher',
             passProps: {
-                keyFrag: puzzArray[0],
-                title: passed + 1,
-                theData: fragObject,
-                theCluesArray: fragsPlusClueArr,
+                title: 'Some puzzle pack!!',
                 },
        });
     }
@@ -177,7 +139,7 @@ class PuzzleLaunch extends React.Component{
                         <Button style={{left: 10}} onPress={ () => this.toggle() }>
                             <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
                         </Button>
-                        <Text style={styles.header_text} >{this.props.title}
+                        <Text style={styles.header_text} >Contents
                         </Text>
                         <Button>
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
@@ -193,6 +155,7 @@ class PuzzleLaunch extends React.Component{
                              </View>}
                          />
                     </View>
+
                     <View style={ container_styles.footer }>
                         <Text style={ styles.copyright }>Some fine print...</Text>
                     </View>
@@ -200,6 +163,9 @@ class PuzzleLaunch extends React.Component{
             </SideMenu>
         );
     }
+
+
+
 }
 
 class Button extends Component {
@@ -257,7 +223,7 @@ var container_styles = StyleSheet.create({
     },
     launcher: {
         width: TILE_WIDTH,
-        height: TILE_WIDTH,
+        height: TILE_WIDTH * .25,
         borderRadius: BORDER_RADIUS,
         borderWidth: 1,
         margin: CELL_PADDING,
@@ -265,5 +231,4 @@ var container_styles = StyleSheet.create({
         alignItems: 'center',
     },
 });
-
-module.exports = PuzzleLaunch;
+module.exports = PuzzleContents;

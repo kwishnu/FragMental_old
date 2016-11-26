@@ -5,6 +5,7 @@ import { Navigator } from 'react-native';
 
 const Game = require('./game');
 const PuzzlesLaunch = require('./puzzles_launch');
+const PuzzlesContents = require('./puzzles_contents');
 
 class AppNavigator extends React.Component {
     constructor(props) {
@@ -16,6 +17,8 @@ class AppNavigator extends React.Component {
                 return Game;
             case 'puzzle launcher':
                 return PuzzlesLaunch;
+            case 'puzzles contents':
+                return PuzzlesContents;
             // Add more ids here
         }
     }
@@ -23,7 +26,7 @@ class AppNavigator extends React.Component {
     render() {
         return (
             <Navigator
-              initialRoute={ { id: 'puzzle launcher' } }
+              initialRoute={ { id: 'puzzles contents' } }
               renderScene={(route, navigator) => {
                 return React.createElement(this.navigatorRenderScene(route.id), { ...this.props, ...route.passProps, navigator, route } );
               }} />
