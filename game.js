@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, BackAndroid, AsyncStorage, Animated, } from 'react-native';
 
+var fileData = require('./data.js');
 var deepCopy = require('./deepCopy.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -19,6 +20,7 @@ var dataObject = null;
 var SPRING_CONFIG = {tension: 10, velocity: 10};
 var timeoutHandle;
 var KEY_ScrollPosition = 'scrollPositionKey';
+var KEY_onPuzzle = 'onPuzzle';
 
 class Game extends React.Component {
     constructor(props) {
@@ -76,9 +78,10 @@ class Game extends React.Component {
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
-    setScrollPosition(){
+    setScrollPosition(where){
+    var strScrollPosition = (where<(fileData.length)/2)?'0':'1000';
         try {
-            AsyncStorage.setItem(KEY_ScrollPosition, '1000');
+            AsyncStorage.setItem(KEY_ScrollPosition, strScrollPosition);
         } catch (error) {
             this._appendMessage('AsyncStorage error: ' + error.message);
         }
@@ -288,7 +291,6 @@ class Game extends React.Component {
                       });
     }
     score_decrement(howMuch){
-    this.setScrollPosition();
         var score = parseInt(this.state.score, 10);
         score -= howMuch;
         score = (score < 0)?0:score;
@@ -452,6 +454,14 @@ class Game extends React.Component {
         if (currClue.indexOf(':') > 0){
             textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
         }else{
+            this.setScrollPosition(parseInt(this.state.title));
+            var onThisPuzzle = (this.state.title).toString();
+            try {
+                AsyncStorage.setItem(KEY_onPuzzle, onThisPuzzle);
+            } catch (error) {
+                this._appendMessage('AsyncStorage error: ' + error.message);
+            }
+
            if (currClue == '1'){
                 textToReturn = 'Congratulations...one star for solving the puzzle!';
                 timeoutHandle = setTimeout(() => {this.changeStarImage(1)}, 50);

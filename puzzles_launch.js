@@ -26,6 +26,7 @@ var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
 var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
+var KEY_onPuzzle = 'onPuzzle';
 
 class PuzzleLaunch extends React.Component{
     constructor(props) {
@@ -36,14 +37,17 @@ class PuzzleLaunch extends React.Component{
             isOpen: false,
             dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
             scrollPosition: 0,
-            levelsSolved: 0,
+            onPuzzle: 0,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
-         AsyncStorage.getItem(KEY_ScrollPosition).then((value) => {
-         this.setState({scrollPosition: parseInt(value, 10)});
-              });
+         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
+                 this.setState({onPuzzle: parseInt(value, 10)});
+        });
+         AsyncStorage.getItem(KEY_ScrollPosition).then((value2) => {
+                 this.setState({scrollPosition: parseInt(value2, 10)});
+        });
     }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
@@ -82,10 +86,10 @@ class PuzzleLaunch extends React.Component{
     }
     bg(num){
          var strToReturn='';
-         if(num<14){
-             strToReturn='#079707';
-             }else if(num==14){
+         if(num==parseInt(this.state.onPuzzle, 10) + 1){
              strToReturn='#0F0';
+             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+             strToReturn='#079707';
              }else{
              strToReturn='#999ba0';
              }
@@ -96,10 +100,10 @@ class PuzzleLaunch extends React.Component{
     }
     getUnderlay(num){
          var strToReturn='';
-         if(num<14){
-             strToReturn='#079707';
-             }else if(num==14){
+         if(num==parseInt(this.state.onPuzzle, 10) + 1){
              strToReturn='#01ff01';
+             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+             strToReturn='#079707';
              }else{
              strToReturn='#999ba0';
              }
@@ -108,10 +112,10 @@ class PuzzleLaunch extends React.Component{
     }
     getBorder(num){
          var strToReturn='';
-         if(num<14){
-             strToReturn='#00a700';
-             }else if(num==14){
+         if(num==parseInt(this.state.onPuzzle, 10) + 1){
              strToReturn='#0F0';
+             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+             strToReturn='#00a700';
              }else{
              strToReturn='#7e867e';
              }
@@ -119,7 +123,7 @@ class PuzzleLaunch extends React.Component{
          return {borderColor: strToReturn};
     }
     onSelect(passed) {
-    if(passed>14)return;
+    if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
         passed = passed - 1;
         var fragObject = owl.deepCopy(fragData);
         var puzzString = fileData[passed].puzzle;
