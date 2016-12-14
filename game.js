@@ -22,6 +22,7 @@ var timeoutHandle;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
+// {/* ... */} for JSX commenting
 class Game extends React.Component {
     constructor(props) {
         super(props);

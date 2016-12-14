@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
-import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage } from 'react-native';
+import React, { Component, PropTypes } from 'react';
+import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
+//import DDPClient from 'ddp-client';
+import Meteor, { MeteorListView, createContainer } from 'react-native-meteor';
+import PuzzlesContainer from './PuzzlesContainer';
+import Puzzles from './Puzzles';
 
-var deepCopy = require('./deepCopy.js');
-var fileData = require('./data.js');
-var fragData = require('./objPassed.js');
+
+//var deepCopy = require('./deepCopy.js');
+//var fileData = require('./data.js');
+//var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -18,6 +23,8 @@ var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
+let METEOR_URL = 'ws://52.52.199.138:80/websocket';//'ws://52.9.147.169:80/websocket';//'ws://10.0.0.207:3000/websocket';//'ws://localhost:3000/websocket';//'ws://52.8.88.93:80/websocket';
+Meteor.connect(METEOR_URL);
 
 class PuzzleContents extends React.Component{
     constructor(props) {
@@ -29,6 +36,8 @@ class PuzzleContents extends React.Component{
             dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
             scrollPosition: 0,
             onPuzzle: 0,
+            connected: false,
+            posts: {}
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -125,9 +134,18 @@ class PuzzleContents extends React.Component{
                 },
        });
     }
-
+    renderRow(detail) {
+        return (
+             <View>
+             <TouchableHighlight style={container_styles.launcher} >
+             <Text style={ styles.puzzle_text_large }>{detail.name}</Text>
+             </TouchableHighlight>
+             </View>
+        );
+    }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
+        const { puzzlesReady } = this.props;
         return (
             <SideMenu
                 menu={ menu }
@@ -146,14 +164,8 @@ class PuzzleContents extends React.Component{
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
-                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
-                         renderRow={(rowData) =>
-                             <View>
-                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} underlayColor={() => this.getUnderlay(rowData) } style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
-                             </TouchableHighlight>
-                             </View>}
-                         />
+                        {!puzzlesReady && <Text>Not Ready...</Text>}
+                         <PuzzlesContainer />
                     </View>
 
                     <View style={ container_styles.footer }>
@@ -167,6 +179,17 @@ class PuzzleContents extends React.Component{
 
 
 }
+
+export default createContainer( () => {
+  const handle = Meteor.subscribe('AllData');//('PuzzlesList');
+  return {
+    puzzlesReady: handle.ready()
+  };
+}, PuzzleContents);
+
+PuzzleContents.propTypes = {
+  puzzlesReady: PropTypes.bool,
+};
 
 class Button extends Component {
     handlePress(e) {
