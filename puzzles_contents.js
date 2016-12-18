@@ -23,8 +23,6 @@ var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
-let METEOR_URL = 'ws://52.52.199.138:80/websocket';//'ws://52.9.147.169:80/websocket';//'ws://10.0.0.207:3000/websocket';//'ws://localhost:3000/websocket';//'ws://52.8.88.93:80/websocket';
-Meteor.connect(METEOR_URL);
 
 class PuzzleContents extends React.Component{
     constructor(props) {
@@ -33,7 +31,7 @@ class PuzzleContents extends React.Component{
         this.state = {
             id: 'puzzles contents',
             isOpen: false,
-            dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
+            //dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
             scrollPosition: 0,
             onPuzzle: 0,
             connected: false,
@@ -47,7 +45,15 @@ class PuzzleContents extends React.Component{
             return true;
         }
     }
-
+    //'ws://52.8.88.93:80/websocket'; <= baked-beans-games...publication details-list, collection details
+    //'ws://52.9.147.169:80/websocket'; <= bbg2...publication PuzzlesList, collection puzzles (field "name")
+    //'ws://52.52.199.138:80/websocket'; <= bbg3...publication AllData, collections data, data1, data2, details, puzzles, text, users
+    //'ws://52.52.205.96:80/websocket'; <= Publications...publication AllData, collections dataA...dataZ
+    //'ws://10.0.0.207:3000/websocket'; <= localhost
+    componentWillMount() {
+        let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
+        Meteor.connect(METEOR_URL);
+    }
     componentDidMount() {
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
@@ -123,17 +129,17 @@ class PuzzleContents extends React.Component{
 
          return {borderColor: strToReturn};
     }
-    onSelect(passed) {
-    if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
-        passed = passed - 1;
-
-        this.props.navigator.replace({
-            id: 'puzzle launcher',
-            passProps: {
-                title: 'Some puzzle pack!!',
-                },
-       });
-    }
+//    onSelect(passed) {
+//        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
+//        passed = passed - 1;
+//
+//        this.props.navigator.replace({
+//            id: 'puzzle launcher',
+//            passProps: {
+//                title: 'Some puzzle pack!!',
+//                },
+//       });
+//    }
     renderRow(detail) {
         return (
              <View>
@@ -164,8 +170,8 @@ class PuzzleContents extends React.Component{
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
-                        {!puzzlesReady && <Text>Not Ready...</Text>}
-                         <PuzzlesContainer />
+                        {!puzzlesReady}
+                         <PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
                     </View>
 
                     <View style={ container_styles.footer }>
@@ -176,20 +182,30 @@ class PuzzleContents extends React.Component{
         );
     }
 
-
-
 }
 
-export default createContainer( () => {
-  const handle = Meteor.subscribe('AllData');//('PuzzlesList');
-  return {
-    puzzlesReady: handle.ready()
-  };
-}, PuzzleContents);
+// function  onSelect (passed) {
+//        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
+//        passed = passed - 1;
+//
+//        this.props.navigator.replace({
+//            id: 'puzzle launcher',
+//            passProps: {
+//                title: 'Some puzzle pack!!',
+//                },
+//       });
+//    };
 
-PuzzleContents.propTypes = {
-  puzzlesReady: PropTypes.bool,
-};
+//export default createContainer( () => {
+//  const handle = Meteor.subscribe('AllData');//('PuzzlesList');
+//  return {
+//    puzzlesReady: handle.ready()
+//  };
+//}, PuzzleContents);
+
+//PuzzleContents.propTypes = {
+//  puzzlesReady: PropTypes.bool,
+//};
 
 class Button extends Component {
     handlePress(e) {
@@ -235,8 +251,8 @@ var container_styles = StyleSheet.create({
     tiles_container: {
         flex: 45,
         backgroundColor: '#486bdd',
-        paddingLeft: 6,
-        paddingRight: 6,
+//        paddingLeft: 6,
+//        paddingRight: 6,
     },
     footer: {
         flex: 4,

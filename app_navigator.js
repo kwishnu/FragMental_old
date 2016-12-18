@@ -6,6 +6,7 @@ import { Navigator } from 'react-native';
 const Game = require('./game');
 const PuzzlesLaunch = require('./puzzles_launch');
 const PuzzlesContents = require('./puzzles_contents');
+const Puzzles = require('./Puzzles');
 
 class AppNavigator extends React.Component {
     constructor(props) {
