@@ -25,7 +25,7 @@ const Puzzles = ({ puzzlesReady, navigator }) => {
             showsVerticalScrollIndicator ={false}
             enableEmptySections ={true}
             //contentContainerStyle={todo.container}
-            collection="dataJ"//"dataJ""puzzles"
+            collection="dataJ"//"dataJ""puzzles""details"
             renderRow={
                 (item) =>
                 <View>

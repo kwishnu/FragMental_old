@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
-//import DDPClient from 'ddp-client';
-import Meteor, { MeteorListView, createContainer } from 'react-native-meteor';
-import PuzzlesContainer from './PuzzlesContainer';
-import Puzzles from './Puzzles';
-
+//import PuzzlesContainer from './PuzzlesContainer';
+//import Puzzles from './Puzzles';
+//import {EJSON} from 'ejson';
 
 //var deepCopy = require('./deepCopy.js');
 //var fileData = require('./data.js');
@@ -24,6 +22,7 @@ var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
 
+
 class PuzzleContents extends React.Component{
     constructor(props) {
         super(props);
@@ -31,7 +30,7 @@ class PuzzleContents extends React.Component{
         this.state = {
             id: 'puzzles contents',
             isOpen: false,
-            //dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
+            dataSource: ds.cloneWithRows(Array.from(new Array(3), (x,i) => i+1)),//NUM_WIDE * NUM_ROWS
             scrollPosition: 0,
             onPuzzle: 0,
             connected: false,
@@ -50,10 +49,41 @@ class PuzzleContents extends React.Component{
     //'ws://52.52.199.138:80/websocket'; <= bbg3...publication AllData, collections data, data1, data2, details, puzzles, text, users
     //'ws://52.52.205.96:80/websocket'; <= Publications...publication AllData, collections dataA...dataZ
     //'ws://10.0.0.207:3000/websocket'; <= localhost
-    componentWillMount() {
-        let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
-        Meteor.connect(METEOR_URL);
-    }
+//    componentWillMount() {
+//        let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
+//        Meteor.connect(METEOR_URL);
+//
+//          //const handle = Meteor.subscribe('AllData');//('AllData');('PuzzlesList');
+//
+//Meteor.subscribe('AllData', {
+//  onReady: function () {
+//    //this.sendToStorage();
+//    //console.log("onReady And the Items actually Arrive", arguments);
+//              const messages = Meteor.collection('dataJ').find();
+//              //const restoredArray = EJSON.stringify(messages);
+//             // window.alert(messages.toString());
+//              //window.alert((typeof messages).toString());
+//                     // window.alert(sent);
+//
+//            for (var key in messages) {
+//                if (!messages.hasOwnProperty(key)) continue;
+//                var obj = messages[key];
+//                for (var prop in obj) {
+//                    if(!obj.hasOwnProperty(prop)) continue;
+//                    if(prop=='text')
+//                    //window.alert(prop + " = " + obj[prop]);
+//                    window.alert(obj[prop]);
+//                }
+//            }
+//
+//    },
+//  onError: function () {
+//    window.alert('oops');
+//    }
+//});
+//}
+//
+
     componentDidMount() {
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
@@ -129,17 +159,29 @@ class PuzzleContents extends React.Component{
 
          return {borderColor: strToReturn};
     }
-//    onSelect(passed) {
-//        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
-//        passed = passed - 1;
-//
-//        this.props.navigator.replace({
-//            id: 'puzzle launcher',
-//            passProps: {
-//                title: 'Some puzzle pack!!',
-//                },
-//       });
-//    }
+    onSelect (sent) {
+    var value = 'test2';
+         Meteor.call('DataJ.deleteOne', { value }, (err, res) => {
+            // Do whatever you want with the response
+            //window.alert(res);
+        });
+
+//         Meteor.call('DataJ.addOne', { value }, (err, res) => {
+//            // Do whatever you want with the response
+//            console.log('Items.addOne', err, res);
+//        });
+    }
+    onSelect(passed) {
+        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
+        passed = passed - 1;
+
+        this.props.navigator.replace({
+            id: 'puzzle launcher',
+            passProps: {
+                title: 'Some puzzle pack!!',
+                },
+       });
+    }
     renderRow(detail) {
         return (
              <View>
@@ -169,9 +211,20 @@ class PuzzleContents extends React.Component{
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
-                    <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
+                    <View style={ container_styles.daily_puzzles }>
+                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
+                         renderRow={(rowData) =>
+                             <View>
+                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} underlayColor={() => this.getUnderlay(rowData) } style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
+                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
+                             </TouchableHighlight>
+                             </View>}
+                         />
+                    </View>
+
+                    <View style={ [container_styles.purchased_container, this.border('#070f4e')] }>
                         {!puzzlesReady}
-                         <PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
+
                     </View>
 
                     <View style={ container_styles.footer }>
@@ -183,6 +236,10 @@ class PuzzleContents extends React.Component{
     }
 
 }
+
+//<PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
+
+
 
 // function  onSelect (passed) {
 //        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
@@ -248,8 +305,14 @@ var container_styles = StyleSheet.create({
         width: window.width,
         backgroundColor: '#09146d',
     },
-    tiles_container: {
-        flex: 45,
+    purchased_container: {
+        flex: 15,
+        backgroundColor: '#486bdd',
+//        paddingLeft: 6,
+//        paddingRight: 6,
+    },
+    daily_puzzles: {
+        flex: 30,
         backgroundColor: '#486bdd',
 //        paddingLeft: 6,
 //        paddingRight: 6,

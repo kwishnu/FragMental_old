@@ -7,6 +7,7 @@ const Game = require('./game');
 const PuzzlesLaunch = require('./puzzles_launch');
 const PuzzlesContents = require('./puzzles_contents');
 const Puzzles = require('./Puzzles');
+const StartScene = require('./start_scene');
 
 class AppNavigator extends React.Component {
     constructor(props) {
@@ -20,6 +21,9 @@ class AppNavigator extends React.Component {
                 return PuzzlesLaunch;
             case 'puzzles contents':
                 return PuzzlesContents;
+            case 'start scene':
+                return StartScene;
+
             // Add more ids here
         }
     }
@@ -27,7 +31,7 @@ class AppNavigator extends React.Component {
     render() {
         return (
             <Navigator
-              initialRoute={ { id: 'puzzles contents' } }
+              initialRoute={ { id: 'start scene' } }
               renderScene={(route, navigator) => {
                 return React.createElement(this.navigatorRenderScene(route.id), { ...this.props, ...route.passProps, navigator, route } );
               }} />

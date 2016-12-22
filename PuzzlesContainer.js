@@ -15,7 +15,10 @@ PuzzlesContainer.propTypes = {
 };
 
 export default createContainer(() => {
-  const handle = Meteor.subscribe('AllData');//('AllData');('PuzzlesList');
+  const handle = Meteor.subscribe('AllData');//('AllData');('PuzzlesList');('details-list');
+  const messages = Meteor.collection('dataJ').find();//('dataJ')('details')('puzzles')
+
+  //window.alert(messages);
   return {
     puzzlesReady: handle.ready(),
   };
