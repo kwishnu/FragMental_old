@@ -12,7 +12,8 @@ import Meteor from 'react-native-meteor';
 const windowsWidth = Dimensions.get('window').width;
 const windowsHeight = Dimensions.get('window').height;
 import AppIntro from 'react-native-app-intro';
-// import AppIntro from './AppIntro';
+var puzzleData = require('./data.js');
+var KEY_SeedPuzzles = 'seedPuzzlesKey';
 
 
 class StartScene extends Component {
@@ -42,9 +43,9 @@ class StartScene extends Component {
                         var obj = messages[key];
                         for (var prop in obj) {
                             if(!obj.hasOwnProperty(prop)) continue;
-                            if(prop=='text')
+                            if(prop=='text'){;}
                             //window.alert(prop + " = " + obj[prop]);
-                            window.alert(obj[prop]);
+                            //window.alert(obj[prop]);
                         }
                     }
 
@@ -56,8 +57,12 @@ class StartScene extends Component {
     }
 
     onSkipBtnHandle = (index) => {
-        Alert.alert('Skip');
-        console.log(index);
+        this.props.navigator.replace({
+            id: 'puzzles contents',
+            passProps: {
+                //title: 'Some puzzle pack!!',
+                },
+       });
     }
     doneBtnHandle = () => {
         this.props.navigator.replace({
@@ -66,8 +71,6 @@ class StartScene extends Component {
                 //title: 'Some puzzle pack!!',
                 },
        });
-
-        //Alert.alert('Done');
     }
     nextBtnHandle = (index) => {
         Alert.alert('Next');
@@ -78,6 +81,8 @@ class StartScene extends Component {
     }
 
     render() {
+
+//#fa931d
     return (
       <AppIntro
         onNextBtnClick={this.nextBtnHandle}
@@ -85,7 +90,7 @@ class StartScene extends Component {
         onSkipBtnClick={this.onSkipBtnHandle}
         onSlideChange={this.onSlideChangeHandle}
       >
-      <View style={[styles.slide,{ backgroundColor: '#fa931d' }]}>
+      <View style={[styles.slide,{ backgroundColor: '#486bdd' }]}>
         <View style={[styles.header, {width: windowsWidth}]}>
           <View>
             <Image style={{ width: 75 * 2.5, height: 63 * 2.5 }} source={require('./img/1/c1.png')} />
@@ -122,8 +127,9 @@ class StartScene extends Component {
           </View>
         </View>
         <View style={styles.info}>
-          <View level={10}><Text style={styles.title}>AppIntro</Text></View>
-          <View level={15}><Text style={styles.description}>Pretty Simple Useful in your app tour!</Text></View>
+          <View level={15}><Text style={styles.description}>Welcome to</Text></View>
+          <View level={10}><Text style={styles.title}>FragMental!</Text></View>
+          <View level={15}><Text style={styles.description}>Swipe through for a quick tutorial...</Text></View>
         </View>
       </View>
       <View style={[styles.slide, { backgroundColor: '#a4b602' }]}>
@@ -269,6 +275,11 @@ const styles = StyleSheet.create({
   description: {
     color: '#fff',
     fontSize: 20,
+  },
+  separator: {
+      flex: 1,
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: '#8E8E8E',
   },
 });
 

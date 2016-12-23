@@ -211,7 +211,7 @@ class PuzzleContents extends React.Component{
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
-                    <View style={ container_styles.daily_puzzles }>
+                    <View style={ container_styles.puzzles_container }>
                          <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
                          renderRow={(rowData) =>
                              <View>
@@ -221,12 +221,6 @@ class PuzzleContents extends React.Component{
                              </View>}
                          />
                     </View>
-
-                    <View style={ [container_styles.purchased_container, this.border('#070f4e')] }>
-                        {!puzzlesReady}
-
-                    </View>
-
                     <View style={ container_styles.footer }>
                         <Text style={ styles.copyright }>Some fine print...</Text>
                     </View>
@@ -282,20 +276,21 @@ class Button extends Component {
 //        backgroundColor: '#3e05a6',
 //        backgroundColor: '#09146d',
 //        backgroundColor: '#dedffa',
-//        backgroundColor: '#3043e2',
+//        backgroundColor: '#3043e2',        justifyContent: 'space-around',        margin: CELL_PADDING,
+//        backgroundColor: '#09146d',
+
+
 
 }
 
 var container_styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#09146d',
     },
     listview: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         alignItems: 'flex-start',
-        justifyContent: 'space-around',
     },
     header: {
         flex: 4,
@@ -305,15 +300,11 @@ var container_styles = StyleSheet.create({
         width: window.width,
         backgroundColor: '#09146d',
     },
-    purchased_container: {
-        flex: 15,
+    puzzles_container: {
+        flex: 45,
         backgroundColor: '#486bdd',
-//        paddingLeft: 6,
-//        paddingRight: 6,
-    },
-    daily_puzzles: {
-        flex: 30,
-        backgroundColor: '#486bdd',
+        justifyContent: 'center',
+        alignItems: 'center',
 //        paddingLeft: 6,
 //        paddingRight: 6,
     },
@@ -328,9 +319,9 @@ var container_styles = StyleSheet.create({
         height: TILE_WIDTH * .25,
         borderRadius: BORDER_RADIUS,
         borderWidth: 1,
-        margin: CELL_PADDING,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 8,
     },
 });
 module.exports = PuzzleContents;
