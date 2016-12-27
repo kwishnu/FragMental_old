@@ -1,19 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
-//import PuzzlesContainer from './PuzzlesContainer';
-//import Puzzles from './Puzzles';
+import SectionHeader  from './components/SectionHeader';
+import Button from './components/Button';
 //import {EJSON} from 'ejson';
 
 //var deepCopy = require('./deepCopy.js');
-var fileData = require('./data.js');
-var dataLength = fileData.length;
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
-var NUM_WIDE = 1;
-var NUM_ROWS = 10;
-var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the screen width
+var CELL_WIDTH = Math.floor(width); // one tile's fraction of the screen width
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
 var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
@@ -21,16 +17,26 @@ var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
-
+var fileData = require('./data.js');
+var dataLength = fileData.length;
 
 class PuzzleContents extends React.Component{
     constructor(props) {
         super(props);
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        const getSectionData = (dataBlob, sectionId) => dataBlob[sectionId];
+        const getRowData = (dataBlob, sectionId, rowId) => dataBlob[`${rowId}`];
+        const ds = new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 !== r2,
+          sectionHeaderHasChanged : (s1, s2) => s1 !== s2,
+          getSectionData,
+          getRowData,
+        });
+        const { dataBlob, sectionIds, rowIds } = this.formatData(fileData);
+
         this.state = {
             id: 'puzzles contents',
             isOpen: false,
-            dataSource: ds.cloneWithRows(fileData),//(Array.from(new Array(dataLength), (x,i) => i+1)),//NUM_WIDE * NUM_ROWS
+            dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds),//(Array.from(new Array(dataLength), (x,i) => i+1)),//NUM_WIDE * NUM_ROWS
             scrollPosition: 0,
             onPuzzle: 0,
             connected: false,
@@ -43,6 +49,31 @@ class PuzzleContents extends React.Component{
             this.toggle();
             return true;
         }
+    }
+    formatData(data) {
+        const headings = 'Daily Puzzles*My Puzzles*Recommended Puzzle Packs*Completed Puzzle Packs'.split('*');
+        const keys = 'daily*mypack*forsale*solved'.split('*');
+        const dataBlob = {};
+        const sectionIds = [];
+        const rowIds = [];
+        for (let sectionId = 0; sectionId < headings.length; sectionId++) {
+            const currentHead = headings[sectionId];
+            const currentKey = keys[sectionId];
+            const packs = data.filter((theData) => theData.type == currentKey && theData.show == 'true');
+          if (packs.length > 0) {
+            sectionIds.push(sectionId);
+            dataBlob[sectionId] = { sectionTitle: currentHead };
+            rowIds.push([]);
+
+            for (let i = 0; i < packs.length; i++) {
+              // Create a unique row id for the data blob that the listview can use for reference
+              const rowId = `${sectionId}:${i}`;
+              rowIds[rowIds.length - 1].push(rowId);
+              dataBlob[rowId] = packs[i];
+            }
+          }
+        }
+        return { dataBlob, sectionIds, rowIds };
     }
     //'ws://52.8.88.93:80/websocket'; <= baked-beans-games...publication details-list, collection details
     //'ws://52.9.147.169:80/websocket'; <= bbg2...publication PuzzlesList, collection puzzles (field "name")
@@ -178,28 +209,46 @@ shadeColor(color, percent) {
 //            console.log('Items.addOne', err, res);
 //        });
     }
-    onSelect(passed) {
+    onSelect(passed, type) {
+        switch(type){
+            case 'daily':
 
+
+                break;
+
+
+            default:
+
+
+        }
         this.props.navigator.replace({
             id: 'puzzle launcher',
             passProps: {
                 title: 'Some puzzle pack!!',
-                dataElement: passed
+                dataElement: passed//index of selected
                 },
        });
     }
-    renderRow(detail) {
+    renderSectionHeader(sectionID) {
+        return (
+            <View style={styles.section}>
+                <Text style={styles.sectionText}>{sectionID}</Text>
+            </View>
+          )
+    }
+    renderRow(pack) {
         return (
              <View>
-             <TouchableHighlight style={container_styles.launcher} >
-             <Text style={ styles.puzzle_text_large }>{detail.name}</Text>
-             </TouchableHighlight>
+                 <TouchableHighlight style={container_styles.launcher} >
+                     <Text style={ styles.puzzle_text_large }>{pack.name}</Text>
+                 </TouchableHighlight>
              </View>
         );
     }
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
         const { puzzlesReady } = this.props;
+
         return (
             <SideMenu
                 menu={ menu }
@@ -226,13 +275,15 @@ shadeColor(color, percent) {
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                     <TouchableHighlight onPress={() => this.onSelect(rowData.index.toString())}
-                                                         underlayColor={() => this.bg(rowData.bg_color) }
-                                                         style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color)]} >
-                                     <Text style={ styles.contents_text }>{rowData.title}</Text>
-                                     </TouchableHighlight>
-                                     </View>}
-                                    />
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index.toString(), rowData.type)}
+                                                             underlayColor={() => this.bg(rowData.bg_color) }
+                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color)]} >
+                                             <Text style={ styles.contents_text }>{rowData.title}</Text>
+                                         </TouchableHighlight>
+                                     </View>
+                                     }
+                                     renderSectionHeader={(sectionData) => <SectionHeader {...sectionData} />}
+                         />
                     </View>
                     <View style={ container_styles.footer }>
                         <Text style={ styles.copyright }>Some fine print...</Text>
@@ -247,22 +298,6 @@ shadeColor(color, percent) {
 //<PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
 
 
-class Button extends Component {
-    handlePress(e) {
-        if (this.props.onPress) {
-            this.props.onPress(e);
-        }
-    }
-    render() {
-        return (
-            <TouchableOpacity
-                onPress={ this.handlePress.bind(this) }
-                style={ this.props.style } >
-                <Text>{ this.props.children }</Text>
-            </TouchableOpacity>
-        );
-    }
-}
 
 var container_styles = StyleSheet.create({
     container: {
@@ -271,7 +306,8 @@ var container_styles = StyleSheet.create({
     listview: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
         flex: 4,
@@ -302,7 +338,7 @@ var container_styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 8,
+        marginBottom: 6,
     },
 });
 module.exports = PuzzleContents;

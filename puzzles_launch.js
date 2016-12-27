@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
+import Button from './components/Button';
 
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -213,27 +214,6 @@ class PuzzleLaunch extends React.Component{
     }
 }
 
-class Button extends Component {
-    handlePress(e) {
-        if (this.props.onPress) {
-            this.props.onPress(e);
-        }
-    }
-    render() {
-        return (
-            <TouchableOpacity
-                onPress={ this.handlePress.bind(this) }
-                style={ this.props.style } >
-                <Text>{ this.props.children }</Text>
-            </TouchableOpacity>
-        );
-    }
-//        backgroundColor: '#3e05a6',
-//        backgroundColor: '#09146d',
-//        backgroundColor: '#dedffa',
-//        backgroundColor: '#3043e2',
-
-}
 
 var container_styles = StyleSheet.create({
     container: {
