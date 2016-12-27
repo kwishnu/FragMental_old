@@ -34,6 +34,7 @@ class PuzzleLaunch extends React.Component{
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             id: 'puzzle launcher',
+            dataElement: this.props.dataElement,
             title: this.props.title,
             isOpen: false,
             dataSource: ds.cloneWithRows(Array.from(new Array(NUM_WIDE * NUM_ROWS), (x,i) => i+1)),
@@ -133,7 +134,10 @@ class PuzzleLaunch extends React.Component{
     if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
         passed = passed - 1;
         var fragObject = owl.deepCopy(fragData);
-        var puzzString = fileData[passed].puzzle;
+        var puzzString = fileData[this.props.dataElement].puzzles[passed];
+//window.alert(typeof puzzString);
+//return;
+        //var puzzString = fileData[passed].puzzle;
         var puzzArray = puzzString.split('~');
         var fragsArray = [];
         var fragsPlusClueArr =  puzzArray[1].split('**');
@@ -184,13 +188,20 @@ class PuzzleLaunch extends React.Component{
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
-                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
-                         renderRow={(rowData) =>
-                             <View>
-                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} underlayColor={() => this.getUnderlay(rowData) } style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
-                             </TouchableHighlight>
-                             </View>}
+                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }}
+                                    ref={(scrollView) => { _scrollView = scrollView; }}
+                                    showsVerticalScrollIndicator ={false}
+                                    initialListSize ={100}
+                                    contentContainerStyle={ container_styles.listview }
+                                    dataSource={this.state.dataSource}
+                                    renderRow={(rowData) =>
+                                     <View>
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData.toString())}
+                                                             underlayColor={() => this.getUnderlay(rowData) }
+                                                             style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
+                                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
+                                         </TouchableHighlight>
+                                     </View>}
                          />
                     </View>
                     <View style={ container_styles.footer }>

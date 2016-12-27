@@ -7,6 +7,7 @@ import {
   Alert,
   Image,
   Dimensions,
+  AsyncStorage
 } from 'react-native';
 import Meteor from 'react-native-meteor';
 const windowsWidth = Dimensions.get('window').width;
@@ -27,7 +28,13 @@ class StartScene extends Component {
     //'ws://52.52.199.138:80/websocket'; <= bbg3...publication AllData, collections data, data1, data2, details, puzzles, text, users
     //'ws://52.52.205.96:80/websocket'; <= Publications...publication AllData, collections dataA...dataZ
     //'ws://10.0.0.207:3000/websocket'; <= localhost
-    componentWillMount() {
+    componentDidMount() {
+        try {
+            AsyncStorage.setItem(KEY_SeedPuzzles, JSON.stringify(puzzleData));//
+        } catch (error) {
+            this._appendMessage('AsyncStorage error: ' + error.message);
+        }
+
         let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
         Meteor.connect(METEOR_URL);
         Meteor.subscribe('AllData', {
@@ -50,8 +57,8 @@ class StartScene extends Component {
                     }
 
             },
-            onError: function () {
-            window.alert('oops');
+            onStop: function () {
+            window.alert('Sorry, can\'t connect to our server right now');
             }
         });
     }

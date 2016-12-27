@@ -5,8 +5,8 @@ import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, L
 //import {EJSON} from 'ejson';
 
 //var deepCopy = require('./deepCopy.js');
-//var fileData = require('./data.js');
-//var fragData = require('./objPassed.js');
+var fileData = require('./data.js');
+var dataLength = fileData.length;
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -30,7 +30,7 @@ class PuzzleContents extends React.Component{
         this.state = {
             id: 'puzzles contents',
             isOpen: false,
-            dataSource: ds.cloneWithRows(Array.from(new Array(3), (x,i) => i+1)),//NUM_WIDE * NUM_ROWS
+            dataSource: ds.cloneWithRows(fileData),//(Array.from(new Array(dataLength), (x,i) => i+1)),//NUM_WIDE * NUM_ROWS
             scrollPosition: 0,
             onPuzzle: 0,
             connected: false,
@@ -83,7 +83,9 @@ class PuzzleContents extends React.Component{
 //});
 //}
 //
-
+//componentWillMount(){
+//window.alert(dataLength);
+//}
     componentDidMount() {
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
@@ -115,49 +117,54 @@ class PuzzleContents extends React.Component{
         });
         window.alert(item);
 }
+shadeColor(color, percent) {
+//window.alert(color);
+//return;
+    var R = parseInt(color.substring(1,3),16);
+    var G = parseInt(color.substring(3,5),16);
+    var B = parseInt(color.substring(5,7),16);
+
+    R = parseInt(R * (100 + percent) / 100);
+    G = parseInt(G * (100 + percent) / 100);
+    B = parseInt(B * (100 + percent) / 100);
+
+    R = (R<255)?R:255;
+    G = (G<255)?G:255;
+    B = (B<255)?B:255;
+
+    var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+    var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+    var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+    return '#'+RR+GG+BB;
+}
     border(color) {
+    var lighterColor = this.shadeColor(color, 80);
         return {
             borderColor: color,
             borderWidth: 2,
         };
     }
-    bg(num){
-         var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#0F0';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#079707';
-             }else{
-             strToReturn='#999ba0';
-             }
+    lightBorder(color) {
+    var lighterColor = this.shadeColor(color, 80);
+        return {
+            borderColor: lighterColor,
+            borderWidth: 6,
+        };
+    }
+    bg(colorSent){
+         var strToReturn=colorSent;
+//         if(num==parseInt(this.state.onPuzzle, 10) + 1){
+//             strToReturn='#0F0';
+//             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+//             strToReturn='#079707';
+//             }else{
+//             strToReturn='#999ba0';
+//             }
 
          return {
          backgroundColor: strToReturn
          };
-    }
-    getUnderlay(num){
-         var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#01ff01';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#079707';
-             }else{
-             strToReturn='#999ba0';
-             }
-
-         return {strToReturn};
-    }
-    getBorder(num){
-         var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#0F0';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#00a700';
-             }else{
-             strToReturn='#7e867e';
-             }
-
-         return {borderColor: strToReturn};
     }
     onSelect (sent) {
     var value = 'test2';
@@ -172,13 +179,12 @@ class PuzzleContents extends React.Component{
 //        });
     }
     onSelect(passed) {
-        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
-        passed = passed - 1;
 
         this.props.navigator.replace({
             id: 'puzzle launcher',
             passProps: {
                 title: 'Some puzzle pack!!',
+                dataElement: passed
                 },
        });
     }
@@ -212,14 +218,21 @@ class PuzzleContents extends React.Component{
                         </Button>
                     </View>
                     <View style={ container_styles.puzzles_container }>
-                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }} ref={(scrollView) => { _scrollView = scrollView; }} showsVerticalScrollIndicator ={false} initialListSize ={100} contentContainerStyle={ container_styles.listview } dataSource={this.state.dataSource}
-                         renderRow={(rowData) =>
-                             <View>
-                             <TouchableHighlight onPress={() => this.onSelect(rowData.toString())} underlayColor={() => this.getUnderlay(rowData) } style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
-                             </TouchableHighlight>
-                             </View>}
-                         />
+                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }}
+                                    ref={(scrollView) => { _scrollView = scrollView; }}
+                                    showsVerticalScrollIndicator ={false}
+                                    initialListSize ={100}
+                                    contentContainerStyle={ container_styles.listview }
+                                    dataSource={this.state.dataSource}
+                                    renderRow={(rowData) =>
+                                     <View>
+                                     <TouchableHighlight onPress={() => this.onSelect(rowData.index.toString())}
+                                                         underlayColor={() => this.bg(rowData.bg_color) }
+                                                         style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color)]} >
+                                     <Text style={ styles.contents_text }>{rowData.title}</Text>
+                                     </TouchableHighlight>
+                                     </View>}
+                                    />
                     </View>
                     <View style={ container_styles.footer }>
                         <Text style={ styles.copyright }>Some fine print...</Text>
@@ -233,30 +246,6 @@ class PuzzleContents extends React.Component{
 
 //<PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
 
-
-
-// function  onSelect (passed) {
-//        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
-//        passed = passed - 1;
-//
-//        this.props.navigator.replace({
-//            id: 'puzzle launcher',
-//            passProps: {
-//                title: 'Some puzzle pack!!',
-//                },
-//       });
-//    };
-
-//export default createContainer( () => {
-//  const handle = Meteor.subscribe('AllData');//('PuzzlesList');
-//  return {
-//    puzzlesReady: handle.ready()
-//  };
-//}, PuzzleContents);
-
-//PuzzleContents.propTypes = {
-//  puzzlesReady: PropTypes.bool,
-//};
 
 class Button extends Component {
     handlePress(e) {
@@ -273,14 +262,6 @@ class Button extends Component {
             </TouchableOpacity>
         );
     }
-//        backgroundColor: '#3e05a6',
-//        backgroundColor: '#09146d',
-//        backgroundColor: '#dedffa',
-//        backgroundColor: '#3043e2',        justifyContent: 'space-around',        margin: CELL_PADDING,
-//        backgroundColor: '#09146d',
-
-
-
 }
 
 var container_styles = StyleSheet.create({

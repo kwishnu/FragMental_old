@@ -79,6 +79,11 @@ module.exports = StyleSheet.create({
         color: '#000',
         fontSize: LETTER_SIZE,
     },
+    contents_text: {
+        color: '#fff',
+        fontSize: LETTER_SIZE,
+    },
+
     answer_text: {
         color: 'white',
         fontSize: LETTER_SIZE * 5/3,
