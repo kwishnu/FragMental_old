@@ -11,6 +11,25 @@ function shuffleArray(array) {
     }
     return array;
 }
+function shadeColor(color, percent) {
+        var R = parseInt(color.substring(1,3),16);
+        var G = parseInt(color.substring(3,5),16);
+        var B = parseInt(color.substring(5,7),16);
+
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
+
+        R = (R<255)?R:255;
+        G = (G<255)?G:255;
+        B = (B<255)?B:255;
+
+        var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+        var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+        var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+
+        return '#'+RR+GG+BB;
+}
 
 var deepCopy = require('./deepCopy.js');
 var fileData = require('./data.js');
@@ -42,6 +61,8 @@ class PuzzleLaunch extends React.Component{
             dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.arraySize, 10)), (x,i) => i+1)),
             scrollPosition: 0,
             onPuzzle: 0,
+            bgColor: this.props.bgColor,
+            textColor: this.props.textColor,
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -130,13 +151,23 @@ class PuzzleLaunch extends React.Component{
 
          return {borderColor: strToReturn};
     }
+    headerFooter(color){
+         var strToReturn = shadeColor(color, -10);
+         return {backgroundColor: strToReturn};
+    }
+    containerBg(color){
+         var strToReturn = shadeColor(color, 60);
+         return {backgroundColor: strToReturn};
+    }
+    darkBorder(color) {
+        var darkerColor = shadeColor(color, -60);
+            return {borderColor: darkerColor};
+    }
     onSelect(passed) {
-    if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
+        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
         passed = passed - 1;
         var fragObject = owl.deepCopy(fragData);
         var puzzString = fileData[this.props.dataElement].puzzles[passed];
-//window.alert(typeof puzzString);
-//return;
         //var puzzString = fileData[passed].puzzle;
         var puzzArray = puzzString.split('~');
         var fragsArray = [];
@@ -168,6 +199,9 @@ class PuzzleLaunch extends React.Component{
                 fromWhere: 'puzzle launcher',
                 arraySize: this.props.arraySize,
                 dataElement: this.props.dataElement,
+                myBg: this.props.bgColor,
+                myTitle: this.props.title,
+                myTextColor: this.props.textColor,
                 },
        });
     }
@@ -180,18 +214,18 @@ class PuzzleLaunch extends React.Component{
                 isOpen={ this.state.isOpen }
                 onChange={ (isOpen) => this.updateMenuState(isOpen) }>
 
-                <View style={ [container_styles.container, this.border('#070f4e')] }>
-                    <View style={ container_styles.header }>
+                <View style={ [container_styles.container, this.darkBorder(this.props.bgColor)] }>
+                    <View style={ [container_styles.header, this.headerFooter(this.props.bgColor)] }>
                         <Button style={{left: 10}} onPress={ () => this.toggle() }>
                             <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
                         </Button>
-                        <Text style={styles.header_text} >{this.props.title}
+                        <Text style={{fontSize: 18, color: this.props.textColor}} >{this.props.title}
                         </Text>
                         <Button>
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
-                    <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
+                    <View style={ [container_styles.tiles_container, this.containerBg(this.props.bgColor), this.darkBorder(this.props.bgColor)] }>
                          <ListView  ref={(scrollView) => { _scrollView = scrollView; }}
                                     showsVerticalScrollIndicator ={false}
                                     initialListSize ={100}
@@ -207,8 +241,8 @@ class PuzzleLaunch extends React.Component{
                                      </View>}
                          />
                     </View>
-                    <View style={ container_styles.footer }>
-                        <Text style={ styles.copyright }>Some fine print...</Text>
+                    <View style={[container_styles.footer, this.headerFooter(this.props.bgColor)]}>
+                        <Text style={{fontSize: 11, color: this.props.textColor}}>Some fine print...</Text>
                     </View>
                  </View>
             </SideMenu>
@@ -220,7 +254,6 @@ class PuzzleLaunch extends React.Component{
 var container_styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#09146d',
     },
     listview: {
         flexDirection: 'row',
@@ -228,25 +261,23 @@ var container_styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'space-around',
     },
+    tiles_container: {
+        flex: 45,
+        paddingLeft: 6,
+        paddingRight: 6,
+    },
     header: {
         flex: 4,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         width: window.width,
-        backgroundColor: '#09146d',
-    },
-    tiles_container: {
-        flex: 45,
-        backgroundColor: '#486bdd',
-        paddingLeft: 6,
-        paddingRight: 6,
     },
     footer: {
         flex: 4,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#09146d',
+        width: window.width,
     },
     launcher: {
         width: TILE_WIDTH,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
+import moment from 'moment';
 import Button from './components/Button';
 
 function shuffleArray(array) {
@@ -190,9 +191,8 @@ class DailyLaunch extends React.Component{
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.border('#070f4e')] }>
-                         <ListView  ref={(scrollView) => { _scrollView = scrollView; }}
-                                    showsVerticalScrollIndicator ={false}
-                                    initialListSize ={100}
+                         <ListView  showsVerticalScrollIndicator ={false}
+                                    initialListSize ={50}
                                     contentContainerStyle={ container_styles.listview }
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
@@ -200,7 +200,7 @@ class DailyLaunch extends React.Component{
                                          <TouchableHighlight onPress={() => this.onSelect(rowData.toString())}
                                                              underlayColor={() => this.getUnderlay(rowData) }
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
+                                             <Text style={ styles.daily_launcher_text }>{moment().subtract(rowData + 1, 'days').format('MM/DD/YYYY')}</Text>
                                          </TouchableHighlight>
                                      </View>}
                          />
@@ -254,6 +254,7 @@ var container_styles = StyleSheet.create({
         margin: CELL_PADDING * 1/2,
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 8,
     },
 });
 

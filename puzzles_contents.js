@@ -12,6 +12,32 @@ function shuffleArray(array) {
     }
     return array;
 }
+function invertColor(hex, bw) {
+    if (hex.indexOf('#') === 0) {
+        hex = hex.slice(1);
+    }
+    // convert 3-digit hex to 6-digits.
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    if (hex.length !== 6) {
+        throw new Error('Invalid HEX color.');
+    }
+    var r = parseInt(hex.slice(0, 2), 16),
+        g = parseInt(hex.slice(2, 4), 16),
+        b = parseInt(hex.slice(4, 6), 16);
+    if (bw) {
+        return (r * 0.299 + g * 0.587 + b * 0.114) > 186
+            ? '#000000'
+            : '#FFFFFF';
+    }
+    // invert color components
+    r = (255 - r).toString(16);
+    g = (255 - g).toString(16);
+    b = (255 - b).toString(16);
+    // pad each with zeros and return
+    return "#" + padZero(r) + padZero(g) + padZero(b);
+}
 var deepCopy = require('./deepCopy.js');
 var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
@@ -128,7 +154,7 @@ class PuzzleContents extends React.Component{
 //}
 
     componentDidMount() {
-    window.alert(-(parseInt(dayDiff,10)));
+    //window.alert(-(parseInt(dayDiff,10)));
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
         });
@@ -185,12 +211,12 @@ class PuzzleContents extends React.Component{
         };
     }
     lightBorder(color, num) {
-    var lighterColor = this.shadeColor(color, 80);
-    var bordWidth = (num<3)? 1:6;
-        return {
-            borderColor: lighterColor,
-            borderWidth: bordWidth,
-        };
+        var lighterColor = this.shadeColor(color, 80);
+        var bordWidth = (num<3)? 1:6;
+            return {
+                borderColor: lighterColor,
+                borderWidth: bordWidth,
+            };
     }
     bg(colorSent){
          var strToReturn=colorSent;
@@ -218,15 +244,17 @@ class PuzzleContents extends React.Component{
 //            console.log('Items.addOne', err, res);
 //        });
     }
-    onSelect(index, howMany, puzzArray) {
+    onSelect(index, howMany, puzzArray, title, bg) {
         var theDestination = 'puzzle launcher';
-        var theKeyFrag = '';
-        var theData = {};
+        var theTitle = title;
+        var textColor = '';
 
         switch(index){
             case '0':
                 theDestination = 'game board';
                 var thePieces = this.makePuzzArray(puzzArray);
+                var theKeyFrag = '';
+                var theData = {};
 
                 this.props.navigator.replace({
                     id: 'game board',
@@ -242,25 +270,23 @@ class PuzzleContents extends React.Component{
                         });
                         return;
                 break;
-
             case '1':
             case '2':  //fallthrough
                 theDestination = 'daily launcher';
-
-
+                theTitle = 'Daily Puzzles'
                 break;
-
             default:
-
-
+                textColor = invertColor(bg, true);
         }
         this.props.navigator.replace({
             id: theDestination,
             passProps: {
-                title: 'Some puzzle pack!!',
+                title: theTitle,
                 arraySize: howMany,
                 dataElement: index,
                 puzzleArray: puzzArray,
+                bgColor: bg,
+                textColor: textColor,
                 },
        });
     }
@@ -335,7 +361,7 @@ class PuzzleContents extends React.Component{
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.num_puzzles, rowData.puzzles)}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.num_puzzles, rowData.puzzles, rowData.title, rowData.bg_color)}
                                                              underlayColor={() => this.bg(rowData.bg_color) }
                                                              style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]} >
                                              <Text style={ styles.contents_text }>{rowData.title}</Text>

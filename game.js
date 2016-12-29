@@ -30,6 +30,9 @@ class Game extends React.Component {
         this.state = {
             id: 'game board',
             fromWhere: this.props.fromWhere,
+            myTitle: this.props.myTitle,
+            myBg: this.props.myBg,
+            myTextColor: this.props.myTextColor,
             puzzleArray: this.props.puzzleArray,
             dataElement: this.props.dataElement,
             isOpen: false,
@@ -103,10 +106,12 @@ class Game extends React.Component {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
                 passProps: {
-                    title: 'Some puzzle pack!!',
                     arraySize: this.props.arraySize,
                     dataElement: this.props.dataElement,
                     puzzleArray: this.props.puzzleArray,
+                    textColor: this.props.myTextColor,
+                    bgColor: this.props.myBg,
+                    title: this.props.myTitle,
                     },
 
             });
@@ -140,9 +145,24 @@ class Game extends React.Component {
         }
     }
     closeGame() {
-        this.props.navigator.replace({
-            id: 'puzzle launcher',
-        });
+            try {
+            this.props.navigator.replace({
+                id: this.props.fromWhere,
+                passProps: {
+                    title: 'Some puzzle pack!!',
+                    arraySize: this.props.arraySize,
+                    dataElement: this.props.dataElement,
+                    puzzleArray: this.props.puzzleArray,
+                    bgColor: this.props.bgColor,
+                    textColor: this.props.textColor,
+                    },
+
+            });
+                return true;
+            } catch(err)  {
+            window.alert(err.message)
+                return true;
+            }
     }
     drawTiles() {
         var result = [];

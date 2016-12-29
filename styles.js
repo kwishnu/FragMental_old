@@ -44,37 +44,6 @@ module.exports = StyleSheet.create({
         marginLeft: 3,
         padding: 2,
     },
-
-    clue_row_light: {
-        flex:1,
-        flexDirection: 'row',
-        width: width,
-        backgroundColor: '#dfe9fe',
-    },
-    clue_row_dark: {
-        flex:1,
-        flexDirection: 'row',
-        width: width,
-        backgroundColor: '#bdcff7',
-    },
-    clue_section: {
-        flex: 5,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-start',
-        backgroundColor: 'transparent',
-        paddingLeft: 5,
-        paddingBottom: 2,
-    },
-    word_section: {
-        flex: 2,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-start',
-        backgroundColor: 'transparent',
-        paddingLeft: 3,
-        paddingBottom: 2,
-    },
     puzzle_text_large: {
         color: '#000',
         fontSize: LETTER_SIZE,
@@ -121,12 +90,10 @@ module.exports = StyleSheet.create({
     header_text: {
         color: '#e3e004',
         fontSize: 18,
-        backgroundColor: 'transparent',
     },
-    button_text: {
-        color: '#fff',
-        fontSize: LETTER_SIZE*4/5,
-        backgroundColor: 'transparent',
+    daily_launcher_text: {
+        color: '#ffffff',
+        fontSize: 14,
     },
     menu: {
         flex: 1,
