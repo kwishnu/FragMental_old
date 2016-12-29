@@ -29,6 +29,9 @@ class Game extends React.Component {
         super(props);
         this.state = {
             id: 'game board',
+            fromWhere: this.props.fromWhere,
+            puzzleArray: this.props.puzzleArray,
+            dataElement: this.props.dataElement,
             isOpen: false,
             title: this.props.title,
             keyFrag: this.props.keyFrag,
@@ -93,13 +96,24 @@ class Game extends React.Component {
             this.toggle();
             return true;
         }else{
+//            window.alert(this.props.fromWhere);
+//            return true;
+
             try {
             this.props.navigator.replace({
-                id: 'puzzle launcher',
+                id: this.props.fromWhere,
+                passProps: {
+                    title: 'Some puzzle pack!!',
+                    arraySize: this.props.arraySize,
+                    dataElement: this.props.dataElement,
+                    puzzleArray: this.props.puzzleArray,
+                    },
+
             });
                 return true;
             } catch(err)  {
-                return false;
+            window.alert(err.message)
+                return true;
             }
         }
     }

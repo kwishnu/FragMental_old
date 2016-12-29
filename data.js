@@ -1,7 +1,7 @@
 module.exports = [
 	{
 		title:'Today\'s Puzzle',
-		index: 0,
+		index: '0',
 		owner:'bbg',
 		type:'daily',
 		date:'date-acquired',
@@ -16,7 +16,7 @@ module.exports = [
 	},
 	{
 		title:'Last Three Days',
-		index: 1,
+		index: '1',
 		owner:'bbg',
 		type:'daily',
 		date:'date-acquired',
@@ -26,14 +26,14 @@ module.exports = [
 		solved:'false',
 		bg_color:'#46f346',
 		puzzles:[
-			'le~^|ger|de|ma|in:Sleight of hand**^|ek:Drip of the onion family?**^|er|ed:Looked at with smarmy intent**^|wd:R-rated, maybe**cl|ue|^|ss:1995 Alicia Silverstone flick**si|nk|ho|^:Bigger than your run-of-the-mill pothole**^|is:Hawaiian garlands**^|thar|gy:Sluggishness**in|evi|tab|^:Fated',
-			 'res~expo|su|^:Photos, pre-digital**^|id|ue:Last vestige**lu|^:At the end of the line**^|tu|dy:Cram again**^|truc|tu|re:Make into a different form**ar|^|ting|ly:Attracting attention**^|taur|an|ts:Reservation takers**ma|tu|^:Comes to fruition**al|lu|^:Attractive traits',
-			 'or~^|lan|do:Florida theme-park haven**ema|nc|ip|at|^:Abraham Lincoln, for one**scu|lpt|^:A chipper artist**ig|^:Dr. Frankenstein\'s assistant**dis|^|ie|nts:Befuddles**win|ds|^:Royal surname**^|iole:Black and orange flyer**unc|^|ked:Breathing, especially if an old red**unm|em|^|able:Easily forgotten'
+            'le~^|ger|de|ma|in:Sleight of hand**^|ek:Drip of the onion family?**^|er|ed:Looked at with smarmy intent**^|wd:R-rated, maybe**cl|ue|^|ss:1995 Alicia Silverstone flick**si|nk|ho|^:Bigger than your run-of-the-mill pothole**^|is:Hawaiian garlands**^|thar|gy:Sluggishness**in|evi|tab|^:Fated',
+            'res~expo|su|^:Photos, pre-digital**^|id|ue:Last vestige**lu|^:At the end of the line**^|tu|dy:Cram again**^|truc|tu|re:Make into a different form**ar|^|ting|ly:Attracting attention**^|taur|an|ts:Reservation takers**ma|tu|^:Comes to fruition**al|lu|^:Attractive traits',
+            'or~^|lan|do:Florida theme-park haven**ema|nc|ip|at|^:Abraham Lincoln, for one**scu|lpt|^:A chipper artist**ig|^:Dr. Frankenstein\'s assistant**dis|^|ie|nts:Befuddles**win|ds|^:Royal surname**^|iole:Black and orange flyer**unc|^|ked:Breathing, especially if an old red**unm|em|^|able:Easily forgotten'
 			],
 	},
 	{
 		title:'Last Thirty Days',
-		index: 2,
+		index: '2',
 		owner:'bbg',
 		type:'daily',
 		date:'date-acquired',
@@ -77,7 +77,7 @@ module.exports = [
 	},
 	{
 		title:'Eggplant',
-		index: 3,
+		index: '3',
 		owner:'bbg',
 		type:'mypack',
 		date:'date-acquired',
@@ -141,7 +141,7 @@ module.exports = [
 	},
 	{
 		title:'Strawberry',
-		index: 4,
+		index: '4',
 		owner:'bbg',
 		type:'forsale',
 		date:'date-acquired',
@@ -156,7 +156,7 @@ module.exports = [
 	},
 	{
 		title:'Banana',
-		index: 5,
+		index: '5',
 		owner:'bbg',
 		type:'forsale',
 		date:'date-acquired',

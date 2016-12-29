@@ -19,21 +19,21 @@ var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
-var NUM_WIDE = 5;
+var NUM_WIDE = 3;
 var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the screen width
-var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
+var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width...+
 var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
 var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
-class PuzzleLaunch extends React.Component{
+class DailyLaunch extends React.Component{
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            id: 'puzzle launcher',
+            id: 'daily launcher',
             puzzleArray: this.props.puzzleArray,
             arraySize: this.props.arraySize,
             dataElement: this.props.dataElement,
@@ -46,7 +46,6 @@ class PuzzleLaunch extends React.Component{
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
-//    window.alert(this.props.arraySize);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
@@ -157,7 +156,6 @@ class PuzzleLaunch extends React.Component{
             countTo20++;
             }
         }
-
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
@@ -165,7 +163,7 @@ class PuzzleLaunch extends React.Component{
                 keyFrag: puzzArray[0],
                 theData: fragObject,
                 theCluesArray: fragsPlusClueArr,
-                fromWhere: 'puzzle launcher',
+                fromWhere: 'daily launcher',
                 arraySize: this.props.arraySize,
                 dataElement: this.props.dataElement,
                 },
@@ -241,6 +239,7 @@ var container_styles = StyleSheet.create({
         backgroundColor: '#486bdd',
         paddingLeft: 6,
         paddingRight: 6,
+        paddingTop: 15,
     },
     footer: {
         flex: 4,
@@ -250,13 +249,12 @@ var container_styles = StyleSheet.create({
     },
     launcher: {
         width: TILE_WIDTH,
-        height: TILE_WIDTH,
         borderRadius: BORDER_RADIUS,
         borderWidth: 1,
-        margin: CELL_PADDING,
+        margin: CELL_PADDING * 1/2,
         justifyContent: 'center',
         alignItems: 'center',
     },
 });
 
-module.exports = PuzzleLaunch;
+module.exports = DailyLaunch;

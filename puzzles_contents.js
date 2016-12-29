@@ -1,10 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
+import moment from 'moment';
 import SectionHeader  from './components/SectionHeader';
 import Button from './components/Button';
-//import {EJSON} from 'ejson';
-
-//var deepCopy = require('./deepCopy.js');
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+var deepCopy = require('./deepCopy.js');
+var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -16,6 +25,12 @@ var BORDER_RADIUS = CELL_PADDING * .2 + 3;
 var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
+
+var now = moment().format("MMMM DD, YYYY");
+var nowISO = moment();
+var launchDay = moment("2016 10", "YYYY-MM");//November 1, 2016
+var dayDiff = launchDay.diff(nowISO, "days");//# of days since 11/1/2016
+var daysToSkip = parseInt(dayDiff, 10) - 31;
 
 var fileData = require('./data.js');
 var dataLength = fileData.length;
@@ -60,18 +75,16 @@ class PuzzleContents extends React.Component{
             const currentHead = headings[sectionId];
             const currentKey = keys[sectionId];
             const packs = data.filter((theData) => theData.type == currentKey && theData.show == 'true');
-          if (packs.length > 0) {
-            sectionIds.push(sectionId);
-            dataBlob[sectionId] = { sectionTitle: currentHead };
-            rowIds.push([]);
-
-            for (let i = 0; i < packs.length; i++) {
-              // Create a unique row id for the data blob that the listview can use for reference
-              const rowId = `${sectionId}:${i}`;
-              rowIds[rowIds.length - 1].push(rowId);
-              dataBlob[rowId] = packs[i];
+            if (packs.length > 0) {
+                sectionIds.push(sectionId);
+                dataBlob[sectionId] = { sectionTitle: currentHead };
+                rowIds.push([]);
+                for (let i = 0; i < packs.length; i++) {
+                    const rowId = `${sectionId}:${i}`;
+                    rowIds[rowIds.length - 1].push(rowId);
+                    dataBlob[rowId] = packs[i];
+                }
             }
-          }
         }
         return { dataBlob, sectionIds, rowIds };
     }
@@ -113,11 +126,9 @@ class PuzzleContents extends React.Component{
 //    }
 //});
 //}
-//
-//componentWillMount(){
-//window.alert(dataLength);
-//}
+
     componentDidMount() {
+    window.alert(-(parseInt(dayDiff,10)));
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
         });
@@ -147,40 +158,38 @@ class PuzzleContents extends React.Component{
             selectedItem: item,
         });
         window.alert(item);
-}
-shadeColor(color, percent) {
-//window.alert(color);
-//return;
-    var R = parseInt(color.substring(1,3),16);
-    var G = parseInt(color.substring(3,5),16);
-    var B = parseInt(color.substring(5,7),16);
+    }
+    shadeColor(color, percent) {
+        var R = parseInt(color.substring(1,3),16);
+        var G = parseInt(color.substring(3,5),16);
+        var B = parseInt(color.substring(5,7),16);
 
-    R = parseInt(R * (100 + percent) / 100);
-    G = parseInt(G * (100 + percent) / 100);
-    B = parseInt(B * (100 + percent) / 100);
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
 
-    R = (R<255)?R:255;
-    G = (G<255)?G:255;
-    B = (B<255)?B:255;
+        R = (R<255)?R:255;
+        G = (G<255)?G:255;
+        B = (B<255)?B:255;
 
-    var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
-    var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
-    var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+        var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
+        var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
+        var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
 
-    return '#'+RR+GG+BB;
-}
+        return '#'+RR+GG+BB;
+    }
     border(color) {
-    var lighterColor = this.shadeColor(color, 80);
         return {
             borderColor: color,
             borderWidth: 2,
         };
     }
-    lightBorder(color) {
+    lightBorder(color, num) {
     var lighterColor = this.shadeColor(color, 80);
+    var bordWidth = (num<3)? 1:6;
         return {
             borderColor: lighterColor,
-            borderWidth: 6,
+            borderWidth: bordWidth,
         };
     }
     bg(colorSent){
@@ -209,25 +218,77 @@ shadeColor(color, percent) {
 //            console.log('Items.addOne', err, res);
 //        });
     }
-    onSelect(passed, type) {
-        switch(type){
-            case 'daily':
+    onSelect(index, howMany, puzzArray) {
+        var theDestination = 'puzzle launcher';
+        var theKeyFrag = '';
+        var theData = {};
+
+        switch(index){
+            case '0':
+                theDestination = 'game board';
+                var thePieces = this.makePuzzArray(puzzArray);
+
+                this.props.navigator.replace({
+                    id: 'game board',
+                    passProps: {
+                        theData: thePieces[0],
+                        keyFrag: thePieces[1],
+                        title: now,
+                        theCluesArray: thePieces[2],
+                        fromWhere: 'puzzles contents',
+                        arraySize: '1',
+                        dataElement: '0',
+                        },
+                        });
+                        return;
+                break;
+
+            case '1':
+            case '2':  //fallthrough
+                theDestination = 'daily launcher';
 
 
                 break;
-
 
             default:
 
 
         }
         this.props.navigator.replace({
-            id: 'puzzle launcher',
+            id: theDestination,
             passProps: {
                 title: 'Some puzzle pack!!',
-                dataElement: passed//index of selected
+                arraySize: howMany,
+                dataElement: index,
+                puzzleArray: puzzArray,
                 },
        });
+    }
+    makePuzzArray(puzzString){
+            var puzzArray = puzzString[0].split('~');
+            var fragsArray = [];
+            var fragsPlusClueArr =  puzzArray[1].split('**');
+            var fragObject = owl.deepCopy(fragData);
+
+            for(var i=0; i<fragsPlusClueArr.length; i++){
+                var splits = fragsPlusClueArr[i].split(':');
+                var frags = splits[0].split('|');
+                for(var j=0; j<frags.length; j++){
+                    fragsArray.push(frags[j]);
+                }
+            }
+            fragsArrayShuffled = shuffleArray(fragsArray);
+            var countTo20 = 0;
+            for(var k=0; k<fragsArrayShuffled.length; k++){
+                if(fragsArrayShuffled[k]!='^'){
+                fragObject[countTo20].frag= fragsArrayShuffled[k];
+                countTo20++;
+                }
+            }
+            var pieces = [fragObject, puzzArray[0], fragsPlusClueArr];
+            return pieces;
+
+
     }
     renderSectionHeader(sectionID) {
         return (
@@ -267,17 +328,16 @@ shadeColor(color, percent) {
                         </Button>
                     </View>
                     <View style={ container_styles.puzzles_container }>
-                         <ListView  onLayout={() => { _scrollView.scrollTo({y: this.state.scrollPosition, animated: false}); }}
-                                    ref={(scrollView) => { _scrollView = scrollView; }}
+                         <ListView  ref={(scrollView) => { _scrollView = scrollView; }}
                                     showsVerticalScrollIndicator ={false}
                                     initialListSize ={100}
                                     contentContainerStyle={ container_styles.listview }
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index.toString(), rowData.type)}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.num_puzzles, rowData.puzzles)}
                                                              underlayColor={() => this.bg(rowData.bg_color) }
-                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color)]} >
+                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]} >
                                              <Text style={ styles.contents_text }>{rowData.title}</Text>
                                          </TouchableHighlight>
                                      </View>
@@ -338,7 +398,7 @@ var container_styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 6,
+        margin: 4,
     },
 });
 module.exports = PuzzleContents;
