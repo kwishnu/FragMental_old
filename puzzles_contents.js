@@ -51,13 +51,18 @@ var BORDER_RADIUS = CELL_PADDING * .2 + 3;
 var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
+var KEY_daily_solved_array = 'solved_array';
+var KEY_midnight = 'midnight';
 
-var now = moment().format("MMMM DD, YYYY");
+
+var now = moment().format('MMMM DD, YYYY');
 var nowISO = moment();
-var launchDay = moment("2016 10", "YYYY-MM");//November 1, 2016
-var dayDiff = launchDay.diff(nowISO, "days");//# of days since 11/1/2016
+var launchDay = moment('2016 10', 'YYYY-MM');//November 1, 2016
+var dayDiff = launchDay.diff(nowISO, 'days');//# of days since 11/1/2016
 var daysToSkip = parseInt(dayDiff, 10) - 31;
+var tonightMidnight = moment().endOf('day');
 
+const solvedArray = [];
 var fileData = require('./data.js');
 var dataLength = fileData.length;
 
@@ -120,6 +125,7 @@ class PuzzleContents extends React.Component{
     //'ws://52.52.205.96:80/websocket'; <= Publications...publication AllData, collections dataA...dataZ
     //'ws://10.0.0.207:3000/websocket'; <= localhost
 //    componentWillMount() {
+    //window.alert(tonightMidnight - nowISO);
 //        let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
 //        Meteor.connect(METEOR_URL);
 //
@@ -155,6 +161,43 @@ class PuzzleContents extends React.Component{
 
     componentDidMount() {
     //window.alert(-(parseInt(dayDiff,10)));
+        AsyncStorage.getItem(KEY_daily_solved_array).then((value) => {
+            if (value !== null) {
+                solvedArray = JSON.parse(value);
+            } else {
+                solvedArray = Array(30).fill(0);
+                try {
+                    AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
+                } catch (error) {
+                    window.alert('AsyncStorage error: ' + error.message);
+                }
+            }
+            return AsyncStorage.getItem(KEY_midnight)
+        }).then( (value) => {
+            if (value !== null) {
+                var storedMidnight = parseInt(value, 10);
+                var milliSecsOver = nowISO - storedMidnight;
+                if(milliSecsOver > 0){//at least the next day, update daily solved array
+                    var numDays = Math.ceil(milliSecsOver/86400000);
+                    numDays=(numDays>30)?30:numDays;
+                    for (var shiftArray=0; shiftArray<numDays; shiftArray++){
+                        solvedArray.push(0);
+                        solvedArray.pop();
+                    }
+                    try {
+                        AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
+                    } catch (error) {
+                        window.alert('AsyncStorage error: ' + error.message);
+                    }
+                }
+            } else {
+                try {
+                    AsyncStorage.setItem(KEY_midnight, tonightMidnight);
+                } catch (error) {
+                    window.alert('AsyncStorage error: ' + error.message);
+                }
+            }
+        });
          AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
                  this.setState({onPuzzle: parseInt(value, 10)});
         });
@@ -211,7 +254,8 @@ class PuzzleContents extends React.Component{
         };
     }
     lightBorder(color, num) {
-        var lighterColor = this.shadeColor(color, 80);
+        var lighterColor = this.shadeColor(color, 60);
+        //lighterColor = (num!=1 && num!=2)?lighterColor:'#f05356';
         var bordWidth = (num<3)? 1:6;
             return {
                 borderColor: lighterColor,
@@ -281,6 +325,7 @@ class PuzzleContents extends React.Component{
         this.props.navigator.replace({
             id: theDestination,
             passProps: {
+                solvedArray: solvedArray,
                 title: theTitle,
                 arraySize: howMany,
                 dataElement: index,
@@ -424,7 +469,9 @@ var container_styles = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: 4,
+        marginTop: 6,
+        marginBottom: 1,
+
     },
 });
 module.exports = PuzzleContents;

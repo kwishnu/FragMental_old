@@ -92,7 +92,6 @@ module.exports = StyleSheet.create({
         fontSize: 18,
     },
     daily_launcher_text: {
-        color: '#ffffff',
         fontSize: 14,
     },
     menu: {

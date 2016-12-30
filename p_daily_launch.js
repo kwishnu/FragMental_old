@@ -28,19 +28,22 @@ var BORDER_RADIUS = CELL_PADDING * .2 + 3;
 var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
+var KEY_daily_solved_array = 'solved_array';
+
 
 class DailyLaunch extends React.Component{
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
+            solvedArray: this.props.solvedArray,
             id: 'daily launcher',
             puzzleArray: this.props.puzzleArray,
             arraySize: this.props.arraySize,
             dataElement: this.props.dataElement,
             title: this.props.title,
             isOpen: false,
-            dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.arraySize, 10)), (x,i) => i+1)),
+            dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.arraySize, 10)), (x,i) => i)),
             scrollPosition: 0,
             onPuzzle: 0,
         };
@@ -48,9 +51,10 @@ class DailyLaunch extends React.Component{
     }
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
-         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
-                 this.setState({onPuzzle: parseInt(value, 10)});
-        });
+
+//         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
+//                 this.setState({onPuzzle: parseInt(value, 10)});
+//        });
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -94,50 +98,54 @@ class DailyLaunch extends React.Component{
     }
     bg(num){
          var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#0F0';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#079707';
+         if (this.props.solvedArray[num]==0){
+             strToReturn='#079707';//green
              }else{
-             strToReturn='#999ba0';
+             strToReturn='#999ba0';//grey
              }
-
          return {
          backgroundColor: strToReturn
          };
+     }
+    getTextColor(num){
+         var strToReturn='';
+         if (this.props.solvedArray[num]==0){
+             strToReturn='#fff';
+             }else{
+             strToReturn='#000';
+             }
+         return {
+         color: strToReturn
+         };
     }
+
     getUnderlay(num){
          var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#01ff01';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#079707';
+         if (this.props.solvedArray[num]==0){
+             strToReturn='#079707';//green
              }else{
-             strToReturn='#999ba0';
+             strToReturn='#999ba0';//grey
              }
-
-         return {strToReturn};
+         return (strToReturn);
     }
     getBorder(num){
          var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#0F0';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-             strToReturn='#00a700';
+         if (this.props.solvedArray[num]==0){
+             strToReturn='#00ff00';//green
              }else{
-             strToReturn='#7e867e';
+             strToReturn='#000000';//black
              }
-
-         return {borderColor: strToReturn};
+         return {
+         borderColor: strToReturn
+         };
     }
-    onSelect(passed) {
-    if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
-        passed = passed - 1;
+    onSelect(index, date) {
+// window.alert(this.props.solvedArray.toString());
+// return;
         var fragObject = owl.deepCopy(fragData);
-        var puzzString = fileData[this.props.dataElement].puzzles[passed];
-//window.alert(typeof puzzString);
-//return;
-        //var puzzString = fileData[passed].puzzle;
+        var puzzString = fileData[this.props.dataElement].puzzles[index];
+
+        //var puzzString = fileData[index].puzzle;
         var puzzArray = puzzString.split('~');
         var fragsArray = [];
         var fragsPlusClueArr =  puzzArray[1].split('**');
@@ -160,13 +168,17 @@ class DailyLaunch extends React.Component{
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
-                title: passed + 1,
+                title: date,
+                myIndex: index,
                 keyFrag: puzzArray[0],
                 theData: fragObject,
                 theCluesArray: fragsPlusClueArr,
                 fromWhere: 'daily launcher',
                 arraySize: this.props.arraySize,
                 dataElement: this.props.dataElement,
+                myBg: this.props.bgColor,
+                myTitle: this.props.title,
+                myTextColor: this.props.textColor,
                 },
        });
     }
@@ -197,10 +209,10 @@ class DailyLaunch extends React.Component{
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.toString())}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData, moment().subtract(rowData, 'days').format('MM/DD/YYYY'))}
                                                              underlayColor={() => this.getUnderlay(rowData) }
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                                             <Text style={ styles.daily_launcher_text }>{moment().subtract(rowData + 1, 'days').format('MM/DD/YYYY')}</Text>
+                                             <Text  style={[ styles.daily_launcher_text, this.getTextColor(rowData) ] }>{moment().subtract(rowData, 'days').format('MM/DD/YYYY')}</Text>
                                          </TouchableHighlight>
                                      </View>}
                          />

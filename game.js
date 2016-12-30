@@ -22,6 +22,8 @@ var SPRING_CONFIG = {tension: 10, velocity: 10};
 var timeoutHandle;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
+var KEY_daily_solved_array = 'solved_array';
+const solvedArray = [];
 
 // {/* ... */} for JSX commenting
 class Game extends React.Component {
@@ -31,6 +33,7 @@ class Game extends React.Component {
             id: 'game board',
             fromWhere: this.props.fromWhere,
             myTitle: this.props.myTitle,
+            myIndex: this.props.myIndex,
             myBg: this.props.myBg,
             myTextColor: this.props.myTextColor,
             puzzleArray: this.props.puzzleArray,
@@ -78,6 +81,13 @@ class Game extends React.Component {
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
+        //window.alert(this.props.dataElement);
+        AsyncStorage.getItem(KEY_daily_solved_array).then((value) => {
+            solvedArray = JSON.parse(value);
+        });
+
+
+
         var arr = Array(this.state.solvedArray.length).fill('');
         dataBackup = owl.deepCopy(this.props.theData);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -106,6 +116,7 @@ class Game extends React.Component {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
                 passProps: {
+                    solvedArray: solvedArray,
                     arraySize: this.props.arraySize,
                     dataElement: this.props.dataElement,
                     puzzleArray: this.props.puzzleArray,
@@ -492,8 +503,10 @@ class Game extends React.Component {
         }else{
             this.setScrollPosition(parseInt(this.state.title));
             var onThisPuzzle = (this.state.title).toString();
+            solvedArray[this.props.myIndex] = 1;
             try {
                 AsyncStorage.setItem(KEY_onPuzzle, onThisPuzzle);
+                AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
             } catch (error) {
                 this._appendMessage('AsyncStorage error: ' + error.message);
             }
