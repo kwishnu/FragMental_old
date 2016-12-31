@@ -9,12 +9,10 @@ import {
   Dimensions,
   AsyncStorage
 } from 'react-native';
-import Meteor from 'react-native-meteor';
+//import Meteor from 'react-native-meteor';
 const windowsWidth = Dimensions.get('window').width;
 const windowsHeight = Dimensions.get('window').height;
 import AppIntro from 'react-native-app-intro';
-var puzzleData = require('./data.js');
-var KEY_SeedPuzzles = 'seedPuzzlesKey';
 
 
 class StartScene extends Component {
@@ -24,60 +22,21 @@ class StartScene extends Component {
             id: 'start scene',
         };
     }
-    //'ws://52.9.147.169:80/websocket'; <= bbg2...publication PuzzlesList, collection puzzles (field "name")
-    //'ws://52.52.199.138:80/websocket'; <= bbg3...publication AllData, collections data, data1, data2, details, puzzles, text, users
-    //'ws://52.52.205.96:80/websocket'; <= Publications...publication AllData, collections dataA...dataZ
-    //'ws://10.0.0.207:3000/websocket'; <= localhost
-    componentDidMount() {
-        try {
-            AsyncStorage.setItem(KEY_SeedPuzzles, JSON.stringify(puzzleData));//
-        } catch (error) {
-            this._appendMessage('AsyncStorage error: ' + error.message);
-        }
-
-        let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
-        Meteor.connect(METEOR_URL);
-        Meteor.subscribe('AllData', {
-            onReady: function () {
-                      const messages = Meteor.collection('dataJ').find();
-                      //const restoredArray = EJSON.stringify(messages);
-                     // window.alert(messages.toString());
-                      //window.alert((typeof messages).toString());
-                             // window.alert(sent);
-
-                    for (var key in messages) {
-                        if (!messages.hasOwnProperty(key)) continue;
-                        var obj = messages[key];
-                        for (var prop in obj) {
-                            if(!obj.hasOwnProperty(prop)) continue;
-                            if(prop=='text'){;}
-                            //window.alert(prop + " = " + obj[prop]);
-                            //window.alert(obj[prop]);
-                        }
-                    }
-
-            },
-            onStop: function () {
-            window.alert('Sorry, can\'t connect to our server right now');
-            }
-        });
-    }
-
-    onSkipBtnHandle = (index) => {
+    gotoContents(){
         this.props.navigator.replace({
             id: 'puzzles contents',
             passProps: {
-                //title: 'Some puzzle pack!!',
-                },
+                puzzleData: this.props.puzzleData,
+            },
        });
+    }
+    onSkipBtnHandle = (index) => {
+        this.gotoContents();
+
     }
     doneBtnHandle = () => {
-        this.props.navigator.replace({
-            id: 'puzzles contents',
-            passProps: {
-                //title: 'Some puzzle pack!!',
-                },
-       });
+        this.gotoContents();
+
     }
     nextBtnHandle = (index) => {
         Alert.alert('Next');
@@ -85,6 +44,7 @@ class StartScene extends Component {
     }
     onSlideChangeHandle = (index, total) => {
         console.log(index, total);
+
     }
 
     render() {

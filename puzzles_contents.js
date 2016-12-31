@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import {  StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage  } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage } from 'react-native';
 import moment from 'moment';
 import SectionHeader  from './components/SectionHeader';
+//import Loading from './components/Loading';
 import Button from './components/Button';
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -66,7 +67,7 @@ const solvedArray = [];
 var fileData = require('./data.js');
 var dataLength = fileData.length;
 
-class PuzzleContents extends React.Component{
+class PuzzleContents extends Component{
     constructor(props) {
         super(props);
         const getSectionData = (dataBlob, sectionId) => dataBlob[sectionId];
@@ -77,7 +78,7 @@ class PuzzleContents extends React.Component{
           getSectionData,
           getRowData,
         });
-        const { dataBlob, sectionIds, rowIds } = this.formatData(fileData);
+        const { dataBlob, sectionIds, rowIds } = this.formatData(this.props.puzzleData);
 
         this.state = {
             id: 'puzzles contents',
@@ -198,12 +199,12 @@ class PuzzleContents extends React.Component{
                 }
             }
         });
-         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
-                 this.setState({onPuzzle: parseInt(value, 10)});
-        });
-         AsyncStorage.getItem(KEY_ScrollPosition).then((value2) => {
-                 this.setState({scrollPosition: parseInt(value2, 10)});
-        });
+//         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
+//                 this.setState({onPuzzle: parseInt(value, 10)});
+//        });
+//         AsyncStorage.getItem(KEY_ScrollPosition).then((value2) => {
+//                 this.setState({scrollPosition: parseInt(value2, 10)});
+//        });
     }
     toggle() {
         this.setState({ isOpen: !this.state.isOpen });
@@ -318,6 +319,7 @@ class PuzzleContents extends React.Component{
             case '2':  //fallthrough
                 theDestination = 'daily launcher';
                 theTitle = 'Daily Puzzles'
+                //theDate =
                 break;
             default:
                 textColor = invertColor(bg, true);
@@ -399,8 +401,7 @@ class PuzzleContents extends React.Component{
                         </Button>
                     </View>
                     <View style={ container_styles.puzzles_container }>
-                         <ListView  ref={(scrollView) => { _scrollView = scrollView; }}
-                                    showsVerticalScrollIndicator ={false}
+                         <ListView  showsVerticalScrollIndicator ={false}
                                     initialListSize ={100}
                                     contentContainerStyle={ container_styles.listview }
                                     dataSource={this.state.dataSource}

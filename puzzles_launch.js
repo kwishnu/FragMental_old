@@ -47,7 +47,7 @@ var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 
-class PuzzleLaunch extends React.Component{
+class PuzzleLaunch extends Component{
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

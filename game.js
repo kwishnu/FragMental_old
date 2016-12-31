@@ -26,7 +26,7 @@ var KEY_daily_solved_array = 'solved_array';
 const solvedArray = [];
 
 // {/* ... */} for JSX commenting
-class Game extends React.Component {
+class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,6 +53,7 @@ class Game extends React.Component {
             onThisFrag: 0,
             score_color: 'white',
             fragOpacity: 1,
+            forwardOpacity: 0,
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
             goLeft: 250,
@@ -85,9 +86,6 @@ class Game extends React.Component {
         AsyncStorage.getItem(KEY_daily_solved_array).then((value) => {
             solvedArray = JSON.parse(value);
         });
-
-
-
         var arr = Array(this.state.solvedArray.length).fill('');
         dataBackup = owl.deepCopy(this.props.theData);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -96,22 +94,11 @@ class Game extends React.Component {
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
-    setScrollPosition(where){
-    var strScrollPosition = (where<(fileData.length)/2)?'0':'1000';
-        try {
-            AsyncStorage.setItem(KEY_ScrollPosition, strScrollPosition);
-        } catch (error) {
-            this._appendMessage('AsyncStorage error: ' + error.message);
-        }
-    }
     handleHardwareBackButton() {
         if (this.state.isOpen) {
             this.toggle();
             return true;
         }else{
-//            window.alert(this.props.fromWhere);
-//            return true;
-
             try {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
@@ -124,7 +111,6 @@ class Game extends React.Component {
                     bgColor: this.props.myBg,
                     title: this.props.myTitle,
                     },
-
             });
                 return true;
             } catch(err)  {
@@ -160,14 +146,14 @@ class Game extends React.Component {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
                 passProps: {
-                    title: 'Some puzzle pack!!',
+                    solvedArray: solvedArray,
                     arraySize: this.props.arraySize,
                     dataElement: this.props.dataElement,
                     puzzleArray: this.props.puzzleArray,
-                    bgColor: this.props.bgColor,
-                    textColor: this.props.textColor,
+                    textColor: this.props.myTextColor,
+                    bgColor: this.props.myBg,
+                    title: this.props.myTitle,
                     },
-
             });
                 return true;
             } catch(err)  {
@@ -501,14 +487,14 @@ class Game extends React.Component {
         if (currClue.indexOf(':') > 0){
             textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
         }else{
-            this.setScrollPosition(parseInt(this.state.title));
+            //this.setScrollPosition(parseInt(this.state.title));
             var onThisPuzzle = (this.state.title).toString();
             solvedArray[this.props.myIndex] = 1;
             try {
                 AsyncStorage.setItem(KEY_onPuzzle, onThisPuzzle);
                 AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
             } catch (error) {
-                this._appendMessage('AsyncStorage error: ' + error.message);
+                window.alert('AsyncStorage error: ' + error.message);
             }
 
            if (currClue == '1'){
@@ -613,14 +599,14 @@ class Game extends React.Component {
 
                     <View style={ container_styles.tiles_container }>
                         { this.drawTiles() }
+                            <Image style={{ width: 96, height: 96, opacity: 1 }} source={require('./images/arrow_forward.png')} />
                     </View>
 
                     <View style={ container_styles.footer }>
-                        <View style={ container_styles.stars_container }>
-                            <Image source={this.state.starImage1} style={ container_styles.star } />
-                            <Image source={this.state.starImage2} style={ container_styles.star } />
+                        <View style={ container_styles.score_container }>
+                            <Text style={[styles.answer_text, {right: 10}, {color: this.state.score_color}]} >{this.state.score}
+                            </Text>
                         </View>
-
                         <View style={ container_styles.buttons_container }>
                             <Button style={styles.skip_button} onPress={ () => this.skip_to_next() }>
                                 <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
@@ -630,8 +616,8 @@ class Game extends React.Component {
                             </Button>
                         </View>
                         <View style={ container_styles.stars_container }>
-                            <Text style={[styles.answer_text, {right: 10}, {color: this.state.score_color}]} >{this.state.score}
-                            </Text>
+                            <Image source={this.state.starImage1} style={ container_styles.star } />
+                            <Image source={this.state.starImage2} style={ container_styles.star } />
                         </View>
                     </View>
                 </View>
@@ -708,19 +694,10 @@ var container_styles = StyleSheet.create({
         paddingLeft: 12,
         padding: 6,
     },
-    UI_container: {
-        flex: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        flexDirection: 'row',
-        width: window.width,
-        backgroundColor: 'transparent',
-        paddingTop: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
-    },
     tiles_container: {
         flex: 19,
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: 'transparent',
         padding: 10,
     },
@@ -745,7 +722,15 @@ var container_styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
-        paddingLeft: 10,
+        paddingRight: 10,
+    },
+    score_container: {
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+        paddingLeft: 15,
     },
     star: {
         flex: 1,

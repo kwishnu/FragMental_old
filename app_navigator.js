@@ -1,13 +1,13 @@
 'use strict';
-
-import React , {Component} from 'react';
+import React, {Component} from 'react';
 import { Navigator } from 'react-native';
 
-const Game = require('./game');
-const PuzzlesLaunch = require('./puzzles_launch');
-const DailyLaunch = require('./p_daily_launch');
-const PuzzlesContents = require('./puzzles_contents');
+const SplashScreen = require('./splash_screen');
 const StartScene = require('./start_scene');
+const PuzzlesContents = require('./puzzles_contents');
+const DailyLaunch = require('./p_daily_launch');
+const PuzzlesLaunch = require('./puzzles_launch');
+const Game = require('./game');
 
 class AppNavigator extends React.Component {
     constructor(props) {
@@ -15,16 +15,18 @@ class AppNavigator extends React.Component {
     }
     navigatorRenderScene(routeID) {
         switch (routeID) {
-            case 'game board':
-                return Game;
-            case 'puzzle launcher':
-                return PuzzlesLaunch;
-            case 'daily launcher':
-                return DailyLaunch;
-            case 'puzzles contents':
-                return PuzzlesContents;
+            case 'splash screen':
+                return SplashScreen;
             case 'start scene':
                 return StartScene;
+            case 'puzzles contents':
+                return PuzzlesContents;
+            case 'daily launcher':
+                return DailyLaunch;
+            case 'puzzle launcher':
+                return PuzzlesLaunch;
+            case 'game board':
+                return Game;
 
             // Add more ids here
         }
@@ -33,7 +35,7 @@ class AppNavigator extends React.Component {
     render() {
         return (
             <Navigator
-              initialRoute={ { id: 'start scene' } }
+              initialRoute={ { id: 'splash screen' } }
               renderScene={(route, navigator) => {
                 return React.createElement(this.navigatorRenderScene(route.id), { ...this.props, ...route.passProps, navigator, route } );
               }} />

@@ -31,7 +31,7 @@ var KEY_onPuzzle = 'onPuzzle';
 var KEY_daily_solved_array = 'solved_array';
 
 
-class DailyLaunch extends React.Component{
+class DailyLaunch extends Component{
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -209,10 +209,10 @@ class DailyLaunch extends React.Component{
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData, moment().subtract(rowData, 'days').format('MM/DD/YYYY'))}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData, moment().subtract(rowData + 1, 'days').format('MMMM DD, YYYY'))}
                                                              underlayColor={() => this.getUnderlay(rowData) }
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                                             <Text  style={[ styles.daily_launcher_text, this.getTextColor(rowData) ] }>{moment().subtract(rowData, 'days').format('MM/DD/YYYY')}</Text>
+                                             <Text  style={[ styles.daily_launcher_text, this.getTextColor(rowData) ] }>{moment().subtract(rowData + 1, 'days').format('MM/DD/YYYY')}</Text>
                                          </TouchableHighlight>
                                      </View>}
                          />
