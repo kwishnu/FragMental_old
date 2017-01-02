@@ -23,6 +23,7 @@ class SplashScreen extends Component {
                     if (puzzles !== null) {//get current Puzzle data:
                         puzzleData = JSON.parse(puzzles)
                     }else{//store seed Puzzle data:
+                        puzzleData = seedPuzzleData;
                         try {
                             AsyncStorage.setItem(KEY_Puzzles, JSON.stringify(seedPuzzleData));//
                         } catch (error) {
@@ -31,9 +32,10 @@ class SplashScreen extends Component {
                     }
                     return AsyncStorage.getItem(KEY_SeenStart)
                 }).then((seenIntro) => {
-                    if (seenIntro !== null) {
+                    if (seenIntro !== null) {  //has already seen app intro
                         this.setState({seenStart: seenIntro});
-                    }else{
+                    }else{    //hasn't seen app intro...
+                    this.setState({seenStart: 'false'});
                         try {
                             AsyncStorage.setItem(KEY_SeenStart, 'true');//
                         } catch (error) {

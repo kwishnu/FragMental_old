@@ -103,6 +103,7 @@ class Game extends Component {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
                 passProps: {
+                    puzzleData: this.props.puzzleData,
                     solvedArray: solvedArray,
                     arraySize: this.props.arraySize,
                     dataElement: this.props.dataElement,

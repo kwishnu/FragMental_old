@@ -67,6 +67,9 @@ class DailyLaunch extends Component{
             try {
             this.props.navigator.replace({
                 id: 'puzzles contents',
+                passProps: {
+                    puzzleData: this.props.puzzleData,
+                }
             });
                 return true;
             } catch(err)  {
@@ -168,6 +171,7 @@ class DailyLaunch extends Component{
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
+                puzzleData: this.props.puzzleData,
                 title: date,
                 myIndex: index,
                 keyFrag: puzzArray[0],
@@ -209,10 +213,10 @@ class DailyLaunch extends Component{
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData, moment().subtract(rowData + 1, 'days').format('MMMM DD, YYYY'))}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData, moment().subtract(rowData + 1, 'days').format('MMMM D, YYYY'))}
                                                              underlayColor={() => this.getUnderlay(rowData) }
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                                             <Text  style={[ styles.daily_launcher_text, this.getTextColor(rowData) ] }>{moment().subtract(rowData + 1, 'days').format('MM/DD/YYYY')}</Text>
+                                             <Text  style={[ styles.daily_launcher_text, this.getTextColor(rowData) ] }>{moment().subtract(rowData + 1, 'days').format('M/D/YYYY')}</Text>
                                          </TouchableHighlight>
                                      </View>}
                          />

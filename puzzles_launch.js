@@ -84,6 +84,9 @@ class PuzzleLaunch extends Component{
             try {
             this.props.navigator.replace({
                 id: 'puzzles contents',
+                passProps: {
+                    puzzleData: this.props.puzzleData,
+                }
             });
                 return true;
             } catch(err)  {
@@ -192,6 +195,7 @@ class PuzzleLaunch extends Component{
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
+                puzzleData: this.props.puzzleData,
                 title: passed + 1,
                 keyFrag: puzzArray[0],
                 theData: fragObject,

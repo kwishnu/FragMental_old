@@ -30,7 +30,7 @@ class StartScene extends Component {
             },
        });
     }
-    onSkipBtnHandle = (index) => {
+    onSkipBtnHandle = () => {
         this.gotoContents();
 
     }
@@ -38,12 +38,12 @@ class StartScene extends Component {
         this.gotoContents();
 
     }
-    nextBtnHandle = (index) => {
-        Alert.alert('Next');
-        console.log(index);
+    nextBtnHandle = () => {
+        //Alert.alert('Next');
+        //console.log(index);
     }
-    onSlideChangeHandle = (index, total) => {
-        console.log(index, total);
+    onSlideChangeHandle = () => {
+        //console.log(index, total);
 
     }
 

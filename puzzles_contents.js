@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, Animated, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, AsyncStorage } from 'react-native';
 import moment from 'moment';
 import SectionHeader  from './components/SectionHeader';
 //import Loading from './components/Loading';
@@ -54,18 +54,14 @@ var KEY_ScrollPosition = 'scrollPositionKey';
 var KEY_onPuzzle = 'onPuzzle';
 var KEY_daily_solved_array = 'solved_array';
 var KEY_midnight = 'midnight';
-
-
-var now = moment().format('MMMM DD, YYYY');
+var todayFull = moment().format('MMMM D, YYYY');
 var nowISO = moment();
 var launchDay = moment('2016 10', 'YYYY-MM');//November 1, 2016
 var dayDiff = launchDay.diff(nowISO, 'days');//# of days since 11/1/2016
 var daysToSkip = parseInt(dayDiff, 10) - 31;
 var tonightMidnight = moment().endOf('day');
-
 const solvedArray = [];
-var fileData = require('./data.js');
-var dataLength = fileData.length;
+
 
 class PuzzleContents extends Component{
     constructor(props) {
@@ -120,46 +116,6 @@ class PuzzleContents extends Component{
         }
         return { dataBlob, sectionIds, rowIds };
     }
-    //'ws://52.8.88.93:80/websocket'; <= baked-beans-games...publication details-list, collection details
-    //'ws://52.9.147.169:80/websocket'; <= bbg2...publication PuzzlesList, collection puzzles (field "name")
-    //'ws://52.52.199.138:80/websocket'; <= bbg3...publication AllData, collections data, data1, data2, details, puzzles, text, users
-    //'ws://52.52.205.96:80/websocket'; <= Publications...publication AllData, collections dataA...dataZ
-    //'ws://10.0.0.207:3000/websocket'; <= localhost
-//    componentWillMount() {
-    //window.alert(tonightMidnight - nowISO);
-//        let METEOR_URL = 'ws://52.52.205.96:80/websocket';////'ws://52.9.147.169:80/websocket';//'ws://52.8.88.93:80/websocket';'ws://10.0.0.207:3000/websocket';//'ws://52.52.205.96:80/websocket';
-//        Meteor.connect(METEOR_URL);
-//
-//          //const handle = Meteor.subscribe('AllData');//('AllData');('PuzzlesList');
-//
-//Meteor.subscribe('AllData', {
-//  onReady: function () {
-//    //this.sendToStorage();
-//    //console.log("onReady And the Items actually Arrive", arguments);
-//              const messages = Meteor.collection('dataJ').find();
-//              //const restoredArray = EJSON.stringify(messages);
-//             // window.alert(messages.toString());
-//              //window.alert((typeof messages).toString());
-//                     // window.alert(sent);
-//
-//            for (var key in messages) {
-//                if (!messages.hasOwnProperty(key)) continue;
-//                var obj = messages[key];
-//                for (var prop in obj) {
-//                    if(!obj.hasOwnProperty(prop)) continue;
-//                    if(prop=='text')
-//                    //window.alert(prop + " = " + obj[prop]);
-//                    window.alert(obj[prop]);
-//                }
-//            }
-//
-//    },
-//  onError: function () {
-//    window.alert('oops');
-//    }
-//});
-//}
-
     componentDidMount() {
     //window.alert(-(parseInt(dayDiff,10)));
         AsyncStorage.getItem(KEY_daily_solved_array).then((value) => {
@@ -264,7 +220,7 @@ class PuzzleContents extends Component{
             };
     }
     bg(colorSent){
-         var strToReturn=colorSent;
+         var strToReturn=colorSent.replace(/\"/g, "");
 //         if(num==parseInt(this.state.onPuzzle, 10) + 1){
 //             strToReturn='#0F0';
 //             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
@@ -277,18 +233,18 @@ class PuzzleContents extends Component{
          backgroundColor: strToReturn
          };
     }
-    onSelect (sent) {
-    var value = 'test2';
-         Meteor.call('DataJ.deleteOne', { value }, (err, res) => {
-            // Do whatever you want with the response
-            //window.alert(res);
-        });
-
+//    onSelect (sent) {
+//    var value = 'test2';
+//         Meteor.call('DataJ.deleteOne', { value }, (err, res) => {
+//            // Do whatever you want with the response
+//            //window.alert(res);
+//        });
+//
 //         Meteor.call('DataJ.addOne', { value }, (err, res) => {
 //            // Do whatever you want with the response
 //            console.log('Items.addOne', err, res);
 //        });
-    }
+//    }
     onSelect(index, howMany, puzzArray, title, bg) {
         var theDestination = 'puzzle launcher';
         var theTitle = title;
@@ -304,9 +260,10 @@ class PuzzleContents extends Component{
                 this.props.navigator.replace({
                     id: 'game board',
                     passProps: {
+                        puzzleData: this.props.puzzleData,
                         theData: thePieces[0],
                         keyFrag: thePieces[1],
-                        title: now,
+                        title: todayFull,
                         theCluesArray: thePieces[2],
                         fromWhere: 'puzzles contents',
                         arraySize: '1',
@@ -327,6 +284,7 @@ class PuzzleContents extends Component{
         this.props.navigator.replace({
             id: theDestination,
             passProps: {
+                puzzleData: this.props.puzzleData,
                 solvedArray: solvedArray,
                 title: theTitle,
                 arraySize: howMany,
@@ -408,8 +366,8 @@ class PuzzleContents extends Component{
                                     renderRow={(rowData) =>
                                      <View>
                                          <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.num_puzzles, rowData.puzzles, rowData.title, rowData.bg_color)}
-                                                             underlayColor={() => this.bg(rowData.bg_color) }
-                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]} >
+                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]}
+                                                             underlayColor={rowData.bg_color} >
                                              <Text style={ styles.contents_text }>{rowData.title}</Text>
                                          </TouchableHighlight>
                                      </View>
