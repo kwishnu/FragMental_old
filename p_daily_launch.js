@@ -14,7 +14,6 @@ function shuffleArray(array) {
 }
 
 var deepCopy = require('./deepCopy.js');
-var fileData = require('./data.js');
 var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -25,10 +24,6 @@ var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the scree
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05); // 5% of the cell width...+
 var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
-var _scrollView = ListView;
-var KEY_ScrollPosition = 'scrollPositionKey';
-var KEY_onPuzzle = 'onPuzzle';
-var KEY_daily_solved_array = 'solved_array';
 
 
 class DailyLaunch extends Component{
@@ -36,25 +31,18 @@ class DailyLaunch extends Component{
         super(props);
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            solvedArray: this.props.solvedArray,
+            daily_solvedArray: this.props.daily_solvedArray,
             id: 'daily launcher',
-            puzzleArray: this.props.puzzleArray,
-            arraySize: this.props.arraySize,
+            puzzleData: this.props.puzzleData,
             dataElement: this.props.dataElement,
             title: this.props.title,
             isOpen: false,
-            dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.arraySize, 10)), (x,i) => i)),
-            scrollPosition: 0,
-            onPuzzle: 0,
+            dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.puzzleData[this.props.dataElement].num_puzzles, 10)), (x,i) => i)),
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
-
-//         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
-//                 this.setState({onPuzzle: parseInt(value, 10)});
-//        });
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -101,7 +89,7 @@ class DailyLaunch extends Component{
     }
     bg(num){
          var strToReturn='';
-         if (this.props.solvedArray[num]==0){
+         if (this.props.daily_solvedArray[num]==0){
              strToReturn='#079707';//green
              }else{
              strToReturn='#999ba0';//grey
@@ -112,7 +100,7 @@ class DailyLaunch extends Component{
      }
     getTextColor(num){
          var strToReturn='';
-         if (this.props.solvedArray[num]==0){
+         if (this.props.daily_solvedArray[num]==0){
              strToReturn='#fff';
              }else{
              strToReturn='#000';
@@ -124,7 +112,7 @@ class DailyLaunch extends Component{
 
     getUnderlay(num){
          var strToReturn='';
-         if (this.props.solvedArray[num]==0){
+         if (this.props.daily_solvedArray[num]==0){
              strToReturn='#079707';//green
              }else{
              strToReturn='#999ba0';//grey
@@ -133,7 +121,7 @@ class DailyLaunch extends Component{
     }
     getBorder(num){
          var strToReturn='';
-         if (this.props.solvedArray[num]==0){
+         if (this.props.daily_solvedArray[num]==0){
              strToReturn='#00ff00';//green
              }else{
              strToReturn='#000000';//black
@@ -143,42 +131,14 @@ class DailyLaunch extends Component{
          };
     }
     onSelect(index, date) {
-// window.alert(this.props.solvedArray.toString());
-// return;
-        var fragObject = owl.deepCopy(fragData);
-        var puzzString = fileData[this.props.dataElement].puzzles[index];
-
-        //var puzzString = fileData[index].puzzle;
-        var puzzArray = puzzString.split('~');
-        var fragsArray = [];
-        var fragsPlusClueArr =  puzzArray[1].split('**');
-
-        for(var i=0; i<fragsPlusClueArr.length; i++){
-            var splits = fragsPlusClueArr[i].split(':');
-            var frags = splits[0].split('|');
-            for(var j=0; j<frags.length; j++){
-                fragsArray.push(frags[j]);
-            }
-        }
-        fragsArrayShuffled = shuffleArray(fragsArray);
-        var countTo20 = 0;
-        for(var k=0; k<fragsArrayShuffled.length; k++){
-            if(fragsArrayShuffled[k]!='^'){
-            fragObject[countTo20].frag= fragsArrayShuffled[k];
-            countTo20++;
-            }
-        }
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
                 puzzleData: this.props.puzzleData,
                 title: date,
-                myIndex: index,
-                keyFrag: puzzArray[0],
-                theData: fragObject,
-                theCluesArray: fragsPlusClueArr,
+                index: index,
                 fromWhere: 'daily launcher',
-                arraySize: this.props.arraySize,
+                daily_solvedArray: this.props.daily_solvedArray,
                 dataElement: this.props.dataElement,
                 myBg: this.props.bgColor,
                 myTitle: this.props.title,
@@ -214,7 +174,7 @@ class DailyLaunch extends Component{
                                     renderRow={(rowData) =>
                                      <View>
                                          <TouchableHighlight onPress={() => this.onSelect(rowData, moment().subtract(rowData + 1, 'days').format('MMMM D, YYYY'))}
-                                                             underlayColor={() => this.getUnderlay(rowData) }
+                                                             underlayColor={rowData.bg_color}
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
                                              <Text  style={[ styles.daily_launcher_text, this.getTextColor(rowData) ] }>{moment().subtract(rowData + 1, 'days').format('M/D/YYYY')}</Text>
                                          </TouchableHighlight>

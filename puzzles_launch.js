@@ -32,7 +32,6 @@ function shadeColor(color, percent) {
 }
 
 var deepCopy = require('./deepCopy.js');
-var fileData = require('./data.js');
 var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
@@ -43,9 +42,7 @@ var CELL_WIDTH = Math.floor(width/NUM_WIDE); // one tile's fraction of the scree
 var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
 var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
-var _scrollView = ListView;
-var KEY_ScrollPosition = 'scrollPositionKey';
-var KEY_onPuzzle = 'onPuzzle';
+
 
 class PuzzleLaunch extends Component{
     constructor(props) {
@@ -53,12 +50,11 @@ class PuzzleLaunch extends Component{
         const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
             id: 'puzzle launcher',
-            puzzleArray: this.props.puzzleArray,
-            arraySize: this.props.arraySize,
+            puzzleData: this.props.puzzleData,
             dataElement: this.props.dataElement,
             title: this.props.title,
             isOpen: false,
-            dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.arraySize, 10)), (x,i) => i+1)),
+            dataSource: ds.cloneWithRows(Array.from(new Array(parseInt(this.props.puzzleData[this.props.dataElement].num_puzzles, 10)), (x,i) => i)),
             scrollPosition: 0,
             onPuzzle: 0,
             bgColor: this.props.bgColor,
@@ -69,9 +65,9 @@ class PuzzleLaunch extends Component{
     componentDidMount() {
 //    window.alert(this.props.arraySize);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
-         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
-                 this.setState({onPuzzle: parseInt(value, 10)});
-        });
+//         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
+//                 this.setState({onPuzzle: parseInt(value, 10)});
+//        });
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -118,9 +114,10 @@ class PuzzleLaunch extends Component{
     }
     bg(num){
          var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
+         var onThis = parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10);
+         if(num==onThis){
              strToReturn='#0F0';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+             }else if(num<onThis){
              strToReturn='#079707';
              }else{
              strToReturn='#999ba0';
@@ -132,9 +129,10 @@ class PuzzleLaunch extends Component{
     }
     getUnderlay(num){
          var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
+         var onThis = parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10);
+         if(num==onThis){
              strToReturn='#01ff01';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+             }else if(num<onThis){
              strToReturn='#079707';
              }else{
              strToReturn='#999ba0';
@@ -144,9 +142,10 @@ class PuzzleLaunch extends Component{
     }
     getBorder(num){
          var strToReturn='';
-         if(num==parseInt(this.state.onPuzzle, 10) + 1){
+         var onThis = parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10);
+         if(num==onThis){
              strToReturn='#0F0';
-             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
+             }else if(num<onThis){
              strToReturn='#00a700';
              }else{
              strToReturn='#7e867e';
@@ -166,42 +165,15 @@ class PuzzleLaunch extends Component{
         var darkerColor = shadeColor(color, -60);
             return {borderColor: darkerColor};
     }
-    onSelect(passed) {
-        if(passed>parseInt(this.state.onPuzzle, 10) + 1)return;
-        passed = passed - 1;
-        var fragObject = owl.deepCopy(fragData);
-        var puzzString = fileData[this.props.dataElement].puzzles[passed];
-        //var puzzString = fileData[passed].puzzle;
-        var puzzArray = puzzString.split('~');
-        var fragsArray = [];
-        var fragsPlusClueArr =  puzzArray[1].split('**');
-
-        for(var i=0; i<fragsPlusClueArr.length; i++){
-            var splits = fragsPlusClueArr[i].split(':');
-            var frags = splits[0].split('|');
-            for(var j=0; j<frags.length; j++){
-                fragsArray.push(frags[j]);
-            }
-        }
-        fragsArrayShuffled = shuffleArray(fragsArray);
-        var countTo20 = 0;
-        for(var k=0; k<fragsArrayShuffled.length; k++){
-            if(fragsArrayShuffled[k]!='^'){
-            fragObject[countTo20].frag= fragsArrayShuffled[k];
-            countTo20++;
-            }
-        }
-
+    onSelect(index) {
+        if(index>parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10))return;
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
                 puzzleData: this.props.puzzleData,
-                title: passed + 1,
-                keyFrag: puzzArray[0],
-                theData: fragObject,
-                theCluesArray: fragsPlusClueArr,
+                title: index + 1,
+                index: index,
                 fromWhere: 'puzzle launcher',
-                arraySize: this.props.arraySize,
                 dataElement: this.props.dataElement,
                 myBg: this.props.bgColor,
                 myTitle: this.props.title,
@@ -223,30 +195,29 @@ class PuzzleLaunch extends Component{
                         <Button style={{left: 10}} onPress={ () => this.toggle() }>
                             <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
                         </Button>
-                        <Text style={{fontSize: 18, color: this.props.textColor}} >{this.props.title}
+                        <Text style={{fontSize: 18, color: '#fff'}} >{this.props.title}
                         </Text>
                         <Button>
                             <Image source={ require('./images/no_image.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                     </View>
                     <View style={ [container_styles.tiles_container, this.containerBg(this.props.bgColor), this.darkBorder(this.props.bgColor)] }>
-                         <ListView  ref={(scrollView) => { _scrollView = scrollView; }}
-                                    showsVerticalScrollIndicator ={false}
+                         <ListView  showsVerticalScrollIndicator ={false}
                                     initialListSize ={100}
                                     contentContainerStyle={ container_styles.listview }
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.toString())}
-                                                             underlayColor={() => this.getUnderlay(rowData) }
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData)}
+                                                             underlayColor={rowData.bg_color}
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
-                                             <Text style={ styles.puzzle_text_large }>{rowData}</Text>
+                                             <Text style={ styles.puzzle_text_large }>{rowData + 1}</Text>
                                          </TouchableHighlight>
                                      </View>}
                          />
                     </View>
                     <View style={[container_styles.footer, this.headerFooter(this.props.bgColor)]}>
-                        <Text style={{fontSize: 11, color: this.props.textColor}}>Some fine print...</Text>
+                        <Text style={{fontSize: 11, color: '#fff'}}>Some fine print...</Text>
                     </View>
                  </View>
             </SideMenu>

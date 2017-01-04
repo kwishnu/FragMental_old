@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, BackAndroid, AsyncStorage, Animated, } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, BackAndroid, AsyncStorage, Animated, ActivityIndicator } from 'react-native';
+//import Spinner from 'react-native-loading-spinner-overlay';
+import moment from 'moment';
 import Button from './components/Button';
 
-var fileData = require('./data.js');
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
 var deepCopy = require('./deepCopy.js');
+var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
 var Menu = require('./menu');
 var styles = require('./styles');
@@ -16,14 +28,13 @@ var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 8% of the cell width
 var BORDER_RADIUS = CELL_PADDING * .2;
 var TILE_WIDTH = CELL_WIDTH - CELL_PADDING * 2;
 var TILE_HEIGHT = CELL_HEIGHT - CELL_PADDING * 2;
-var dataBackup = null;
-var dataObject = null;
 var SPRING_CONFIG = {tension: 10, velocity: 10};
 var timeoutHandle;
-var KEY_ScrollPosition = 'scrollPositionKey';
-var KEY_onPuzzle = 'onPuzzle';
+var KEY_Puzzles = 'puzzlesKey';
 var KEY_daily_solved_array = 'solved_array';
-const solvedArray = [];
+var dataBackup = {};
+var puzzleData = {};
+var dsArray = [];
 
 // {/* ... */} for JSX commenting
 class Game extends Component {
@@ -31,29 +42,31 @@ class Game extends Component {
         super(props);
         this.state = {
             id: 'game board',
+ //*********** sender info: **********//
             fromWhere: this.props.fromWhere,
             myTitle: this.props.myTitle,
-            myIndex: this.props.myIndex,
             myBg: this.props.myBg,
             myTextColor: this.props.myTextColor,
-            puzzleArray: this.props.puzzleArray,
+            daily_solvedArray: this.props.daily_solvedArray,
+ //***********************************//
+            puzzleData: this.props.puzzleData,
+            puzzleArray: [],//this.props.puzzleArray,
             dataElement: this.props.dataElement,
-            isOpen: false,
             title: this.props.title,
-            keyFrag: this.props.keyFrag,
-            theData: this.props.theData,
-            theCluesArray: this.props.theCluesArray,
-            solvedArray: new Array(this.props.theCluesArray.length),
-            currentClue: this.props.theCluesArray[0],
-            currentFrags: this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
-            numFrags:  (this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
+            index: this.props.index,
+            keyFrag: '',//this.props.keyFrag,
+            theData: {},//this.props.theData,
+            theCluesArray: [],//this.props.theCluesArray,
+            solvedArray: [],//new Array(this.props.theCluesArray.length),
+            currentClue: '',//this.props.theCluesArray[0],
+            currentFrags: '',//this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
+            numFrags: 0,//(this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
             answer_text: '',
             score: 10,
             onThisClue: 0,
             onThisFrag: 0,
-            score_color: 'white',
             fragOpacity: 1,
-            forwardOpacity: 0,
+            forwardBackOpacity: 0,
             pan: new Animated.ValueXY(),
             fadeAnim: new Animated.Value(1),
             goLeft: 250,
@@ -73,23 +86,23 @@ class Game extends Component {
             answer12: '',
             answer13: '',
             answer14: '',
+            isLoading: true,
+            isOpen: false,
             puzzle_solved: false,
             wentBust: false,
+            score_color: 'white',
             bgColor: '#09146d',
             starImage1: require('./images/star_grey.png'),
             starImage2: require('./images/star_grey.png'),
+            arrowImage: require('./images/arrow_forward.png'),
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
-        //window.alert(this.props.dataElement);
-        AsyncStorage.getItem(KEY_daily_solved_array).then((value) => {
-            solvedArray = JSON.parse(value);
-        });
-        var arr = Array(this.state.solvedArray.length).fill('');
-        dataBackup = owl.deepCopy(this.props.theData);
+        puzzleData = this.state.puzzleData;
+        this.storeGameVariables(this.state.index);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
-        this.setState({solvedArray: arr})
+        this.setState({isLoading: false});
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -100,25 +113,59 @@ class Game extends Component {
             return true;
         }else{
             try {
-            this.props.navigator.replace({
-                id: this.props.fromWhere,
-                passProps: {
-                    puzzleData: this.props.puzzleData,
-                    solvedArray: solvedArray,
-                    arraySize: this.props.arraySize,
-                    dataElement: this.props.dataElement,
-                    puzzleArray: this.props.puzzleArray,
-                    textColor: this.props.myTextColor,
-                    bgColor: this.props.myBg,
-                    title: this.props.myTitle,
-                    },
-            });
+                this.props.navigator.replace({
+                    id: this.props.fromWhere,
+                    passProps: {
+                        puzzleData: this.state.puzzleData,
+                        daily_solvedArray: dsArray,
+                        dataElement: this.props.dataElement,
+                        puzzleArray: this.state.puzzleArray,
+                        textColor: this.props.myTextColor,
+                        bgColor: this.props.myBg,
+                        title: this.props.myTitle,
+                        },
+                });
                 return true;
             } catch(err)  {
             window.alert(err.message)
                 return true;
             }
         }
+    }
+    storeGameVariables(index){
+        dsArray = this.state.daily_solvedArray;
+        var fragObject = owl.deepCopy(fragData);
+        var puzzString = this.state.puzzleData[this.props.dataElement].puzzles[index];
+        var puzzArray = puzzString.split('~');
+        var fragsArray = [];
+        var fragsPlusClueArr =  puzzArray[1].split('**');
+
+        for(var i=0; i<fragsPlusClueArr.length; i++){
+            var splits = fragsPlusClueArr[i].split(':');
+            var frags = splits[0].split('|');
+            for(var j=0; j<frags.length; j++){
+                fragsArray.push(frags[j]);
+            }
+        }
+        fragsArrayShuffled = shuffleArray(fragsArray);
+        var countTo20 = 0;
+        for(var k=0; k<fragsArrayShuffled.length; k++){
+            if(fragsArrayShuffled[k]!='^'){
+            fragObject[countTo20].frag= fragsArrayShuffled[k];
+            countTo20++;
+            }
+        }
+        var arr = new Array(fragsPlusClueArr.length).fill('');
+        dataBackup = owl.deepCopy(fragObject);
+        this.setState({
+            solvedArray: arr,
+            keyFrag: puzzArray[0],
+            theData: fragObject,
+            theCluesArray: fragsPlusClueArr,
+            currentClue: fragsPlusClueArr[0],
+            currentFrags: fragsPlusClueArr[0].substring(0, fragsPlusClueArr[0].indexOf(':')),
+            numFrags: (fragsPlusClueArr[0].substring(0, fragsPlusClueArr[0].indexOf(':')).split('|')).length,
+        });
     }
     toggle() {
         this.setState({
@@ -147,8 +194,8 @@ class Game extends Component {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
                 passProps: {
-                    solvedArray: solvedArray,
-                    arraySize: this.props.arraySize,
+                    puzzleData: this.props.puzzleData,
+                    daily_solvedArray: this.state.daily_solvedArray,
                     dataElement: this.props.dataElement,
                     puzzleArray: this.props.puzzleArray,
                     textColor: this.props.myTextColor,
@@ -161,6 +208,30 @@ class Game extends Component {
             window.alert(err.message)
                 return true;
             }
+    }
+    nextGame(){
+        if(!this.state.forwardBackOpacity)return;
+        var newIndex = (parseInt(this.state.index, 10) + 1).toString();
+        this.setState({daily_solvedArray: dsArray,
+                        isLoading: true,
+                        index: newIndex,
+                        });
+        var onLastGameInPack = (this.props.fromWhere == 'puzzles contents' || parseInt(this.state.index, 10) + 1 == parseInt(this.props.puzzleData[this.props.dataElement].num_puzzles, 10))?true:false;
+        if (onLastGameInPack){
+            this.closeGame();
+        }else{
+            this.storeGameVariables(newIndex);
+            var nextTitle = '';
+            if(this.props.fromWhere == 'daily launcher'){
+                var today = moment(this.state.title, 'MMMM D, YYYY');
+                nextTitle = today.subtract(1, 'days').format('MMMM D, YYYY');
+            }else{
+                nextTitle = (parseInt(this.state.title, 10) + 1).toString();
+            }
+            this.setState({ title: nextTitle, forwardBackOpacity: 0 });
+            setTimeout(() => {this.reset_scene()}, 500);
+        }
+        //this.getClueText();
     }
     drawTiles() {
         var result = [];
@@ -198,14 +269,14 @@ class Game extends Component {
         var colSort = this.state.columnSort;
 
         if(which==100){
-            theFrag = this.props.keyFrag;
+            theFrag = this.state.keyFrag;
         }else{
             var theFrag = data[which].frag;
             if(data[which].opacity==0)return;
         }
         var guessFragsArray = this.state.currentFrags.split('|');
         var onFrag = this.state.onThisFrag;
-        if(theFrag == guessFragsArray[onFrag] || (theFrag == this.props.keyFrag && guessFragsArray[onFrag] == '^')){
+        if(theFrag == guessFragsArray[onFrag] || (theFrag == this.state.keyFrag && guessFragsArray[onFrag] == '^')){
             if(which<100){
                 data[which].frag = '';
                 data[which].opacity = 0;
@@ -240,7 +311,7 @@ class Game extends Component {
                 for(goThru_sArray=onClue + 1;goThru_sArray<onClue + sArray.length;goThru_sArray++){
                     if(sArray[goThru_sArray % sArray.length]==''){
                         onClue = goThru_sArray % sArray.length;
-                        currClue =  this.props.theCluesArray[onClue]
+                        currClue =  this.state.theCluesArray[onClue]
                         entire_puzzle_solved = false;
                         newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
                         newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
@@ -291,9 +362,9 @@ class Game extends Component {
                         columnSort: -1,
                         onThisClue: 0,
                         onThisFrag: 0,
-                        currentClue: this.props.theCluesArray[0],
-                        currentFrags: this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')),
-                        numFrags:  (this.props.theCluesArray[0].substring(0, this.props.theCluesArray[0].indexOf(':')).split('|')).length,
+                        currentClue: this.state.theCluesArray[0],
+                        currentFrags: this.state.theCluesArray[0].substring(0, this.state.theCluesArray[0].indexOf(':')),
+                        numFrags:  (this.state.theCluesArray[0].substring(0, this.state.theCluesArray[0].indexOf(':')).split('|')).length,
                         solvedArray: arr,
                         score: 10,
                         score_color: 'white',
@@ -314,6 +385,7 @@ class Game extends Component {
                         answer14: '',
                         puzzle_solved: false,
                         wentBust: false,
+                        isLoading: false,
                         bgColor: '#09146d',
                     });
     }
@@ -353,7 +425,7 @@ class Game extends Component {
             for(goThru_sArray=this.state.onThisClue + 1;goThru_sArray<this.state.onThisClue + sArray.length;goThru_sArray++){
                 if(sArray[goThru_sArray % sArray.length]==''){
                     onClue = goThru_sArray % sArray.length;
-                    currClue =  this.props.theCluesArray[onClue]
+                    currClue =  this.state.theCluesArray[onClue]
                     newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
                     newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
 
@@ -482,18 +554,18 @@ class Game extends Component {
     getClueText(){
         var textToReturn = '';
         var currClue = this.state.currentClue;
-        var lastOne = false;
-        var counter = 0;
 
         if (currClue.indexOf(':') > 0){
-            textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1)
+            textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1);
+            return textToReturn;
         }else{
             //this.setScrollPosition(parseInt(this.state.title));
-            var onThisPuzzle = (this.state.title).toString();
-            solvedArray[this.props.myIndex] = 1;
+            //var onThisPuzzle = (parseInt(this.state.title) + 1).toString();
+            dsArray[this.props.myIndex] = '1';
+            //return;
+            //window.alert(dsArray.toString());
             try {
-                AsyncStorage.setItem(KEY_onPuzzle, onThisPuzzle);
-                AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
+                AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(dsArray));
             } catch (error) {
                 window.alert('AsyncStorage error: ' + error.message);
             }
@@ -505,30 +577,60 @@ class Game extends Component {
                 textToReturn = 'Excellent:  you get both stars for solving the puzzle with ' + this.state.score + ' points!';
                 timeoutHandle = setTimeout(() => {this.changeStarImage(2)}, 50);
             }
+            return textToReturn;
         }
-        return textToReturn;
     }
     changeStarImage(howMany){
+        var onLastGameInPack=(this.props.fromWhere == 'puzzles contents' || parseInt(this.state.index, 10) + 1 == parseInt(this.props.puzzleData[this.props.dataElement].num_puzzles, 10))?true:false;
         switch(howMany){
             case 0:
                 this.setState({
                     starImage1: require('./images/star_grey.png'),
                     starImage2: require('./images/star_grey.png'),
                     fragOpacity: 1,
+                    forwardBackOpacity: 0,
+                    //isLoading: false,
                 });
                 break;
             case 1:
-                this.setState({
-                    starImage1: require('./images/star_green.png'),
-                    fragOpacity: 0
-                });
+                if (onLastGameInPack){
+                    this.setState({
+                        starImage1: require('./images/star_green.png'),
+                        fragOpacity: 0,
+                        arrowImage: require('./images/arrow_backward.png'),
+                        forwardBackOpacity: 1,
+                        //isLoading: false,
+                    });
+                }else{
+                    this.setState({
+                        starImage1: require('./images/star_green.png'),
+                        fragOpacity: 0,
+                        arrowImage: require('./images/arrow_forward.png'),
+                        forwardBackOpacity: 1,
+                        //isLoading: false,
+                    });
+                }
                 break;
             case 2:
-                this.setState({
-                    starImage1: require('./images/star_green.png'),
-                    starImage2: require('./images/star_green.png'),
-                    fragOpacity: 0
-                });
+                if (onLastGameInPack){
+                    this.setState({
+                        starImage1: require('./images/star_green.png'),
+                        starImage2: require('./images/star_green.png'),
+                        fragOpacity: 0,
+                        arrowImage: require('./images/arrow_backward.png'),
+                        forwardBackOpacity: 1,
+                        //isLoading: false,
+                    });
+                }else{
+                    this.setState({
+                        starImage1: require('./images/star_green.png'),
+                        starImage2: require('./images/star_green.png'),
+                        fragOpacity: 0,
+                        arrowImage: require('./images/arrow_forward.png'),
+                        forwardBackOpacity: 1,
+                        //isLoading: false,
+                    });
+                }
                 break;
             default:
         }
@@ -538,92 +640,102 @@ class Game extends Component {
 
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
-        return (
-            <SideMenu
-                menu={ menu }
-                isOpen={ this.state.isOpen }
-                onChange={ (isOpen) => this.updateMenuState(isOpen) } >
-
-                <View style={ [container_styles.container, {backgroundColor: this.state.bgColor}, this.border('black')] }>
-                    <View style={ container_styles.game_header }>
-                        <Button style={{left: 10}} onPress={ () => this.closeGame() }>
-                            <Image source={ require('./images/close.png') } style={ { width: 32, height: 32 } } />
-                        </Button>
-                        <Text style={styles.header_text} >{this.state.title}
-                        </Text>
-                        <Button style={{right: 10}} onPress={ () => this.reset_scene() }>
-                            <Image source={ require('./images/replay.png') } style={ { width: 32, height: 32 } } />
-                        </Button>
-                    </View>
-
-                    <View style={ container_styles.display_area }>
-                        <View style={ container_styles.answers_container }>
-                            <View style={ container_styles.answers_column }>
-                                <Text style={styles.answer_column_text}>{this.state.answer0}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer3}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer6}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer9}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer12}</Text>
-                            </View>
-                            <View style={ container_styles.answers_column }>
-                                <Text style={styles.answer_column_text}>{this.state.answer1}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer4}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer7}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer10}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer13}</Text>
-                            </View>
-                            <View style={ container_styles.answers_column }>
-                                <Text style={styles.answer_column_text}>{this.state.answer2}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer5}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer8}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer11}</Text>
-                                <Text style={styles.answer_column_text}>{this.state.answer14}</Text>
-                            </View>
-
-                        </View>
-                        <View style={ container_styles.clue_container }>
-                            <Text style={styles.clue_text} >{this.getClueText()}
-                            </Text>
-                        </View>
-
-                        <View style={ container_styles.word_and_frag }>
-                            <View style={ [container_styles.frag_container, {opacity: this.state.fragOpacity}] } onStartShouldSetResponder={() => this.guess(100, 1)}>
-                                <Text style={styles.keyfrag_text} >{this.state.keyFrag}
-                                </Text>
-                            </View>
-                            <Animated.View style={this.getStyle()}>
-                                <Text style={styles.answer_text} >{this.state.answer_text}
-                                </Text>
-                            </Animated.View>
-                        </View>
-                    </View>
-
-                    <View style={ container_styles.tiles_container }>
-                        { this.drawTiles() }
-                            <Image style={{ width: 96, height: 96, opacity: 1 }} source={require('./images/arrow_forward.png')} />
-                    </View>
-
-                    <View style={ container_styles.footer }>
-                        <View style={ container_styles.score_container }>
-                            <Text style={[styles.answer_text, {right: 10}, {color: this.state.score_color}]} >{this.state.score}
-                            </Text>
-                        </View>
-                        <View style={ container_styles.buttons_container }>
-                            <Button style={styles.skip_button} onPress={ () => this.skip_to_next() }>
-                                <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
-                            </Button>
-                            <Button style={styles.hint_button} onPress={ () => this.give_hint() }>
-                                <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
-                            </Button>
-                        </View>
-                        <View style={ container_styles.stars_container }>
-                            <Image source={this.state.starImage1} style={ container_styles.star } />
-                            <Image source={this.state.starImage2} style={ container_styles.star } />
-                        </View>
-                    </View>
+        if(this.state.isLoading == true){
+            return(
+                <View style={ container_styles.loading }>
+                    <ActivityIndicator animating={true} size={'large'}/>
                 </View>
-            </SideMenu>
-        );
+            )
+        }else{
+            return (
+                <SideMenu
+                    menu={ menu }
+                    isOpen={ this.state.isOpen }
+                    onChange={ (isOpen) => this.updateMenuState(isOpen) } >
+
+                    <View style={ [container_styles.container, {backgroundColor: this.state.bgColor}, this.border('black')] }>
+                        <View style={ container_styles.game_header }>
+                            <Button style={{left: 10}} onPress={ () => this.closeGame() }>
+                                <Image source={ require('./images/close.png') } style={ { width: 32, height: 32 } } />
+                            </Button>
+                            <Text style={styles.header_text} >{this.state.title}
+                            </Text>
+                            <Button style={{right: 10}} onPress={ () => this.reset_scene() }>
+                                <Image source={ require('./images/replay.png') } style={ { width: 32, height: 32 } } />
+                            </Button>
+                        </View>
+
+                        <View style={ container_styles.display_area }>
+                            <View style={ container_styles.answers_container }>
+                                <View style={ container_styles.answers_column }>
+                                    <Text style={styles.answer_column_text}>{this.state.answer0}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer3}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer6}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer9}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer12}</Text>
+                                </View>
+                                <View style={ container_styles.answers_column }>
+                                    <Text style={styles.answer_column_text}>{this.state.answer1}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer4}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer7}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer10}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer13}</Text>
+                                </View>
+                                <View style={ container_styles.answers_column }>
+                                    <Text style={styles.answer_column_text}>{this.state.answer2}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer5}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer8}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer11}</Text>
+                                    <Text style={styles.answer_column_text}>{this.state.answer14}</Text>
+                                </View>
+
+                            </View>
+                            <View style={ container_styles.clue_container }>
+                                <Text style={styles.clue_text} >{this.getClueText()}
+                                </Text>
+                            </View>
+
+                            <View style={ container_styles.word_and_frag }>
+                                <View style={ [container_styles.frag_container, {opacity: this.state.fragOpacity}] } onStartShouldSetResponder={() => this.guess(100, 1)}>
+                                    <Text style={styles.keyfrag_text} >{this.state.keyFrag}
+                                    </Text>
+                                </View>
+                                <Animated.View style={this.getStyle()}>
+                                    <Text style={styles.answer_text} >{this.state.answer_text}
+                                    </Text>
+                                </Animated.View>
+                            </View>
+                        </View>
+
+                        <View style={ container_styles.tiles_container }>
+                                <View onStartShouldSetResponder={ () => this.nextGame() }>
+                                    <Image style={{ width: 96, height: 96, opacity: this.state.forwardBackOpacity, marginBottom: 30 }} source={this.state.arrowImage} />
+                                </View>
+                            { this.drawTiles() }
+                        </View>
+
+                        <View style={ container_styles.footer }>
+                            <View style={ container_styles.score_container }>
+                                <Text style={[styles.answer_text, {right: 10}, {color: this.state.score_color}]} >{this.state.score}
+                                </Text>
+                            </View>
+                            <View style={ container_styles.buttons_container }>
+                                <Button style={styles.skip_button} onPress={ () => this.skip_to_next() }>
+                                    <Image source={ require('./images/skip.png')} style={{ width: 36, height: 36 }} />
+                                </Button>
+                                <Button style={styles.hint_button} onPress={ () => this.give_hint() }>
+                                    <Image source={ require('./images/question.png')} style={{ width: 36, height: 36 }} />
+                                </Button>
+                            </View>
+                            <View style={ container_styles.stars_container }>
+                                <Image source={this.state.starImage1} style={ container_styles.star } />
+                                <Image source={this.state.starImage2} style={ container_styles.star } />
+                            </View>
+                        </View>
+                    </View>
+                </SideMenu>
+            );
+        }
     }
 }
 
@@ -631,6 +743,12 @@ class Game extends Component {
 var container_styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    loading: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#09146d' ,
     },
     game_header: {
         flex: 4,

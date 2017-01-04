@@ -51,16 +51,15 @@ var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
 var BORDER_RADIUS = CELL_PADDING * .2 + 3;
 var _scrollView = ListView;
 var KEY_ScrollPosition = 'scrollPositionKey';
-var KEY_onPuzzle = 'onPuzzle';
 var KEY_daily_solved_array = 'solved_array';
 var KEY_midnight = 'midnight';
 var todayFull = moment().format('MMMM D, YYYY');
-var nowISO = moment();
+var nowISO = moment().valueOf();
 var launchDay = moment('2016 10', 'YYYY-MM');//November 1, 2016
 var dayDiff = launchDay.diff(nowISO, 'days');//# of days since 11/1/2016
 var daysToSkip = parseInt(dayDiff, 10) - 31;
-var tonightMidnight = moment().endOf('day');
-const solvedArray = [];
+var tonightMidnight = moment().endOf('day').valueOf();
+var sArray = [];
 
 
 class PuzzleContents extends Component{
@@ -79,11 +78,7 @@ class PuzzleContents extends Component{
         this.state = {
             id: 'puzzles contents',
             isOpen: false,
-            dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds),//(Array.from(new Array(dataLength), (x,i) => i+1)),//NUM_WIDE * NUM_ROWS
-            scrollPosition: 0,
-            onPuzzle: 0,
-            connected: false,
-            posts: {}
+            dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds),
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -118,13 +113,16 @@ class PuzzleContents extends Component{
     }
     componentDidMount() {
     //window.alert(-(parseInt(dayDiff,10)));
-        AsyncStorage.getItem(KEY_daily_solved_array).then((value) => {
-            if (value !== null) {
-                solvedArray = JSON.parse(value);
+        AsyncStorage.getItem(KEY_daily_solved_array).then((theArray) => {
+            if (theArray !== null) {
+              sArray = JSON.parse(theArray);
+                  //window.alert(sArray.toString());
             } else {
-                solvedArray = Array(30).fill(0);
+                var solvedArray = new Array(30).fill('0');
+                sArray = solvedArray;
+                //window.alert(sArray);
                 try {
-                    AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
+                   AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
                 } catch (error) {
                     window.alert('AsyncStorage error: ' + error.message);
                 }
@@ -132,24 +130,24 @@ class PuzzleContents extends Component{
             return AsyncStorage.getItem(KEY_midnight)
         }).then( (value) => {
             if (value !== null) {
-                var storedMidnight = parseInt(value, 10);
+                var storedMidnight = parseInt(JSON.parse(value), 10);
                 var milliSecsOver = nowISO - storedMidnight;
                 if(milliSecsOver > 0){//at least the next day, update daily solved array
                     var numDays = Math.ceil(milliSecsOver/86400000);
                     numDays=(numDays>30)?30:numDays;
                     for (var shiftArray=0; shiftArray<numDays; shiftArray++){
-                        solvedArray.push(0);
-                        solvedArray.pop();
+                        sArray.push('0');
+                        sArray.pop();
                     }
                     try {
-                        AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
+                        AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(sArray));
                     } catch (error) {
                         window.alert('AsyncStorage error: ' + error.message);
                     }
                 }
             } else {
                 try {
-                    AsyncStorage.setItem(KEY_midnight, tonightMidnight);
+                    AsyncStorage.setItem(KEY_midnight, JSON.stringify(tonightMidnight));
                 } catch (error) {
                     window.alert('AsyncStorage error: ' + error.message);
                 }
@@ -245,7 +243,7 @@ class PuzzleContents extends Component{
 //            console.log('Items.addOne', err, res);
 //        });
 //    }
-    onSelect(index, howMany, puzzArray, title, bg) {
+    onSelect(index, puzzArray, title, bg) {
         var theDestination = 'puzzle launcher';
         var theTitle = title;
         var textColor = '';
@@ -253,20 +251,16 @@ class PuzzleContents extends Component{
         switch(index){
             case '0':
                 theDestination = 'game board';
-                var thePieces = this.makePuzzArray(puzzArray);
-                var theKeyFrag = '';
-                var theData = {};
+                //var thePieces = this.makePuzzArray(puzzArray);
 
                 this.props.navigator.replace({
                     id: 'game board',
                     passProps: {
                         puzzleData: this.props.puzzleData,
-                        theData: thePieces[0],
-                        keyFrag: thePieces[1],
+                        daily_solvedArray: sArray,
                         title: todayFull,
-                        theCluesArray: thePieces[2],
+                        index: 0,
                         fromWhere: 'puzzles contents',
-                        arraySize: '1',
                         dataElement: '0',
                         },
                         });
@@ -285,42 +279,40 @@ class PuzzleContents extends Component{
             id: theDestination,
             passProps: {
                 puzzleData: this.props.puzzleData,
-                solvedArray: solvedArray,
+                daily_solvedArray: sArray,
                 title: theTitle,
-                arraySize: howMany,
                 dataElement: index,
-                puzzleArray: puzzArray,
                 bgColor: bg,
                 textColor: textColor,
                 },
        });
     }
-    makePuzzArray(puzzString){
-            var puzzArray = puzzString[0].split('~');
-            var fragsArray = [];
-            var fragsPlusClueArr =  puzzArray[1].split('**');
-            var fragObject = owl.deepCopy(fragData);
-
-            for(var i=0; i<fragsPlusClueArr.length; i++){
-                var splits = fragsPlusClueArr[i].split(':');
-                var frags = splits[0].split('|');
-                for(var j=0; j<frags.length; j++){
-                    fragsArray.push(frags[j]);
-                }
-            }
-            fragsArrayShuffled = shuffleArray(fragsArray);
-            var countTo20 = 0;
-            for(var k=0; k<fragsArrayShuffled.length; k++){
-                if(fragsArrayShuffled[k]!='^'){
-                fragObject[countTo20].frag= fragsArrayShuffled[k];
-                countTo20++;
-                }
-            }
-            var pieces = [fragObject, puzzArray[0], fragsPlusClueArr];
-            return pieces;
-
-
-    }
+//    makePuzzArray(puzzString){
+//            var puzzArray = puzzString[0].split('~');
+//            var fragsArray = [];
+//            var fragsPlusClueArr =  puzzArray[1].split('**');
+//            var fragObject = owl.deepCopy(fragData);
+//
+//            for(var i=0; i<fragsPlusClueArr.length; i++){
+//                var splits = fragsPlusClueArr[i].split(':');
+//                var frags = splits[0].split('|');
+//                for(var j=0; j<frags.length; j++){
+//                    fragsArray.push(frags[j]);
+//                }
+//            }
+//            fragsArrayShuffled = shuffleArray(fragsArray);
+//            var countTo20 = 0;
+//            for(var k=0; k<fragsArrayShuffled.length; k++){
+//                if(fragsArrayShuffled[k]!='^'){
+//                fragObject[countTo20].frag= fragsArrayShuffled[k];
+//                countTo20++;
+//                }
+//            }
+//            var pieces = [fragObject, puzzArray[0], fragsPlusClueArr];
+//            return pieces;
+//
+//
+//    }
     renderSectionHeader(sectionID) {
         return (
             <View style={styles.section}>
@@ -328,15 +320,7 @@ class PuzzleContents extends Component{
             </View>
           )
     }
-    renderRow(pack) {
-        return (
-             <View>
-                 <TouchableHighlight style={container_styles.launcher} >
-                     <Text style={ styles.puzzle_text_large }>{pack.name}</Text>
-                 </TouchableHighlight>
-             </View>
-        );
-    }
+
     render() {
         const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
         const { puzzlesReady } = this.props;
@@ -365,7 +349,7 @@ class PuzzleContents extends Component{
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.num_puzzles, rowData.puzzles, rowData.title, rowData.bg_color)}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.puzzles, rowData.title, rowData.bg_color)}
                                                              style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]}
                                                              underlayColor={rowData.bg_color} >
                                              <Text style={ styles.contents_text }>{rowData.title}</Text>
