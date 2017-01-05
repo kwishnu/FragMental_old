@@ -174,6 +174,7 @@ class PuzzleLaunch extends Component{
                 title: index + 1,
                 index: index,
                 fromWhere: 'puzzle launcher',
+                daily_solvedArray: this.props.daily_solvedArray,
                 dataElement: this.props.dataElement,
                 myBg: this.props.bgColor,
                 myTitle: this.props.title,
@@ -209,7 +210,7 @@ class PuzzleLaunch extends Component{
                                     renderRow={(rowData) =>
                                      <View>
                                          <TouchableHighlight onPress={() => this.onSelect(rowData)}
-                                                             underlayColor={rowData.bg_color}
+                                                             underlayColor={() => this.bg(rowData)}
                                                              style={[container_styles.launcher, this.getBorder(rowData), this.bg(rowData)]} >
                                              <Text style={ styles.puzzle_text_large }>{rowData + 1}</Text>
                                          </TouchableHighlight>

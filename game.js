@@ -231,7 +231,6 @@ class Game extends Component {
             this.setState({ title: nextTitle, forwardBackOpacity: 0 });
             setTimeout(() => {this.reset_scene()}, 500);
         }
-        //this.getClueText();
     }
     drawTiles() {
         var result = [];
@@ -320,10 +319,25 @@ class Game extends Component {
                     }
                 }
                 if (entire_puzzle_solved){
+                    if(this.props.fromWhere == 'daily launcher'){
+                    dsArray[this.props.index] = '1';
+                    }
+                    if(this.props.fromWhere == 'puzzle launcher'){
+                        var newNumSolved = (parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10) + 1).toString();
+                        this.props.puzzleData[this.props.dataElement].num_solved = newNumSolved;
+                        try {
+                            AsyncStorage.setItem(KEY_Puzzles, JSON.stringify(this.props.puzzleData));
+                        } catch (error) {
+                            window.alert('AsyncStorage error: ' + error.message);
+                        }
+                    }
+
+
                     currClue = (this.state.score < 20)?'1':'2';
                 }
             }
             this.setState({ theData: data,
+                            daily_solvedArray: dsArray,
                             answer_text: theWord,
                             onThisClue: onClue,
                             onThisFrag: onFrag,
@@ -559,17 +573,11 @@ class Game extends Component {
             textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1);
             return textToReturn;
         }else{
-            //this.setScrollPosition(parseInt(this.state.title));
-            //var onThisPuzzle = (parseInt(this.state.title) + 1).toString();
-            dsArray[this.props.myIndex] = '1';
-            //return;
-            //window.alert(dsArray.toString());
             try {
                 AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(dsArray));
             } catch (error) {
                 window.alert('AsyncStorage error: ' + error.message);
             }
-
            if (currClue == '1'){
                 textToReturn = 'Congratulations...one star for solving the puzzle!';
                 timeoutHandle = setTimeout(() => {this.changeStarImage(1)}, 50);

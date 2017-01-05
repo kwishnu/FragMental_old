@@ -39,6 +39,7 @@ function invertColor(hex, bw) {
     // pad each with zeros and return
     return "#" + padZero(r) + padZero(g) + padZero(b);
 }
+var listening = false;
 var deepCopy = require('./deepCopy.js');
 var fragData = require('./objPassed.js');
 var SideMenu = require('react-native-side-menu');
@@ -132,15 +133,17 @@ class PuzzleContents extends Component{
             if (value !== null) {
                 var storedMidnight = parseInt(JSON.parse(value), 10);
                 var milliSecsOver = nowISO - storedMidnight;
+
                 if(milliSecsOver > 0){//at least the next day, update daily solved array
                     var numDays = Math.ceil(milliSecsOver/86400000);
                     numDays=(numDays>30)?30:numDays;
                     for (var shiftArray=0; shiftArray<numDays; shiftArray++){
-                        sArray.push('0');
+                        sArray.unshift('0');
                         sArray.pop();
                     }
                     try {
                         AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(sArray));
+                        AsyncStorage.setItem(KEY_midnight, JSON.stringify(tonightMidnight));
                     } catch (error) {
                         window.alert('AsyncStorage error: ' + error.message);
                     }
@@ -160,11 +163,17 @@ class PuzzleContents extends Component{
 //                 this.setState({scrollPosition: parseInt(value2, 10)});
 //        });
     }
+    componentWillUnmount(){
+        if(listening)BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
+
+    }
     toggle() {
         this.setState({ isOpen: !this.state.isOpen });
         if (this.state.isOpen) {
+            listening = true;
             BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
         } else {
+            listening = false;
             BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
         }
     }
@@ -251,8 +260,6 @@ class PuzzleContents extends Component{
         switch(index){
             case '0':
                 theDestination = 'game board';
-                //var thePieces = this.makePuzzArray(puzzArray);
-
                 this.props.navigator.replace({
                     id: 'game board',
                     passProps: {
@@ -287,32 +294,6 @@ class PuzzleContents extends Component{
                 },
        });
     }
-//    makePuzzArray(puzzString){
-//            var puzzArray = puzzString[0].split('~');
-//            var fragsArray = [];
-//            var fragsPlusClueArr =  puzzArray[1].split('**');
-//            var fragObject = owl.deepCopy(fragData);
-//
-//            for(var i=0; i<fragsPlusClueArr.length; i++){
-//                var splits = fragsPlusClueArr[i].split(':');
-//                var frags = splits[0].split('|');
-//                for(var j=0; j<frags.length; j++){
-//                    fragsArray.push(frags[j]);
-//                }
-//            }
-//            fragsArrayShuffled = shuffleArray(fragsArray);
-//            var countTo20 = 0;
-//            for(var k=0; k<fragsArrayShuffled.length; k++){
-//                if(fragsArrayShuffled[k]!='^'){
-//                fragObject[countTo20].frag= fragsArrayShuffled[k];
-//                countTo20++;
-//                }
-//            }
-//            var pieces = [fragObject, puzzArray[0], fragsPlusClueArr];
-//            return pieces;
-//
-//
-//    }
     renderSectionHeader(sectionID) {
         return (
             <View style={styles.section}>
