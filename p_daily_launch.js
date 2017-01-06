@@ -148,7 +148,7 @@ class DailyLaunch extends Component{
     }
 
     render() {
-        const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
+        const menu = <Menu onItemSelected={ this.onMenuItemSelected } data = {this.props.puzzleData} />;
         return (
             <SideMenu
                 menu={ menu }

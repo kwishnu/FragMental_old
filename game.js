@@ -442,7 +442,6 @@ class Game extends Component {
                     currClue =  this.state.theCluesArray[onClue]
                     newCurrentFrags = currClue.substring(0, currClue.indexOf(':'));
                     newNumFrags = (currClue.substring(0, currClue.indexOf(':')).split('|')).length;
-
                     break;
                 }
             }

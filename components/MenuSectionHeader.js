@@ -6,16 +6,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    padding: 10,
     paddingLeft: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: '#0000FF',
+    backgroundColor: '#191919',
   },
   text: {
-    fontSize: 20,
-    color: '#FFF600',
+    fontSize: 14,
+    color: '#FFF056',
   },
 });
 

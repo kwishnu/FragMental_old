@@ -1,32 +1,103 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
+import { ListView, StyleSheet, Text, View, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
+import MenuSectionHeader  from './components/MenuSectionHeader';
+
+var {width, height} = require('Dimensions').get('window');
+var CELL_WIDTH = Math.floor(width); // one tile's fraction of the screen width
+var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 5% of the cell width...+
+var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2);
+var BORDER_RADIUS = CELL_PADDING * .3;
 
 const styles = require('./styles');
 
 module.exports = class Menu extends Component {
-    static propTypes = {
-        onItemSelected: React.PropTypes.func.isRequired,
-    };
+    constructor(props) {
+        super(props);
+        const getSectionData = (dataBlob, sectionId) => dataBlob[sectionId];
+        const getRowData = (dataBlob, sectionId, rowId) => dataBlob[`${rowId}`];
+        const ds = new ListView.DataSource({
+          rowHasChanged: (r1, r2) => r1 !== r2,
+          sectionHeaderHasChanged : (s1, s2) => s1 !== s2,
+          getSectionData,
+          getRowData,
+        });
+        const { dataBlob, sectionIds, rowIds } = this.formatData(this.props.data);
+
+        this.state = {
+            dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds),
+        };
+    }
+    formatData(data) {
+        const headings = 'Daily Puzzles*My Puzzles*Recommended Puzzle Packs*Completed Puzzle Packs'.split('*');
+        const keys = 'daily*mypack*forsale*solved'.split('*');
+        const dataBlob = {};
+        const sectionIds = [];
+        const rowIds = [];
+        for (let sectionId = 0; sectionId < headings.length; sectionId++) {
+            const currentHead = headings[sectionId];
+            const currentKey = keys[sectionId];
+            const packs = data.filter((theData) => theData.type == currentKey && theData.show == 'true');
+            if (packs.length > 0) {
+                sectionIds.push(sectionId);
+                dataBlob[sectionId] = { sectionTitle: currentHead };
+                rowIds.push([]);
+                for (let i = 0; i < packs.length; i++) {
+                    const rowId = `${sectionId}:${i}`;
+                    rowIds[rowIds.length - 1].push(rowId);
+                    dataBlob[rowId] = packs[i];
+                }
+            }
+        }
+        return { dataBlob, sectionIds, rowIds };
+    }
 
     render() {
-        return (
-            <ScrollView scrollsToTop={ false } style={ styles.menu }>
-                <View style={ styles.avatarContainer }>
-                    <Text style={ styles.name }>'Heading'</Text>
-                </View>
-                <Text
-                    onPress={ () => this.props.onItemSelected('Puzzle Launch Page') }
-                    style={ styles.menu_item } >
-
-                    Puzzle Launch Page
-                </Text>
-                <Text
-                    onPress={ () => this.props.onItemSelected('A Puzzle') }
-                    style={ styles.menu_item } >
-
-                    A Puzzle
-                </Text>
-            </ScrollView>
-        );
+        return (<View style=  {menu_styles.container} >
+                 <ListView  showsVerticalScrollIndicator ={false}
+                            initialListSize ={100}
+                            dataSource={this.state.dataSource}
+                            renderRow={(rowData) =>
+                                <View>
+                                    <TouchableHighlight onPress={(rowData)=> this.onMenuItemSelected(item)}
+                                                        style={[menu_styles.launcher]}>
+                                        <Text style={ menu_styles.launcher_text }>{rowData.title}</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            }
+                            renderSeparator={(sectionId, rowId) => <View key={rowId} style={menu_styles.separator} />}
+                            renderSectionHeader={(sectionData) => <MenuSectionHeader {...sectionData}
+                             />}
+                     />
+                 </View>
+                );
     }
 }
+
+var menu_styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: width,
+        height: height,
+        backgroundColor: '#486bdd',
+    },
+    launcher: {
+        flex: 1,
+        width: width,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingLeft: 30,
+        paddingTop: 10,
+        paddingBottom: 10,
+        backgroundColor: '#6EA436',
+    },
+    launcher_text: {
+        color: '#EBF9DC',
+        fontSize: 16,
+    },
+    separator: {
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: '#FFF056',
+    }
+
+});

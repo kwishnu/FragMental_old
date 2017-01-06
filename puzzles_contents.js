@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, TouchableOpacity, ListView, BackAndroid, AsyncStorage } from 'react-native';
 import moment from 'moment';
 import SectionHeader  from './components/SectionHeader';
-//import Loading from './components/Loading';
 import Button from './components/Button';
+var SideMenu = require('react-native-side-menu');
+var Menu = require('./menu');
+
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -42,16 +44,12 @@ function invertColor(hex, bw) {
 var listening = false;
 var deepCopy = require('./deepCopy.js');
 var fragData = require('./objPassed.js');
-var SideMenu = require('react-native-side-menu');
-var Menu = require('./menu');
 var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
 var CELL_WIDTH = Math.floor(width); // one tile's fraction of the screen width
-var CELL_PADDING = Math.floor(CELL_WIDTH * .05) + 5; // 5% of the cell width...+
-var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2) - 7;
-var BORDER_RADIUS = CELL_PADDING * .2 + 3;
-var _scrollView = ListView;
-var KEY_ScrollPosition = 'scrollPositionKey';
+var CELL_PADDING = Math.floor(CELL_WIDTH * .08); // 5% of the cell width...+
+var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2);
+var BORDER_RADIUS = CELL_PADDING * .3;
 var KEY_daily_solved_array = 'solved_array';
 var KEY_midnight = 'midnight';
 var todayFull = moment().format('MMMM D, YYYY');
@@ -113,7 +111,7 @@ class PuzzleContents extends Component{
         return { dataBlob, sectionIds, rowIds };
     }
     componentDidMount() {
-    //window.alert(-(parseInt(dayDiff,10)));
+                //window.alert(this.props.puzzleData.length);
         AsyncStorage.getItem(KEY_daily_solved_array).then((theArray) => {
             if (theArray !== null) {
               sArray = JSON.parse(theArray);
@@ -121,7 +119,6 @@ class PuzzleContents extends Component{
             } else {
                 var solvedArray = new Array(30).fill('0');
                 sArray = solvedArray;
-                //window.alert(sArray);
                 try {
                    AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(solvedArray));
                 } catch (error) {
@@ -188,7 +185,6 @@ class PuzzleContents extends Component{
     onMenuItemSelected(item) {
         this.setState({
             isOpen: false,
-            selectedItem: item,
         });
         window.alert(item);
     }
@@ -294,17 +290,9 @@ class PuzzleContents extends Component{
                 },
        });
     }
-    renderSectionHeader(sectionID) {
-        return (
-            <View style={styles.section}>
-                <Text style={styles.sectionText}>{sectionID}</Text>
-            </View>
-          )
-    }
 
     render() {
-        const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
-        const { puzzlesReady } = this.props;
+        const menu = <Menu onItemSelected={ (item)=> this.onMenuItemSelected(item) } data = {this.props.puzzleData} />;
 
         return (
             <SideMenu
