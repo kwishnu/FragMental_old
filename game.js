@@ -99,6 +99,8 @@ class Game extends Component {
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
+//    window.alert(this.state.index);
+//    return;
         puzzleData = this.state.puzzleData;
         this.storeGameVariables(this.state.index);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);

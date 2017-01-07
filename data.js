@@ -4,9 +4,9 @@ module.exports = [
 		index: '0',
 		type:'toPuzzles',
         link: 'puzzles contents',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
@@ -14,9 +14,9 @@ module.exports = [
 		index: '1',
 		type:'toPuzzles',
         link: 'game board',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
@@ -24,9 +24,9 @@ module.exports = [
 		index: '2',
 		type:'toPuzzles',
         link: 'daily launcher',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
@@ -34,19 +34,87 @@ module.exports = [
 		index: '3',
 		type:'store',
         link: 'store',
-        data:[
-
-            ],
-
+        data:{
+            sale_item:{
+                    name: 'Capri',
+                    price: '$1.99',
+                    num_puzzles: '50',
+                    difficulty: 'easy',
+                    color: '#00BFFF',
+                    },
+            sale_item:{
+                    name: 'Chartreuse',
+                    price: '$1.99',
+                    num_puzzles: '50',
+                    difficulty: 'easy',
+                    color: '#DFFF00',
+                    },
+            sale_item:{
+                    name: 'Electric Indigo',
+                    price: '$1.99',
+                    num_puzzles: '50',
+                    difficulty: 'easy',
+                    color: '#6F00FF',
+                    },
+            sale_item:{
+                    name: 'Ferrari Red',
+                    price: '$1.99',
+                    num_puzzles: '50',
+                    difficulty: 'easy',
+                    color: '#FF2800',
+                    },
+            sale_item:{
+                    name: 'Guppie Green',
+                    price: '$1.99',
+                    num_puzzles: '50',
+                    difficulty: 'easy',
+                    color: '#00FF7F',
+                    },
+            sale_item:{
+                    name: 'Lavender Blue',
+                    price: '$1.99',
+                    num_puzzles: '50',
+                    difficulty: 'easy',
+                    color: '#CCCCFF',
+                    },
+            sale_item:{
+                    name: 'Mango Tango',
+                    price: '$2.99',
+                    num_puzzles: '100',
+                    difficulty: 'easy',
+                    color: '#FF8243',
+                    },
+            sale_item:{
+                    name: 'Hot Phlox',
+                    price: '$2.99',
+                    num_puzzles: '100',
+                    difficulty: 'easy',
+                    color: '#DF00FF',
+                    },
+            sale_item:{
+                    name: 'Tasty Turquoise',
+                    price: '$2.99',
+                    num_puzzles: '100',
+                    difficulty: 'easy',
+                    color: '#00FFEF',
+                    },
+            sale_item:{
+                    name: 'Wild Strawberry',
+                    price: '$2.99',
+                    num_puzzles: '100',
+                    difficulty: 'easy',
+                    color: '#FF43A4',
+                    },
+            },
     },
     {
 		title:'Moderate',
 		index: '4',
 		type:'store',
         link: 'store',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
@@ -54,9 +122,9 @@ module.exports = [
 		index: '5',
 		type:'store',
         link: 'store',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
@@ -64,95 +132,105 @@ module.exports = [
 		index: '6',
 		type:'store',
         link: 'store',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
-		title:'Easy Value Combos',
+		title:'Easy Combos',
 		index: '7',
 		type:'combos',
         link: 'store',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
-		title:'Moderate Value Combos',
+		title:'Moderate Combos',
 		index: '8',
 		type:'combos',
         link: 'store',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
-		title:'Hard Value Combos',
+		title:'Hard Combos',
 		index: '9',
 		type:'combos',
         link: 'store',
-        data:[
+        data:{
 
-            ],
+            },
+
+    },
+    {
+		title:'Mixed Combos',
+		index: '10',
+		type:'combos',
+        link: 'store',
+        data:{
+
+            },
 
     },
     {
 		title:'Facebook',
-		index: '10',
+		index: '11',
 		type:'social',
         link: '',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
 		title:'Twitter',
-		index: '11',
+		index: '12',
 		type:'social',
         link: '',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
 		title:'How To Play',
-		index: '12',
+		index: '13',
 		type:'about',
         link: '',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
 		title:'Settings',
-		index: '13',
+		index: '14',
 		type:'about',
         link: '',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
     {
 		title:'About',
-		index: '14',
+		index: '15',
 		type:'about',
         link: '',
-        data:[
+        data:{
 
-            ],
+            },
 
     },
 
 	{
 		title:'Today\'s Puzzle',
-		index: '15',
+		index: '16',
 		type:'daily',
 		show:'true',
 		num_puzzles:'1',
@@ -165,7 +243,7 @@ module.exports = [
 	},
 	{
 		title:'Last Three Days',
-		index: '16',
+		index: '17',
 		type:'daily',
 		show:'true',
 		num_puzzles:'3',
@@ -180,7 +258,7 @@ module.exports = [
 	},
 	{
 		title:'Last Thirty Days',
-		index: '17',
+		index: '18',
 		type:'daily',
 		show:'true',
 		num_puzzles:'30',
@@ -222,7 +300,7 @@ module.exports = [
 	},
 	{
 		title:'Eggplant',
-		index: '18',
+		index: '19',
 		type:'mypack',
 		show:'true',
 		num_puzzles:'50',
@@ -284,7 +362,7 @@ module.exports = [
 	},
 	{
 		title:'Strawberry',
-		index: '19',
+		index: '20',
 		type:'forsale',
 		show:'true',
 		num_puzzles:'0',
@@ -297,7 +375,7 @@ module.exports = [
 	},
 	{
 		title:'Banana',
-		index: '20',
+		index: '21',
 		type:'forsale',
 		show:'true',
 		num_puzzles:'0',

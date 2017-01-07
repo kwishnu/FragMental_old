@@ -52,7 +52,6 @@ var TILE_WIDTH = (CELL_WIDTH - CELL_PADDING * 2);
 var BORDER_RADIUS = CELL_PADDING * .3;
 var KEY_daily_solved_array = 'solved_array';
 var KEY_midnight = 'midnight';
-var todayFull = moment().format('MMMM D, YYYY');
 var nowISO = moment().valueOf();
 var launchDay = moment('2016 10', 'YYYY-MM');//November 1, 2016
 var dayDiff = launchDay.diff(nowISO, 'days');//# of days since 11/1/2016
@@ -77,6 +76,7 @@ class PuzzleContents extends Component{
         this.state = {
             id: 'puzzles contents',
             isOpen: false,
+            todayFull: null,
             dataSource: ds.cloneWithRowsAndSections(dataBlob, sectionIds, rowIds),
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
@@ -111,7 +111,8 @@ class PuzzleContents extends Component{
         return { dataBlob, sectionIds, rowIds };
     }
     componentDidMount() {
-                //window.alert(this.props.puzzleData.length);
+        var todayfull = moment().format('MMMM D, YYYY');
+        this.setState({todayFull: todayfull});
         AsyncStorage.getItem(KEY_daily_solved_array).then((theArray) => {
             if (theArray !== null) {
               sArray = JSON.parse(theArray);
@@ -262,24 +263,24 @@ class PuzzleContents extends Component{
         var theTitle = title;
         var textColor = '';
 
-        switch(index){
-            case '0':
+        switch(title){
+            case 'Today\'s Puzzle':
                 theDestination = 'game board';
                 this.props.navigator.replace({
                     id: 'game board',
                     passProps: {
                         puzzleData: this.props.puzzleData,
                         daily_solvedArray: sArray,
-                        title: todayFull,
-                        index: 15,
+                        title: this.state.todayFull,
+                        index: '0',
                         fromWhere: 'puzzles contents',
-                        dataElement: '0',
+                        dataElement: index,
                         },
                         });
                         return;
                 break;
-            case '1':
-            case '2':  //fallthrough
+            case 'Last Three Days':
+            case 'Last Thirty Days':  //fallthrough
                 theDestination = 'daily launcher';
                 theTitle = 'Daily Puzzles'
                 //theDate =
