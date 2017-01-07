@@ -222,10 +222,10 @@ class PuzzleContents extends Component{
             borderWidth: 2,
         };
     }
-    lightBorder(color, num) {
+    lightBorder(color, type) {
         var lighterColor = this.shadeColor(color, 60);
         //lighterColor = (num!=1 && num!=2)?lighterColor:'#f05356';
-        var bordWidth = (num<3)? 1:6;
+        var bordWidth = (type == 'daily')? 1:6;
             return {
                 borderColor: lighterColor,
                 borderWidth: bordWidth,
@@ -271,7 +271,7 @@ class PuzzleContents extends Component{
                         puzzleData: this.props.puzzleData,
                         daily_solvedArray: sArray,
                         title: todayFull,
-                        index: 0,
+                        index: 15,
                         fromWhere: 'puzzles contents',
                         dataElement: '0',
                         },
@@ -328,7 +328,7 @@ class PuzzleContents extends Component{
                                     renderRow={(rowData) =>
                                      <View>
                                          <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.title, rowData.bg_color)}
-                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]}
+                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.type)]}
                                                              underlayColor={rowData.bg_color} >
                                              <Text style={ styles.contents_text }>{rowData.title}</Text>
                                          </TouchableHighlight>

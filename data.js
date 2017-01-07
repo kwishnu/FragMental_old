@@ -1,10 +1,159 @@
 module.exports = [
+    {
+		title:'Contents',
+		index: '0',
+		type:'toPuzzles',
+        link: 'puzzles contents',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Today\'s Puzzle',
+		index: '1',
+		type:'toPuzzles',
+        link: 'game board',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Daily Puzzles',
+		index: '2',
+		type:'toPuzzles',
+        link: 'daily launcher',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Easy',
+		index: '3',
+		type:'store',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Moderate',
+		index: '4',
+		type:'store',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Hard',
+		index: '5',
+		type:'store',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Theme',
+		index: '6',
+		type:'store',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Easy Value Combos',
+		index: '7',
+		type:'combos',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Moderate Value Combos',
+		index: '8',
+		type:'combos',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Hard Value Combos',
+		index: '9',
+		type:'combos',
+        link: 'store',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Facebook',
+		index: '10',
+		type:'social',
+        link: '',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Twitter',
+		index: '11',
+		type:'social',
+        link: '',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'How To Play',
+		index: '12',
+		type:'about',
+        link: '',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'Settings',
+		index: '13',
+		type:'about',
+        link: '',
+        data:[
+
+            ],
+
+    },
+    {
+		title:'About',
+		index: '14',
+		type:'about',
+        link: '',
+        data:[
+
+            ],
+
+    },
+
 	{
 		title:'Today\'s Puzzle',
-		index: '0',
-		owner:'bbg',
+		index: '15',
 		type:'daily',
-		date:'date-acquired',
 		show:'true',
 		num_puzzles:'1',
 		num_solved:'0',
@@ -16,10 +165,8 @@ module.exports = [
 	},
 	{
 		title:'Last Three Days',
-		index: '1',
-		owner:'bbg',
+		index: '16',
 		type:'daily',
-		date:'date-acquired',
 		show:'true',
 		num_puzzles:'3',
 		num_solved:'0',
@@ -33,10 +180,8 @@ module.exports = [
 	},
 	{
 		title:'Last Thirty Days',
-		index: '2',
-		owner:'bbg',
+		index: '17',
 		type:'daily',
-		date:'date-acquired',
 		show:'true',
 		num_puzzles:'30',
 		num_solved:'0',
@@ -77,10 +222,8 @@ module.exports = [
 	},
 	{
 		title:'Eggplant',
-		index: '3',
-		owner:'bbg',
+		index: '18',
 		type:'mypack',
-		date:'date-acquired',
 		show:'true',
 		num_puzzles:'50',
 		num_solved:'0',
@@ -141,10 +284,8 @@ module.exports = [
 	},
 	{
 		title:'Strawberry',
-		index: '4',
-		owner:'bbg',
+		index: '19',
 		type:'forsale',
-		date:'date-acquired',
 		show:'true',
 		num_puzzles:'0',
 		num_solved:'0',
@@ -156,10 +297,8 @@ module.exports = [
 	},
 	{
 		title:'Banana',
-		index: '5',
-		owner:'bbg',
+		index: '20',
 		type:'forsale',
-		date:'date-acquired',
 		show:'true',
 		num_puzzles:'0',
 		num_solved:'0',

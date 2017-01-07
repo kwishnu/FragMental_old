@@ -36,7 +36,7 @@ module.exports = class Menu extends Component {
         for (let sectionId = 0; sectionId < headings.length; sectionId++) {
             const currentHead = headings[sectionId];
             const currentKey = keys[sectionId];
-            const packs = data.filter((theData) => theData.type == currentKey && theData.show == 'true');
+            const packs = data.filter((theData) => theData.type == currentKey);
             if (packs.length > 0) {
                 sectionIds.push(sectionId);
                 dataBlob[sectionId] = { sectionTitle: currentHead };
@@ -56,22 +56,23 @@ module.exports = class Menu extends Component {
 
     render() {
         return (<View style=  {menu_styles.container} >
-             <ListView  showsVerticalScrollIndicator ={false}
-                        initialListSize ={100}
-                        dataSource={this.state.dataSource}
-                        renderRow={(rowData) =>
-                            <View>
-                                <TouchableHighlight onPress={() => this.props.onItemSelected(rowData)}
-                                                    style={[menu_styles.launcher]}>
-                                    <Text style={ menu_styles.launcher_text }>{rowData.title}</Text>
-                                </TouchableHighlight>
-                            </View>
-                        }
-                        renderSeparator={(sectionId, rowId) => <View key={rowId} style={menu_styles.separator} />}
-                        renderSectionHeader={(sectionData) => <MenuSectionHeader {...sectionData}
-                         />}
-                 />
-             </View>
+                     <ListView  showsVerticalScrollIndicator ={false}
+                                initialListSize ={100}
+                                contentContainerStyle={ menu_styles.listview }
+                                dataSource={this.state.dataSource}
+                                renderRow={(rowData) =>
+                                    <View>
+                                        <TouchableHighlight onPress={() => this.props.onItemSelected(rowData)}
+                                                            style={[menu_styles.launcher]}>
+                                            <Text style={ menu_styles.launcher_text }>{rowData.title}</Text>
+                                        </TouchableHighlight>
+                                    </View>
+                                }
+                                renderSeparator={(sectionId, rowId) => <View key={rowId} style={menu_styles.separator} />}
+                                renderSectionHeader={(sectionData) => <MenuSectionHeader {...sectionData}
+                                 />}
+                     />
+                </View>
                 );
     }
 }
@@ -82,6 +83,9 @@ var menu_styles = StyleSheet.create({
         width: width,
         height: height,
         backgroundColor: '#486bdd',
+    },
+    listview: {
+        paddingBottom: 50
     },
     launcher: {
         flex: 1,
