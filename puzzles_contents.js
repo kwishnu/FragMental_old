@@ -182,11 +182,20 @@ class PuzzleContents extends Component{
             BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
         }
     }
-    onMenuItemSelected(item) {
-        this.setState({
-            isOpen: false,
-        });
-        window.alert(item);
+    onMenuItemSelected = (item) => {
+//        this.setState({
+//          isOpen: false,
+//        });
+//        window.alert(item.title);
+           this.props.navigator.push({
+               id: 'store',
+               passProps: {
+                word: item.title,
+                puzzleData: this.props.puzzleData
+
+               }
+            });
+
     }
     shadeColor(color, percent) {
         var R = parseInt(color.substring(1,3),16);
@@ -248,7 +257,7 @@ class PuzzleContents extends Component{
 //            console.log('Items.addOne', err, res);
 //        });
 //    }
-    onSelect(index, puzzArray, title, bg) {
+    onSelect(index, title, bg) {
         var theDestination = 'puzzle launcher';
         var theTitle = title;
         var textColor = '';
@@ -292,7 +301,7 @@ class PuzzleContents extends Component{
     }
 
     render() {
-        const menu = <Menu onItemSelected={ (item)=> this.onMenuItemSelected(item) } data = {this.props.puzzleData} />;
+        const menu = <Menu onItemSelected={this.onMenuItemSelected} data = {this.props.puzzleData} />;
 
         return (
             <SideMenu
@@ -318,7 +327,7 @@ class PuzzleContents extends Component{
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
                                      <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.puzzles, rowData.title, rowData.bg_color)}
+                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.title, rowData.bg_color)}
                                                              style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.index)]}
                                                              underlayColor={rowData.bg_color} >
                                              <Text style={ styles.contents_text }>{rowData.title}</Text>
@@ -339,7 +348,7 @@ class PuzzleContents extends Component{
 }
 
 //<PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
-
+//09146d
 
 
 var container_styles = StyleSheet.create({
@@ -358,7 +367,7 @@ var container_styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: window.width,
-        backgroundColor: '#09146d',
+        backgroundColor: '#12046c',
     },
     puzzles_container: {
         flex: 45,

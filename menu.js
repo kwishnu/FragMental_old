@@ -28,8 +28,8 @@ module.exports = class Menu extends Component {
         };
     }
     formatData(data) {
-        const headings = 'Daily Puzzles*My Puzzles*Recommended Puzzle Packs*Completed Puzzle Packs'.split('*');
-        const keys = 'daily*mypack*forsale*solved'.split('*');
+        const headings = 'FragMental*Puzzle Store*Discount Combo Packs*Social Media*About FragMental'.split('*');
+        const keys = 'toPuzzles*store*combos*social*about'.split('*');
         const dataBlob = {};
         const sectionIds = [];
         const rowIds = [];
@@ -50,25 +50,28 @@ module.exports = class Menu extends Component {
         }
         return { dataBlob, sectionIds, rowIds };
     }
+    static propTypes = {
+        onItemSelected: React.PropTypes.func.isRequired,
+    }
 
     render() {
         return (<View style=  {menu_styles.container} >
-                 <ListView  showsVerticalScrollIndicator ={false}
-                            initialListSize ={100}
-                            dataSource={this.state.dataSource}
-                            renderRow={(rowData) =>
-                                <View>
-                                    <TouchableHighlight onPress={(rowData)=> this.onMenuItemSelected(item)}
-                                                        style={[menu_styles.launcher]}>
-                                        <Text style={ menu_styles.launcher_text }>{rowData.title}</Text>
-                                    </TouchableHighlight>
-                                </View>
-                            }
-                            renderSeparator={(sectionId, rowId) => <View key={rowId} style={menu_styles.separator} />}
-                            renderSectionHeader={(sectionData) => <MenuSectionHeader {...sectionData}
-                             />}
-                     />
-                 </View>
+             <ListView  showsVerticalScrollIndicator ={false}
+                        initialListSize ={100}
+                        dataSource={this.state.dataSource}
+                        renderRow={(rowData) =>
+                            <View>
+                                <TouchableHighlight onPress={() => this.props.onItemSelected(rowData)}
+                                                    style={[menu_styles.launcher]}>
+                                    <Text style={ menu_styles.launcher_text }>{rowData.title}</Text>
+                                </TouchableHighlight>
+                            </View>
+                        }
+                        renderSeparator={(sectionId, rowId) => <View key={rowId} style={menu_styles.separator} />}
+                        renderSectionHeader={(sectionData) => <MenuSectionHeader {...sectionData}
+                         />}
+                 />
+             </View>
                 );
     }
 }
@@ -86,18 +89,19 @@ var menu_styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingLeft: 30,
+        paddingLeft: 20,
         paddingTop: 10,
         paddingBottom: 10,
-        backgroundColor: '#6EA436',
+        backgroundColor: '#e1fed2',
     },
     launcher_text: {
-        color: '#EBF9DC',
+        color: '#464646',
         fontSize: 16,
+        fontWeight: 'bold'
     },
     separator: {
         height: StyleSheet.hairlineWidth,
-        backgroundColor: '#FFF056',
+        backgroundColor: '#707070',
     }
 
 });

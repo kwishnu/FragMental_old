@@ -6,17 +6,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: width,
-    paddingLeft: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingLeft: 12,
+    paddingTop: 10,
+    paddingBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: '#191919',
+    backgroundColor: '#12046c',
   },
   text: {
-    fontSize: 14,
-    color: '#FFF056',
+    fontSize: 18,
+    color: '#fbf70e',
   },
 });
 

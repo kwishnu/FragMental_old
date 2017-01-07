@@ -646,7 +646,7 @@ class Game extends Component {
     }
 
     render() {
-        const menu = <Menu onItemSelected={ this.onMenuItemSelected } />;
+        const menu = <Menu onItemSelected={ this.onMenuItemSelected } data = {this.props.puzzleData} />;
         if(this.state.isLoading == true){
             return(
                 <View style={ container_styles.loading }>
