@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, TouchableHighlight, ListView, BackAndroid, AsyncStorage } from 'react-native';
-import Row from './components/Row';
+import Row3 from './components/Row3';
 import Button from './components/Button';
 var styles = require('./styles');
 
 
-module.exports = class StoreListView extends Component {
+module.exports = class ComboStore extends Component {
     constructor(props) {
         super(props);
         this.dataSource = new ListView.DataSource({
@@ -13,7 +13,7 @@ module.exports = class StoreListView extends Component {
           })
 //        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         this.state = {
-            id: 'store',
+            id: 'combo store',
             dataSource: this.props.puzzleData[this.props.dataIndex].data
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
@@ -60,7 +60,7 @@ module.exports = class StoreListView extends Component {
                                 initialListSize ={100}
                                 contentContainerStyle={ store_styles.listview }
                                 dataSource={rows}
-                                renderRow={(data) => <Row {...data} />}
+                                renderRow={(data) => <Row3 {...data} />}
                         />
                     </View>
                 </View>

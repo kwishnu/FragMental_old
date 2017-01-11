@@ -184,18 +184,56 @@ class PuzzleContents extends Component{
         }
     }
     onMenuItemSelected = (item) => {
-//        this.setState({
-//          isOpen: false,
-//        });
-//        window.alert(item.title);
-           this.props.navigator.push({
-               id: 'store',
-               passProps: {
-                word: item.title,
-                puzzleData: this.props.puzzleData
 
-               }
-            });
+    //window.alert(item.link);
+        switch (item.link){
+            case 'puzzles contents':
+                this.props.navigator.push({
+                    id: 'puzzles contents',
+                    passProps: {
+                        puzzleData: this.props.puzzleData,
+                    }
+                });
+                break;
+            case 'game board':
+                this.onSelect('16','Today\'s Puzzle', null);
+                break;
+            case 'daily launcher':
+                //check for upgrade, route accordingly todo
+                this.onSelect('17','Last Three Days', null);
+                break;
+            case 'store':
+                this.props.navigator.push({
+                    id: 'store',
+                    passProps: {
+                        dataIndex: item.index,
+                        title: item.title + ' Puzzle Packs',
+                        puzzleData: this.props.puzzleData,
+                    }
+                });
+                break;
+            case 'store3':
+                this.props.navigator.push({
+                    id: 'combo store',
+                    passProps: {
+                        dataIndex: item.index,
+                        title: item.title + ' Value Packs',
+                        puzzleData: this.props.puzzleData,
+                    }
+                });
+                break;
+
+            case 'app_intro':
+                this.props.navigator.push({
+                    id: 'start scene',
+                    passProps: {
+                        puzzleData: this.props.puzzleData,
+                    }
+                });
+                break;
+        }
+
+
 
     }
     shadeColor(color, percent) {
@@ -275,9 +313,9 @@ class PuzzleContents extends Component{
                         index: '0',
                         fromWhere: 'puzzles contents',
                         dataElement: index,
-                        },
-                        });
-                        return;
+                    },
+                });
+                return;
                 break;
             case 'Last Three Days':
             case 'Last Thirty Days':  //fallthrough
@@ -297,7 +335,7 @@ class PuzzleContents extends Component{
                 dataElement: index,
                 bgColor: bg,
                 textColor: textColor,
-                },
+            },
        });
     }
 
