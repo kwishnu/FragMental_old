@@ -13,6 +13,10 @@ function shuffleArray(array) {
     }
     return array;
 }
+function randomNum(low, high) {
+    high++;
+    return Math.floor((Math.random())*(high-low))+low;
+}
 
 var deepCopy = require('./deepCopy.js');
 var fragData = require('./objPassed.js');
@@ -114,6 +118,12 @@ class Game extends Component {
             this.toggle();
             return true;
         }else{
+            var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+            for(let i=0; i<4; i++){
+                var rand0to9 = randomNum(0, 9);
+                puzzleData[20 + i].title = '*' + puzzleData[levels[i]].data[rand0to9].name;
+                puzzleData[20 + i].bg_color = puzzleData[levels[i]].data[rand0to9].color;
+            }
             try {
                 this.props.navigator.replace({
                     id: this.props.fromWhere,
@@ -192,6 +202,12 @@ class Game extends Component {
         }
     }
     closeGame() {
+            var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+            for(let i=0; i<4; i++){
+                var rand0to9 = randomNum(0, 9);
+                puzzleData[20 + i].title = '*' + puzzleData[levels[i]].data[rand0to9].name;
+                puzzleData[20 + i].bg_color = puzzleData[levels[i]].data[rand0to9].color;
+            }
             try {
             this.props.navigator.replace({
                 id: this.props.fromWhere,
@@ -207,7 +223,7 @@ class Game extends Component {
             });
                 return true;
             } catch(err)  {
-            window.alert(err.message)
+                window.alert(err.message)
                 return true;
             }
     }

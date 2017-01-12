@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, Image, TouchableHighlight, ListView, BackAndroi
 import Row from './components/Row';
 import Button from './components/Button';
 var styles = require('./styles');
+function randomNum(low, high) {
+    high++;
+    return Math.floor((Math.random())*(high-low))+low;
+}
 
 
 module.exports = class StoreListView extends Component {
@@ -10,8 +14,7 @@ module.exports = class StoreListView extends Component {
         super(props);
         this.dataSource = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
-          })
-//        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        })
         this.state = {
             id: 'store',
             dataSource: this.props.puzzleData[this.props.dataIndex].data
@@ -19,7 +22,6 @@ module.exports = class StoreListView extends Component {
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount(){
-    //window.alert(this.props.dataIndex);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
     }
     componentWillUnmount () {
@@ -46,8 +48,8 @@ module.exports = class StoreListView extends Component {
         return (
                 <View style={store_styles.container}>
                     <View style={ store_styles.header }>
-                        <Button style={{left: 10}} onPress={ () => this.toggle() }>
-                            <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
+                        <Button style={{left: 10}} onPress={ () => this.handleHardwareBackButton() }>
+                            <Image source={ require('./images/arrow_back.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                         <Text style={styles.header_text} >{this.props.title}
                         </Text>
@@ -91,8 +93,6 @@ const store_styles = StyleSheet.create({
         paddingRight: 16,
     },
     listview: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
         marginTop: 16,
         paddingBottom: 40,
         justifyContent: 'center',

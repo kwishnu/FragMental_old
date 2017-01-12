@@ -61,15 +61,16 @@ shadeColor=(color, percent)=> {
 lightBorder=(color)=> {
     var lighterColor = this.shadeColor(color, 60);
         return {
-            borderColor: lighterColor,
-            borderWidth: 6,
+            borderColor: lighterColor
         };
 }
 getTextColor=(bg)=>{
 var strToReturn = this.invertColor(bg, true);
-         return {
-         color: strToReturn,
-         };
+    return {
+        color: strToReturn,
+        borderWidth: 20,
+        borderStyle: 'solid'
+    };
 }
 startPurchase=(item_name)=>{
     window.alert(item_name);
@@ -77,13 +78,13 @@ startPurchase=(item_name)=>{
 const Row = (props) => (
     <TouchableHighlight onPress={()=>this.startPurchase(props.name)} style={[styles.launcher, {backgroundColor: props.color}, this.lightBorder(props.color)]}>
         <View style={styles.row_view}>
-            <Text style={[{fontSize: 10}, this.getTextColor(props.color)]}>
+            <Text style={[styles.text_small, this.getTextColor(props.color)]}>
               {`${props.num_puzzles}`}
             </Text>
             <Text style={[{fontSize: 20}, this.getTextColor(props.color)]}>
               {`${props.name}`}
             </Text>
-            <Text style={[{fontSize: 10}, {color: props.color}]}>
+            <Text style={[styles.text_small, {color: props.color}]}>
               {`${props.difficulty}`}
             </Text>
         </View>
@@ -91,28 +92,20 @@ const Row = (props) => (
 );
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     row_view: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-
-
     },
-    text: {
-        fontSize: 20,
+    text_small: {
+        fontSize: 10,
+        marginLeft: 10
     },
     launcher: {
         width: TILE_WIDTH,
         height: TILE_WIDTH * .25,
         borderRadius: BORDER_RADIUS,
-        padding: 20,
         marginTop: 6,
         marginBottom: 1,
     },

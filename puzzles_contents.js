@@ -154,12 +154,6 @@ class PuzzleContents extends Component{
                 }
             }
         });
-//         AsyncStorage.getItem(KEY_onPuzzle).then((value) => {
-//                 this.setState({onPuzzle: parseInt(value, 10)});
-//        });
-//         AsyncStorage.getItem(KEY_ScrollPosition).then((value2) => {
-//                 this.setState({scrollPosition: parseInt(value2, 10)});
-//        });
     }
     componentWillUnmount(){
         if(listening)BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -184,8 +178,6 @@ class PuzzleContents extends Component{
         }
     }
     onMenuItemSelected = (item) => {
-
-    //window.alert(item.link);
         switch (item.link){
             case 'puzzles contents':
                 this.props.navigator.push({
@@ -263,7 +255,6 @@ class PuzzleContents extends Component{
     }
     lightBorder(color, type) {
         var lighterColor = this.shadeColor(color, 60);
-        //lighterColor = (num!=1 && num!=2)?lighterColor:'#f05356';
         var bordWidth = (type == 'daily')? 1:6;
             return {
                 borderColor: lighterColor,
@@ -271,36 +262,34 @@ class PuzzleContents extends Component{
             };
     }
     bg(colorSent){
-         var strToReturn=colorSent.replace(/\"/g, "");
-//         if(num==parseInt(this.state.onPuzzle, 10) + 1){
-//             strToReturn='#0F0';
-//             }else if(num<parseInt(this.state.onPuzzle, 10) + 1){
-//             strToReturn='#079707';
-//             }else{
-//             strToReturn='#999ba0';
-//             }
-
-         return {
-         backgroundColor: strToReturn
-         };
+        var strToReturn=colorSent.replace(/\"/g, "");
+        return {
+            backgroundColor: strToReturn
+        };
     }
-//    onSelect (sent) {
-//    var value = 'test2';
-//         Meteor.call('DataJ.deleteOne', { value }, (err, res) => {
-//            // Do whatever you want with the response
-//            //window.alert(res);
-//        });
-//
-//         Meteor.call('DataJ.addOne', { value }, (err, res) => {
-//            // Do whatever you want with the response
-//            console.log('Items.addOne', err, res);
-//        });
-//    }
+    getTextColor(bg){
+        var strToReturn = invertColor(bg, true);
+        return {
+            color: strToReturn,
+        };
+    }
+    getTitle(title){
+        var titleToReturn = (title.indexOf('*') > -1)?title.substring(1):title;
+        return titleToReturn;
+    }
+    startPurchase=(item_name)=>{
+        window.alert(item_name);
+    }
+
     onSelect(index, title, bg) {
         var theDestination = 'puzzle launcher';
         var theTitle = title;
         var textColor = '';
 
+        if (title.indexOf('*') > -1){
+            this.startPurchase(title.substring(1));
+            return;
+        }
         switch(title){
             case 'Today\'s Puzzle':
                 theDestination = 'game board';
@@ -365,13 +354,13 @@ class PuzzleContents extends Component{
                                     contentContainerStyle={ container_styles.listview }
                                     dataSource={this.state.dataSource}
                                     renderRow={(rowData) =>
-                                     <View>
-                                         <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.title, rowData.bg_color)}
-                                                             style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.type)]}
-                                                             underlayColor={rowData.bg_color} >
-                                             <Text style={ styles.contents_text }>{rowData.title}</Text>
-                                         </TouchableHighlight>
-                                     </View>
+                                         <View>
+                                             <TouchableHighlight onPress={() => this.onSelect(rowData.index, rowData.title, rowData.bg_color)}
+                                                                 style={[container_styles.launcher, this.bg(rowData.bg_color), this.lightBorder(rowData.bg_color, rowData.type)]}
+                                                                 underlayColor={rowData.bg_color} >
+                                                 <Text style={[container_styles.launcher_text, this.getTextColor(rowData.bg_color)]}>{this.getTitle(rowData.title)}</Text>
+                                             </TouchableHighlight>
+                                         </View>
                                      }
                                      renderSectionHeader={(sectionData) => <SectionHeader {...sectionData} />}
                          />
@@ -386,7 +375,6 @@ class PuzzleContents extends Component{
 
 }
 
-//<PuzzlesContainer navigator={this.props.navigator} id={'puzzle contents'}/>
 //09146d
 
 
@@ -399,6 +387,7 @@ var container_styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingBottom: 40
     },
     header: {
         flex: 4,
@@ -413,8 +402,6 @@ var container_styles = StyleSheet.create({
         backgroundColor: '#486bdd',
         justifyContent: 'center',
         alignItems: 'center',
-//        paddingLeft: 6,
-//        paddingRight: 6,
     },
     footer: {
         flex: 4,
@@ -426,12 +413,13 @@ var container_styles = StyleSheet.create({
         width: TILE_WIDTH,
         height: TILE_WIDTH * .25,
         borderRadius: BORDER_RADIUS,
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 6,
         marginBottom: 1,
-
+    },
+    launcher_text: {
+        fontSize: 20,
     },
 });
 module.exports = PuzzleContents;

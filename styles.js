@@ -52,7 +52,6 @@ module.exports = StyleSheet.create({
         color: '#fff',
         fontSize: LETTER_SIZE,
     },
-
     answer_text: {
         color: 'white',
         fontSize: LETTER_SIZE * 5/3,

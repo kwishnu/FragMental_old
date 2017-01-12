@@ -423,7 +423,7 @@ module.exports = [
 
     },
     {
-		title:'Easy Combos',
+		title:'Easy Combo',
 		index: '7',
 		type:'combos',
         link: 'store3',
@@ -439,7 +439,7 @@ module.exports = [
                     },
                     {
                     name: ['Ferrari Red','Guppie Green','Lavender Blue'],
-                    product_id: 'fragmental.e.ferrari_red50',
+                    product_id: 'fragmental.ec.ferrari_red150',
                     price: '$2.99',
                     show: 'true',
                     num_puzzles: ['50','50','50'],
@@ -448,7 +448,7 @@ module.exports = [
                     },
                     {
                     name: ['Mango Tango','Hot Phlox','Tasty Turquoise'],
-                    product_id: 'fragmental.e.mango_tango100',
+                    product_id: 'fragmental.ec.mango_tango300',
                     price: '$3.99',
                     show: 'true',
                     num_puzzles: ['100','100','100'],
@@ -458,33 +458,111 @@ module.exports = [
             ],
     },
     {
-		title:'Moderate Combos',
+		title:'Moderate Combo',
 		index: '8',
 		type:'combos',
         link: 'store3',
-        data:{
-
-            },
+        data:[
+                    {
+                    name: ['Bungalow', 'Cruise', 'Getaway'],
+                    product_id: 'fragmental.mc.bungalow150',
+                    price: '$2.99',
+                    show: 'true',
+                    num_puzzles: ['50','50','50'],
+                    difficulty: ['M','M','M'],
+                    color: ['#138808','#2A52BE','#800000']
+                    },
+                    {
+                    name: ['Holiday','Road Trip','Siesta'],
+                    product_id: 'fragmental.mc.holiday150',
+                    price: '$2.99',
+                    show: 'true',
+                    num_puzzles: ['50','50','50'],
+                    difficulty: ['M','M','M'],
+                    color: ['#FEFE22','#98817B','#082567']
+                    },
+                    {
+                    name: ['Tropics','Vacation','Villa'],
+                    product_id: 'fragmental.mc.tropics300',
+                    price: '$3.99',
+                    show: 'true',
+                    num_puzzles: ['100','100','100'],
+                    difficulty: ['M','M','M'],
+                    color: ['#C71585','#CBA135','#FFC40C']
+                    },
+            ],
 
     },
     {
-		title:'Hard Combos',
+		title:'Hard Combo',
 		index: '9',
 		type:'combos',
         link: 'store3',
-        data:{
-
-            },
+        data:[
+                    {
+                    name: ['Blizzard', 'Cyclone', 'Dust'],
+                    product_id: 'fragmental.hc.blizzard150',
+                    price: '$2.99',
+                    show: 'true',
+                    num_puzzles: ['50','50','50'],
+                    difficulty: ['H','H','H'],
+                    color: ['#E7FEFF','#DE3163','#FFCBA4']
+                    },
+                    {
+                    name: ['Electrical','Hurricane','Southwester'],
+                    product_id: 'fragmental.hc.electrical150',
+                    price: '$2.99',
+                    show: 'true',
+                    num_puzzles: ['50','50','50'],
+                    difficulty: ['H','H','H'],
+                    color: ['#7DF9FF','#8F00FF','#FFCC33']
+                    },
+                    {
+                    name: ['Squall','Tempest','Thunderstorm'],
+                    product_id: 'fragmental.hc.squall300',
+                    price: '$3.99',
+                    show: 'true',
+                    num_puzzles: ['100','100','100'],
+                    difficulty: ['H','H','H'],
+                    color: ['#A52A2A','#007BA7','#3B444B']
+                    },
+            ],
 
     },
     {
-		title:'Mixed Combos',
+		title:'Mixed Combo',
 		index: '10',
 		type:'combos',
         link: 'store3',
-        data:{
-
-            },
+        data:[
+                    {
+                    name: ['Electric Indigo', 'Mango Tango', 'Cruise'],
+                    product_id: 'fragmental.mix.electric_indigo150',
+                    price: '$2.99',
+                    show: 'true',
+                    num_puzzles: ['50','50','50'],
+                    difficulty: ['E','E','M'],
+                    color: ['#6F00FF','#FF8243','#2A52BE']
+                    },
+                    {
+                    name: ['Electrical','Hurricane','Southwester'],
+                    product_id: 'fragmental.mix.electrical150',
+                    price: '$2.99',
+                    show: 'true',
+                    num_puzzles: ['50','50','50'],
+                    difficulty: ['E','M','H'],
+                    color: ['#7DF9FF','#8F00FF','#FFCC33']
+                    },
+                    {
+                    name: ['Wild Strawberry','Villa','Tempest'],
+                    product_id: 'fragmental.mix.wild_strawberry300',
+                    price: '$3.99',
+                    show: 'true',
+                    num_puzzles: ['100','100','100'],
+                    difficulty: ['E','M','H'],
+                    color: ['#FF43A4','#FFC40C','#007BA7']
+                    },
+            ],
 
     },
     {
@@ -671,29 +749,55 @@ module.exports = [
 			],
 	},
 	{
-		title:'Strawberry',
+		title:'',
 		index: '20',
 		type:'forsale',
 		show:'true',
 		num_puzzles:'0',
 		num_solved:'0',
 		solved:'false',
-		bg_color:'#FF43A4',
+		bg_color:'',
 		puzzles:[
-			''
+
 			],
 	},
 	{
-		title:'Banana',
+		title:'',
 		index: '21',
 		type:'forsale',
 		show:'true',
 		num_puzzles:'0',
 		num_solved:'0',
 		solved:'false',
-		bg_color:'#FFE135',
+		bg_color:'',
 		puzzles:[
-			''
+
+			],
+	},
+	{
+		title:'',
+		index: '22',
+		type:'forsale',
+		show:'true',
+		num_puzzles:'0',
+		num_solved:'0',
+		solved:'false',
+		bg_color:'',
+		puzzles:[
+
+			],
+	},
+	{
+		title:'',
+		index: '23',
+		type:'forsale',
+		show:'true',
+		num_puzzles:'0',
+		num_solved:'0',
+		solved:'false',
+		bg_color:'',
+		puzzles:[
+
 			],
 	},
 ];

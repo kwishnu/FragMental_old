@@ -9,6 +9,10 @@ var seenStart = false;
 var puzzleData = {};
 var ready = false;
 
+function randomNum(low, high) {
+    high++;
+    return Math.floor((Math.random())*(high-low))+low;
+}
 
 class SplashScreen extends Component {
     constructor(props) {
@@ -35,7 +39,7 @@ class SplashScreen extends Component {
                     if (seenIntro !== null) {  //has already seen app intro
                         this.setState({seenStart: seenIntro});
                     }else{    //hasn't seen app intro...
-                    this.setState({seenStart: 'false'});
+                        this.setState({seenStart: 'false'});
                         try {
                             AsyncStorage.setItem(KEY_SeenStart, 'true');//
                         } catch (error) {
@@ -83,6 +87,12 @@ class SplashScreen extends Component {
                 });
     }
     gotoScene(whichScene){
+        var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+        for(let i=0; i<4; i++){
+            var rand0to9 = randomNum(0, 9);
+            puzzleData[20 + i].title = '*' + puzzleData[levels[i]].data[rand0to9].name;
+            puzzleData[20 + i].bg_color = puzzleData[levels[i]].data[rand0to9].color;
+        }
         this.props.navigator.replace({
             id: whichScene,
             passProps: {

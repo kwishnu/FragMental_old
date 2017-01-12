@@ -30,6 +30,10 @@ function shadeColor(color, percent) {
 
         return '#'+RR+GG+BB;
 }
+function randomNum(low, high) {
+    high++;
+    return Math.floor((Math.random())*(high-low))+low;
+}
 
 var deepCopy = require('./deepCopy.js');
 var fragData = require('./objPassed.js');
@@ -77,13 +81,19 @@ class PuzzleLaunch extends Component{
             this.toggle();
             return true;
         }else{
+            var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+            for(let i=0; i<4; i++){
+                var rand0to9 = randomNum(0, 9);
+                this.state.puzzleData[20 + i].title = '*' + this.props.puzzleData[levels[i]].data[rand0to9].name;
+                this.state.puzzleData[20 + i].bg_color = this.props.puzzleData[levels[i]].data[rand0to9].color;
+            }
             try {
-            this.props.navigator.replace({
-                id: 'puzzles contents',
-                passProps: {
-                    puzzleData: this.props.puzzleData,
-                }
-            });
+                this.props.navigator.replace({
+                    id: 'puzzles contents',
+                    passProps: {
+                        puzzleData: this.state.puzzleData,
+                    }
+                });
                 return true;
             } catch(err)  {
                 return false;
@@ -167,10 +177,16 @@ class PuzzleLaunch extends Component{
     }
     onSelect(index) {
         if(index>parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10))return;
+            var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+            for(let i=0; i<4; i++){
+                var rand0to9 = randomNum(0, 9);
+                this.state.puzzleData[20 + i].title = '*' + this.props.puzzleData[levels[i]].data[rand0to9].name;
+                this.state.puzzleData[20 + i].bg_color = this.props.puzzleData[levels[i]].data[rand0to9].color;
+            }
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
-                puzzleData: this.props.puzzleData,
+                puzzleData: this.state.puzzleData,
                 title: index + 1,
                 index: index,
                 fromWhere: 'puzzle launcher',

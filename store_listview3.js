@@ -3,6 +3,10 @@ import { StyleSheet, Text, View, Image, TouchableHighlight, ListView, BackAndroi
 import Row3 from './components/Row3';
 import Button from './components/Button';
 var styles = require('./styles');
+function randomNum(low, high) {
+    high++;
+    return Math.floor((Math.random())*(high-low))+low;
+}
 
 
 module.exports = class ComboStore extends Component {
@@ -46,8 +50,8 @@ module.exports = class ComboStore extends Component {
         return (
                 <View style={store_styles.container}>
                     <View style={ store_styles.header }>
-                        <Button style={{left: 10}} onPress={ () => this.toggle() }>
-                            <Image source={ require('./images/menu.png') } style={ { width: 32, height: 32 } } />
+                        <Button style={{left: 10}} onPress={ () => this.handleHardwareBackButton() }>
+                            <Image source={ require('./images/arrow_back.png') } style={ { width: 32, height: 32 } } />
                         </Button>
                         <Text style={styles.header_text} >{this.props.title}
                         </Text>

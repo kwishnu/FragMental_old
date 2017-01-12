@@ -12,6 +12,10 @@ function shuffleArray(array) {
     }
     return array;
 }
+function randomNum(low, high) {
+    high++;
+    return Math.floor((Math.random())*(high-low))+low;
+}
 
 var deepCopy = require('./deepCopy.js');
 var fragData = require('./objPassed.js');
@@ -53,10 +57,16 @@ class DailyLaunch extends Component{
             return true;
         }else{
             try {
+            var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+            for(let i=0; i<4; i++){
+                var rand0to9 = randomNum(0, 9);
+                this.state.puzzleData[20 + i].title = '*' + this.props.puzzleData[levels[i]].data[rand0to9].name;
+                this.state.puzzleData[20 + i].bg_color = this.props.puzzleData[levels[i]].data[rand0to9].color;
+            }
             this.props.navigator.replace({
                 id: 'puzzles contents',
                 passProps: {
-                    puzzleData: this.props.puzzleData,
+                    puzzleData: this.state.puzzleData,
                 }
             });
                 return true;
@@ -131,10 +141,16 @@ class DailyLaunch extends Component{
          };
     }
     onSelect(index, date) {
+            var levels = [3,4,5,6];//Easy, Moderate, Hard, Theme
+            for(let i=0; i<4; i++){
+                var rand0to9 = randomNum(0, 9);
+                this.state.puzzleData[20 + i].title = '*' + this.props.puzzleData[levels[i]].data[rand0to9].name;
+                this.state.puzzleData[20 + i].bg_color = this.props.puzzleData[levels[i]].data[rand0to9].color;
+            }
         this.props.navigator.replace({
             id: 'game board',
             passProps: {
-                puzzleData: this.props.puzzleData,
+                puzzleData: this.state.puzzleData,
                 title: date,
                 index: index,
                 fromWhere: 'daily launcher',
