@@ -10,6 +10,7 @@ const PuzzlesLaunch = require('./puzzles_launch');
 const Game = require('./game');
 const StoreListView = require('./store_listview');
 const ComboStore = require('./store_listview3');
+const Settings = require('./settings');
 
 class AppNavigator extends React.Component {
     constructor(props) {
@@ -33,6 +34,8 @@ class AppNavigator extends React.Component {
                 return StoreListView;
             case 'combo store':
                 return ComboStore;
+            case 'settings':
+                return Settings;
 
             // Add more ids here
         }

@@ -214,6 +214,14 @@ class PuzzleContents extends Component{
                     }
                 });
                 break;
+            case 'settings':
+                this.props.navigator.push({
+                    id: 'settings',
+                    passProps: {
+                        puzzleData: this.props.puzzleData,
+                    }
+                });
+                break;
 
             case 'app_intro':
                 this.props.navigator.push({
@@ -285,6 +293,7 @@ class PuzzleContents extends Component{
         var theDestination = 'puzzle launcher';
         var theTitle = title;
         var textColor = '';
+        var gripeText = '';
 
         if (title.indexOf('*') > -1){
             this.startPurchase(title.substring(1));
@@ -307,10 +316,10 @@ class PuzzleContents extends Component{
                 return;
                 break;
             case 'Last Three Days':
+                gripeText = 'Purchase any puzzle pack and always have access here to the last 30 days of FragMental puzzles!';
             case 'Last Thirty Days':  //fallthrough
                 theDestination = 'daily launcher';
-                theTitle = 'Daily Puzzles'
-                //theDate =
+                theTitle = 'Daily Puzzles';
                 break;
             default:
                 textColor = invertColor(bg, true);
@@ -321,6 +330,7 @@ class PuzzleContents extends Component{
                 puzzleData: this.props.puzzleData,
                 daily_solvedArray: sArray,
                 title: theTitle,
+                gripeText: gripeText,
                 dataElement: index,
                 bgColor: bg,
                 textColor: textColor,

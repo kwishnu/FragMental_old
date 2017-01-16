@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, BackAndroid, AsyncStor
 //import Spinner from 'react-native-loading-spinner-overlay';
 import moment from 'moment';
 import Button from './components/Button';
-
+var Sound = require('react-native-sound');
 function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -36,9 +36,31 @@ var SPRING_CONFIG = {tension: 10, velocity: 10};
 var timeoutHandle;
 var KEY_Puzzles = 'puzzlesKey';
 var KEY_daily_solved_array = 'solved_array';
+var KEY_Sound = 'soundKey';
+var useSounds = 'false';
 var dataBackup = {};
 var puzzleData = {};
 var dsArray = [];
+const plink = new Sound('plink.mp3', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    window.alert('Sound file not found');
+  }
+});
+const slide = new Sound('slide.mp3', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    window.alert('Sound file not found');
+  }
+});
+const blat = new Sound('blat.mp3', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    window.alert('Sound file not found');
+  }
+});
+const fanfare = new Sound('fanfare.mp3', Sound.MAIN_BUNDLE, (error) => {
+  if (error) {
+    window.alert('Sound file not found');
+  }
+});
 
 // {/* ... */} for JSX commenting
 class Game extends Component {
@@ -103,12 +125,23 @@ class Game extends Component {
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
     componentDidMount() {
-//    window.alert(this.state.index);
-//    return;
         puzzleData = this.state.puzzleData;
         this.storeGameVariables(this.state.index);
         BackAndroid.addEventListener('hardwareBackPress', this.handleHardwareBackButton);
         this.setState({isLoading: false});
+
+        AsyncStorage.getItem(KEY_Sound).then((sounds) => {
+            if (sounds !== null) {
+                useSounds = sounds;
+            }else{
+                useSounds = 'false';
+                try {
+                    AsyncStorage.setItem(KEY_Sound, useSounds);//
+                } catch (error) {
+                    window.alert('AsyncStorage error: ' + error.message);
+                }
+            }
+        })
     }
     componentWillUnmount () {
         BackAndroid.removeEventListener('hardwareBackPress', this.handleHardwareBackButton);
@@ -228,7 +261,7 @@ class Game extends Component {
             }
     }
     nextGame(){
-        if(!this.state.forwardBackOpacity)return;
+        if(!this.state.forwardBackOpacity)return;//keep transparent arrow from responding to touches
         var newIndex = (parseInt(this.state.index, 10) + 1).toString();
         this.setState({daily_solvedArray: dsArray,
                         isLoading: true,
@@ -306,7 +339,9 @@ class Game extends Component {
             var sArray = this.state.solvedArray;
             solved = (onFrag ==  this.state.numFrags)?true:false;
 
-            if(solved){
+            if(!solved){
+                if(useSounds == 'true')plink.play();
+            }else{
                 onFrag  = 0;
                 scoreToAdd = 3;
                 sArray[onClue]='solved';
@@ -338,7 +373,7 @@ class Game extends Component {
                 }
                 if (entire_puzzle_solved){
                     if(this.props.fromWhere == 'daily launcher'){
-                    dsArray[this.props.index] = '1';
+                        dsArray[this.state.index] = '1';
                     }
                     if(this.props.fromWhere == 'puzzle launcher'){
                         var newNumSolved = (parseInt(this.props.puzzleData[this.props.dataElement].num_solved, 10) + 1).toString();
@@ -369,12 +404,15 @@ class Game extends Component {
             if(howMuchToScore>0) {
                 this.score_increment(scoreToAdd);
             }else{
+                if(useSounds == 'true')blat.play();
                 this.score_decrement(scoreToAdd);
             }
         }else{
+            if(useSounds == 'true')blat.play();
             this.score_decrement(1);
         }
         if (solved){
+            if(useSounds == 'true')slide.play();
             setTimeout(() => {this.animate_word(currClue)}, 20);
         };
     }
@@ -590,6 +628,7 @@ class Game extends Component {
             textToReturn = parseInt(this.state.onThisClue + 1, 10) + ':  ' + currClue.substring(currClue.indexOf(':') + 1);
             return textToReturn;
         }else{
+            if(useSounds == 'true')fanfare.play();
             try {
                 AsyncStorage.setItem(KEY_daily_solved_array, JSON.stringify(dsArray));
             } catch (error) {
@@ -614,7 +653,6 @@ class Game extends Component {
                     starImage2: require('./images/star_grey.png'),
                     fragOpacity: 1,
                     forwardBackOpacity: 0,
-                    //isLoading: false,
                 });
                 break;
             case 1:
@@ -624,16 +662,14 @@ class Game extends Component {
                         fragOpacity: 0,
                         arrowImage: require('./images/arrow_backward.png'),
                         forwardBackOpacity: 1,
-                        //isLoading: false,
-                    });
+                        });
                 }else{
                     this.setState({
                         starImage1: require('./images/star_green.png'),
                         fragOpacity: 0,
                         arrowImage: require('./images/arrow_forward.png'),
                         forwardBackOpacity: 1,
-                        //isLoading: false,
-                    });
+                        });
                 }
                 break;
             case 2:
@@ -644,8 +680,7 @@ class Game extends Component {
                         fragOpacity: 0,
                         arrowImage: require('./images/arrow_backward.png'),
                         forwardBackOpacity: 1,
-                        //isLoading: false,
-                    });
+                        });
                 }else{
                     this.setState({
                         starImage1: require('./images/star_green.png'),
@@ -653,8 +688,7 @@ class Game extends Component {
                         fragOpacity: 0,
                         arrowImage: require('./images/arrow_forward.png'),
                         forwardBackOpacity: 1,
-                        //isLoading: false,
-                    });
+                        });
                 }
                 break;
             default:

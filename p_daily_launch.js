@@ -197,6 +197,12 @@ class DailyLaunch extends Component{
                                      </View>}
                          />
                     </View>
+
+
+                         <View style={container_styles.center_text_view}>
+                             <Text numberOfLines={5} style={container_styles.gripe_text}>{this.props.gripeText}</Text>
+                         </View>
+
                     <View style={ container_styles.footer }>
                         <Text style={ styles.copyright }>Some fine print...</Text>
                     </View>
@@ -212,10 +218,25 @@ var container_styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#09146d',
     },
+    center_text_view: {
+        flex: 1,
+        width: width,
+        flexDirection: 'column',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        position: 'absolute',
+        padding: 20,
+        top: height/2,
+    },
+    gripe_text: {
+        color: '#e3e004',
+        fontSize: 18,
+    },
     listview: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'space-around',
     },
     header: {
@@ -223,7 +244,7 @@ var container_styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: window.width,
+        width: width,
         backgroundColor: '#09146d',
     },
     tiles_container: {

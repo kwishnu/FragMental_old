@@ -250,7 +250,7 @@ module.exports = [
                     color: '#DE3163',
                     },
                     {
-                    name: 'Dust',
+                    name: 'Scirocco',
                     product_id: 'fragmental.h.dust50',
                     price: '$1.99',
                     show: 'true',
@@ -259,13 +259,13 @@ module.exports = [
                     color: '#FFCBA4',
                     },
                     {
-                    name: 'Electrical',
+                    name: 'Deluge',
                     product_id: 'fragmental.h.electrical50',
                     price: '$1.99',
                     show: 'true',
                     num_puzzles: '50',
                     difficulty: 'H',
-                    color: '#7DF9FF',
+                    color: '#663854',
                     },
                     {
                     name: 'Hurricane',
@@ -500,7 +500,7 @@ module.exports = [
         link: 'store3',
         data:[
                     {
-                    name: ['Blizzard', 'Cyclone', 'Dust'],
+                    name: ['Blizzard', 'Cyclone', 'Scirocco'],
                     product_id: 'fragmental.hc.blizzard150',
                     price: '$2.99',
                     show: 'true',
@@ -509,13 +509,13 @@ module.exports = [
                     color: ['#E7FEFF','#DE3163','#FFCBA4']
                     },
                     {
-                    name: ['Electrical','Hurricane','Southwester'],
+                    name: ['Deluge','Hurricane','Southwester'],
                     product_id: 'fragmental.hc.electrical150',
                     price: '$2.99',
                     show: 'true',
                     num_puzzles: ['50','50','50'],
                     difficulty: ['H','H','H'],
-                    color: ['#7DF9FF','#8F00FF','#FFCC33']
+                    color: ['#663854','#8F00FF','#FFCC33']
                     },
                     {
                     name: ['Squall','Tempest','Thunderstorm'],
@@ -545,13 +545,13 @@ module.exports = [
                     color: ['#6F00FF','#FF8243','#2A52BE']
                     },
                     {
-                    name: ['Electrical','Hurricane','Southwester'],
+                    name: ['Deluge','Hurricane','Southwester'],
                     product_id: 'fragmental.mix.electrical150',
                     price: '$2.99',
                     show: 'true',
                     num_puzzles: ['50','50','50'],
                     difficulty: ['E','M','H'],
-                    color: ['#7DF9FF','#8F00FF','#FFCC33']
+                    color: ['#663854','#8F00FF','#FFCC33']
                     },
                     {
                     name: ['Wild Strawberry','Villa','Tempest'],
@@ -569,7 +569,7 @@ module.exports = [
 		title:'Facebook',
 		index: '11',
 		type:'social',
-        link: '',
+        link: 'facebook',
         data:{
 
             },
@@ -579,7 +579,7 @@ module.exports = [
 		title:'Twitter',
 		index: '12',
 		type:'social',
-        link: '',
+        link: 'twitter',
         data:{
 
             },
@@ -599,7 +599,7 @@ module.exports = [
 		title:'Settings',
 		index: '14',
 		type:'about',
-        link: '',
+        link: 'settings',
         data:{
 
             },
@@ -609,7 +609,7 @@ module.exports = [
 		title:'About',
 		index: '15',
 		type:'about',
-        link: '',
+        link: 'about',
         data:{
 
             },

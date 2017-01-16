@@ -2,6 +2,7 @@ package com.fragmental;
 
 import android.app.Application;
 import android.util.Log;
+import com.zmxv.RNSound.RNSoundPackage;
 
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -23,7 +24,8 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected List<ReactPackage> getPackages() {
             return Arrays.<ReactPackage>asList(
-                    new MainReactPackage()
+                    new MainReactPackage(),
+                    new RNSoundPackage()
             );
         }
     };
