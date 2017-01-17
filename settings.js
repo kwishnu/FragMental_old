@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableHighlight, ListView, BackAndroid, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Image, Picker, BackAndroid, AsyncStorage } from 'react-native';
 import {Switch} from './components/Switch';
 import Button from './components/Button';
 var styles = require('./styles');
 var {width, height} = require('Dimensions').get('window');
 var KEY_Sound = 'soundKey';
+var PushNotification = require('react-native-push-notification');
 
 module.exports = class Settings extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ module.exports = class Settings extends Component {
             id: 'settings',
             sounds_text: 'Game sounds off',
             sounds_switch_state: false,
-
+            notif_time: '7:00 am'
         };
         this.handleHardwareBackButton = this.handleHardwareBackButton.bind(this);
     }
@@ -117,8 +118,21 @@ module.exports = class Settings extends Component {
                                 <Switch value={this.state.sounds_switch_state} onValueChange={(state)=>{this.toggleGameSounds(state)}}/>
                             </View>
                         </View>
+                        <View style={settings_styles.parameter_container}>
+                            <Picker
+                                style={settings_styles.picker}
+                                selectedValue={this.state.notif_time}
+                                onValueChange={(notif_time) => this.setState({ notif_time })}
+                            >
+                                <Picker.Item label='5:00 am' value={'5:00 am'} />
+                                <Picker.Item label='6:00 am' value={'6:00 am'} />
+                                <Picker.Item label='7:00 am' value={'7:00 am'} />
+                                <Picker.Item label='8:00 am' value={'8:00 am'} />
+                                <Picker.Item label='9:00 am' value={'9:00 am'} />
 
+                            </Picker>
 
+                        </View>
 
                     </View>
                 </View>
@@ -171,6 +185,10 @@ const settings_styles = StyleSheet.create({
     },
     text: {
         color: 'white',
+    },
+    picker: {
+        width: 100,
+
     },
 });
 
